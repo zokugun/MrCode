@@ -1,0 +1,13 @@
+diff --git a/build/gulpfile.vscode.js b/build/gulpfile.vscode.js
+index 4906bfd..599f1a9 100644
+--- a/build/gulpfile.vscode.js
++++ b/build/gulpfile.vscode.js
+@@ -326,7 +326,7 @@ const buildRoot = path.dirname(root);
+ const BUILD_TARGETS = [
+ 	{ platform: 'win32', arch: 'ia32' },
+ 	{ platform: 'win32', arch: 'x64' },
+-	{ platform: 'darwin', arch: null, opts: { stats: true } },
++	{ platform: 'darwin', arch: null },
+ 	{ platform: 'linux', arch: 'ia32' },
+ 	{ platform: 'linux', arch: 'x64' },
+ 	{ platform: 'linux', arch: 'arm' },

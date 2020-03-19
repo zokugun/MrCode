@@ -1,0 +1,26 @@
+diff --git a/build/gulpfile.vscode.js b/build/gulpfile.vscode.js
+index 4906bfd..2fecb5f 100644
+--- a/build/gulpfile.vscode.js
++++ b/build/gulpfile.vscode.js
+@@ -261,7 +261,7 @@ function packageTask(platform, arch, sourceFolderName, destinationFolderName, op
+ 			all = es.merge(all, gulp.src('resources/linux/code.png', { base: '.' }));
+ 		} else if (platform === 'darwin') {
+ 			const shortcut = gulp.src('resources/darwin/bin/code.sh')
+-				.pipe(rename('bin/code'));
++				.pipe(rename(`bin/${product.applicationName}`));
+ 
+ 			all = es.merge(all, shortcut);
+ 		}
+diff --git a/src/vs/platform/environment/node/environmentService.ts b/src/vs/platform/environment/node/environmentService.ts
+index 15b5c20..3c562e6 100644
+--- a/src/vs/platform/environment/node/environmentService.ts
++++ b/src/vs/platform/environment/node/environmentService.ts
+@@ -67,7 +67,7 @@ function getCLIPath(execPath: string, appRoot: string, isBuilt: boolean): string
+ 
+ 	// macOS
+ 	if (isBuilt) {
+-		return path.join(appRoot, 'bin', 'code');
++		return path.join(appRoot, 'bin', `${product.applicationName}`);
+ 	}
+ 
+ 	return path.join(appRoot, 'scripts', 'code-cli.sh');

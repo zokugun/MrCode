@@ -1,0 +1,163 @@
+diff --git a/src/vs/workbench/browser/parts/editor/editor.ts b/src/vs/workbench/browser/parts/editor/editor.ts
+index 371455d..e3fe0ee 100644
+--- a/src/vs/workbench/browser/parts/editor/editor.ts
++++ b/src/vs/workbench/browser/parts/editor/editor.ts
+@@ -34,6 +34,8 @@ export const DEFAULT_EDITOR_PART_OPTIONS: IEditorPartOptions = {
+ 	showIcons: true,
+ 	enablePreview: true,
+ 	openPositioning: 'right',
++	openPositioningSortOrder: 'asc',
++	openPositioningSortRule: 'name-local',
+ 	openSideBySideDirection: 'right',
+ 	closeEmptyGroups: true,
+ 	labelFormat: 'default',
+diff --git a/src/vs/workbench/browser/workbench.contribution.ts b/src/vs/workbench/browser/workbench.contribution.ts
+index 2fa180e..e2b8837 100644
+--- a/src/vs/workbench/browser/workbench.contribution.ts
++++ b/src/vs/workbench/browser/workbench.contribution.ts
+@@ -108,9 +108,21 @@ import { workbenchConfigurationNodeBase } from 'vs/workbench/common/configuratio
+ 			},
+ 			'workbench.editor.openPositioning': {
+ 				'type': 'string',
+-				'enum': ['left', 'right', 'first', 'last'],
++				'enum': ['left', 'right', 'first', 'last', 'sort'],
+ 				'default': 'right',
+-				'markdownDescription': nls.localize({ comment: ['This is the description for a setting. Values surrounded by single quotes are not to be translated.'], key: 'editorOpenPositioning' }, "Controls where editors open. Select `left` or `right` to open editors to the left or right of the currently active one. Select `first` or `last` to open editors independently from the currently active one.")
++				'markdownDescription': nls.localize({ comment: ['This is the description for a setting. Values surrounded by single quotes are not to be translated.'], key: 'editorOpenPositioning' }, "Controls where editors open. Select `left` or `right` to open editors to the left or right of the currently active one. Select `first` or `last` to open editors independently from the currently active one. Select `sort` to open editors in alphabetical order.")
++			},
++			'workbench.editor.openPositioningSortOrder': {
++				'type': 'string',
++				'enum': ['asc', 'desc'],
++				'default': 'asc',
++				'description': nls.localize('openPositioningSortOrder', "Controls in which direction the open editors are sorted.")
++			},
++			'workbench.editor.openPositioningSortRule': {
++				'type': 'string',
++				'enum': ['name-local', 'name-absolute', 'absolute'],
++				'default': 'name-local',
++				'description': nls.localize('openPositioningSortRule', "Controls how the open editors are sorted.")
+ 			},
+ 			'workbench.editor.openSideBySideDirection': {
+ 				'type': 'string',
+diff --git a/src/vs/workbench/common/editor.ts b/src/vs/workbench/common/editor.ts
+index 8b3c8a4..0fef9c5 100644
+--- a/src/vs/workbench/common/editor.ts
++++ b/src/vs/workbench/common/editor.ts
+@@ -1296,7 +1296,9 @@ interface IEditorPartConfiguration {
+ 	enablePreview?: boolean;
+ 	enablePreviewFromQuickOpen?: boolean;
+ 	closeOnFileDelete?: boolean;
+-	openPositioning?: 'left' | 'right' | 'first' | 'last';
++	openPositioning?: 'left' | 'right' | 'first' | 'last' | 'sort';
++	openPositioningSortOrder?: 'asc' | 'desc';
++	openPositioningSortRule?: 'name-local' | 'name-absolute' | 'absolute';
+ 	openSideBySideDirection?: 'right' | 'down';
+ 	closeEmptyGroups?: boolean;
+ 	revealIfOpen?: boolean;
+diff --git a/src/vs/workbench/common/editor/editorGroup.ts b/src/vs/workbench/common/editor/editorGroup.ts
+index 3ff8760..c7c583f 100644
+--- a/src/vs/workbench/common/editor/editorGroup.ts
++++ b/src/vs/workbench/common/editor/editorGroup.ts
+@@ -4,7 +4,7 @@
+  *--------------------------------------------------------------------------------------------*/
+ 
+ import { Event, Emitter } from 'vs/base/common/event';
+-import { Extensions, IEditorInputFactoryRegistry, EditorInput, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, CloseDirection, SideBySideEditorInput, IEditorInput, EditorsOrder } from 'vs/workbench/common/editor';
++import { Extensions, IEditorInputFactoryRegistry, EditorInput, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, CloseDirection, SideBySideEditorInput, IEditorInput, EditorsOrder, Verbosity } from 'vs/workbench/common/editor';
+ import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
+ import { IConfigurationService, IConfigurationChangeEvent } from 'vs/platform/configuration/common/configuration';
+ import { dispose, Disposable, DisposableStore } from 'vs/base/common/lifecycle';
+@@ -15,7 +15,8 @@ const EditorOpenPositioning = {
+ 	LEFT: 'left',
+ 	RIGHT: 'right',
+ 	FIRST: 'first',
+-	LAST: 'last'
++	LAST: 'last',
++	SORT: 'sort'
+ };
+ 
+ export interface EditorCloseEvent extends IEditorCloseEvent {
+@@ -92,7 +93,9 @@ export class EditorGroup extends Disposable {
+ 	private preview: EditorInput | null = null; // editor in preview state
+ 	private active: EditorInput | null = null;  // editor in active state
+ 
+-	private editorOpenPositioning: ('left' | 'right' | 'first' | 'last') | undefined;
++	private editorOpenPositioning: ('left' | 'right' | 'first' | 'last' | 'sort') | undefined;
++	private editorOpenPositioningSortOrder: ('asc' | 'desc') | undefined;
++	private editorOpenPositioningSortRule: ('name-local' | 'name-absolute' | 'absolute') | undefined;
+ 	private focusRecentEditorAfterClose: boolean | undefined;
+ 
+ 	constructor(
+@@ -118,6 +121,8 @@ export class EditorGroup extends Disposable {
+ 
+ 	private onConfigurationUpdated(event?: IConfigurationChangeEvent): void {
+ 		this.editorOpenPositioning = this.configurationService.getValue('workbench.editor.openPositioning');
++		this.editorOpenPositioningSortOrder = this.configurationService.getValue('workbench.editor.openPositioningSortOrder');
++		this.editorOpenPositioningSortRule = this.configurationService.getValue('workbench.editor.openPositioningSortRule');
+ 		this.focusRecentEditorAfterClose = this.configurationService.getValue('workbench.editor.focusRecentEditorAfterClose');
+ 	}
+ 
+@@ -185,6 +190,63 @@ export class EditorGroup extends Disposable {
+ 				}
+ 			}
+ 
++			// Insert in Order
++			else if (this.editorOpenPositioning === EditorOpenPositioning.SORT) {
++				targetIndex = this.editors.length;
++
++				const order = this.editorOpenPositioningSortOrder === 'asc' ? (v: number) => v <= 0 : (v: number) => v > 0;
++				const name = candidate.getTitle(Verbosity.SHORT);
++				const localPath = candidate.getTitle(Verbosity.MEDIUM);
++				const absolutePath = candidate.getTitle(Verbosity.LONG);
++
++				let sort: (i: number) => number = () => -1;
++
++				// Sort by name then, if editor is local, sort by local path; if not, sort by absolute path
++				if (this.editorOpenPositioningSortRule === 'name-local') {
++					sort = (i: number) => {
++						const lc = name.localeCompare(this.editors[i].getTitle(Verbosity.SHORT));
++						if (lc === 0) {
++							if (name === localPath) {
++								if (order(localPath.localeCompare(this.editors[i].getTitle(Verbosity.MEDIUM)))) {
++									return i;
++								}
++							} else if (order(absolutePath.localeCompare(this.editors[i].getTitle(Verbosity.LONG)))) {
++								return i;
++							}
++
++							return -1;
++						} else {
++							return order(lc) ? i : -1;
++						}
++					};
++				}
++
++				// Sort by name then, by absolute path
++				else if (this.editorOpenPositioningSortRule === 'name-absolute') {
++					sort = (i: number) => {
++						const lc = name.localeCompare(this.editors[i].getTitle(Verbosity.SHORT));
++						if (lc === 0) {
++							return order(absolutePath.localeCompare(this.editors[i].getTitle(Verbosity.LONG))) ? i : -1;
++						} else {
++							return order(lc) ? i : -1;
++						}
++					};
++				}
++
++				// Sort by absolute path
++				else if (this.editorOpenPositioningSortRule === 'absolute') {
++					sort = (i: number) => order(absolutePath.localeCompare(this.editors[i].getTitle(Verbosity.LONG))) ? i : -1;
++				}
++
++				let t;
++				for (let i = 0; i < this.editors.length; i++) {
++					if ((t = sort(i)) !== -1) {
++						targetIndex = t;
++						break;
++					}
++				}
++			}
++
+ 			// Insert to the RIGHT of active editor
+ 			else {
+ 				targetIndex = indexOfActive + 1;

@@ -1,0 +1,236 @@
+diff --git a/src/vs/editor/common/config/editorOptions.ts b/src/vs/editor/common/config/editorOptions.ts
+index 284c6f9..28b1464 100644
+--- a/src/vs/editor/common/config/editorOptions.ts
++++ b/src/vs/editor/common/config/editorOptions.ts
+@@ -495,7 +495,7 @@ export interface IEditorOptions {
+ 	 * Selects the folding strategy. 'auto' uses the strategies contributed for the current document, 'indentation' uses the indentation based folding strategy.
+ 	 * Defaults to 'auto'.
+ 	 */
+-	foldingStrategy?: 'auto' | 'indentation';
++	foldingStrategy?: string;
+ 	/**
+ 	 * Enable highlight for folded regions.
+ 	 * Defaults to true.
+@@ -3619,16 +3619,10 @@ export const EditorOptions = {
+ 		EditorOption.folding, 'folding', true,
+ 		{ description: nls.localize('folding', "Controls whether the editor has code folding enabled.") }
+ 	)),
+-	foldingStrategy: register(new EditorStringEnumOption(
+-		EditorOption.foldingStrategy, 'foldingStrategy',
+-		'auto' as 'auto' | 'indentation',
+-		['auto', 'indentation'] as const,
++	foldingStrategy: register(new EditorStringOption(
++		EditorOption.foldingStrategy, 'foldingStrategy', 'auto',
+ 		{
+-			enumDescriptions: [
+-				nls.localize('foldingStrategy.auto', "Use a language-specific folding strategy if available, else the indentation-based one."),
+-				nls.localize('foldingStrategy.indentation', "Use the indentation-based folding strategy."),
+-			],
+-			description: nls.localize('foldingStrategy', "Controls the strategy for computing folding ranges.")
++			description: nls.localize('foldingStrategy', "Controls the strategy for computing folding ranges. `auto`, `indentation` or the custom id of an extension")
+ 		}
+ 	)),
+ 	foldingHighlight: register(new EditorBooleanOption(
+diff --git a/src/vs/editor/common/modes.ts b/src/vs/editor/common/modes.ts
+index b93301c..2b193b2 100644
+--- a/src/vs/editor/common/modes.ts
++++ b/src/vs/editor/common/modes.ts
+@@ -1250,6 +1250,10 @@ export interface FoldingContext {
+  */
+ export interface FoldingRangeProvider {
+ 	/**
++	 * Provides the id of the provider.
++	 */
++	id?: string;
++	/**
+ 	 * Provides the color ranges for a specific model.
+ 	 */
+ 	provideFoldingRanges(model: model.ITextModel, context: FoldingContext, token: CancellationToken): ProviderResult<FoldingRange[]>;
+diff --git a/src/vs/editor/common/modes/languageFeatureRegistry.ts b/src/vs/editor/common/modes/languageFeatureRegistry.ts
+index 4278ec1..e2d5e47 100644
+--- a/src/vs/editor/common/modes/languageFeatureRegistry.ts
++++ b/src/vs/editor/common/modes/languageFeatureRegistry.ts
+@@ -62,6 +62,10 @@ export class LanguageFeatureRegistry<T> {
+ 		});
+ 	}
+ 
++	entries(): T[] {
++		return this._entries.map(entry => entry.provider);
++	}
++
+ 	has(model: ITextModel): boolean {
+ 		return this.all(model).length > 0;
+ 	}
+diff --git a/src/vs/editor/contrib/folding/folding.ts b/src/vs/editor/contrib/folding/folding.ts
+index e80d1f6..cb4ff0d 100644
+--- a/src/vs/editor/contrib/folding/folding.ts
++++ b/src/vs/editor/contrib/folding/folding.ts
+@@ -35,6 +35,8 @@ import { RawContextKey, IContextKey, IContextKeyService } from 'vs/platform/cont
+ import { registerThemingParticipant } from 'vs/platform/theme/common/themeService';
+ import { registerColor, editorSelectionBackground, transparent } from 'vs/platform/theme/common/colorRegistry';
+ 
++import { IExtensionManagementService } from 'vs/platform/extensionManagement/common/extensionManagement';
++
+ const CONTEXT_FOLDING_ENABLED = new RawContextKey<boolean>('foldingEnabled', false);
+ 
+ export interface RangeProvider {
+@@ -61,7 +63,7 @@ export class FoldingController extends Disposable implements IEditorContribution
+ 
+ 	private readonly editor: ICodeEditor;
+ 	private _isEnabled: boolean;
+-	private _useFoldingProviders: boolean;
++	private _foldingStrategy: string;
+ 	private _unfoldOnClickAfterEndOfLine: boolean;
+ 
+ 	private readonly foldingDecorationProvider: FoldingDecorationProvider;
+@@ -91,7 +93,7 @@ export class FoldingController extends Disposable implements IEditorContribution
+ 		this.editor = editor;
+ 		const options = this.editor.getOptions();
+ 		this._isEnabled = options.get(EditorOption.folding);
+-		this._useFoldingProviders = options.get(EditorOption.foldingStrategy) !== 'indentation';
++		this._foldingStrategy = options.get(EditorOption.foldingStrategy);
+ 		this._unfoldOnClickAfterEndOfLine = options.get(EditorOption.unfoldOnClickAfterEndOfLine);
+ 
+ 		this.foldingModel = null;
+@@ -125,7 +127,7 @@ export class FoldingController extends Disposable implements IEditorContribution
+ 				this.onModelContentChanged();
+ 			}
+ 			if (e.hasChanged(EditorOption.foldingStrategy)) {
+-				this._useFoldingProviders = this.editor.getOptions().get(EditorOption.foldingStrategy) !== 'indentation';
++				this._foldingStrategy = this.editor.getOptions().get(EditorOption.foldingStrategy);
+ 				this.onFoldingStrategyChanged();
+ 			}
+ 			if (e.hasChanged(EditorOption.unfoldOnClickAfterEndOfLine)) {
+@@ -133,6 +135,13 @@ export class FoldingController extends Disposable implements IEditorContribution
+ 			}
+ 		}));
+ 		this.onModelChanged();
++
++
++		editor.invokeWithinContext((editorAccessor) => {
++			const service = editorAccessor.get(IExtensionManagementService);
++			console.log(service);
++		});
++		// const installedExtensions = this.instantiationService.invokeFunction(getInstalledExtensions);
+ 	}
+ 
+ 	/**
+@@ -244,10 +253,14 @@ export class FoldingController extends Disposable implements IEditorContribution
+ 		if (this.rangeProvider) {
+ 			return this.rangeProvider;
+ 		}
+-		this.rangeProvider = new IndentRangeProvider(editorModel); // fallback
+-
++		if (this._foldingStrategy !== 'auto' && this._foldingStrategy !== 'indentation') {
++			const foldingProviders = FoldingRangeProviderRegistry.entries().filter(provider => provider.id === this._foldingStrategy);
++			if (foldingProviders.length > 0) {
++				this.rangeProvider = new SyntaxRangeProvider(editorModel, foldingProviders);
++			}
++		}
+ 
+-		if (this._useFoldingProviders && this.foldingModel) {
++		if (this.foldingModel && (this._foldingStrategy === 'auto' || (this._foldingStrategy !== 'indentation' && !this.rangeProvider))) {
+ 			let foldingProviders = FoldingRangeProviderRegistry.ordered(this.foldingModel.textModel);
+ 			if (foldingProviders.length === 0 && this.foldingStateMemento && this.foldingStateMemento.collapsedRegions) {
+ 				const rangeProvider = this.rangeProvider = new InitializingRangeProvider(editorModel, this.foldingStateMemento.collapsedRegions, () => {
+@@ -260,6 +273,10 @@ export class FoldingController extends Disposable implements IEditorContribution
+ 				this.rangeProvider = new SyntaxRangeProvider(editorModel, foldingProviders);
+ 			}
+ 		}
++
++		if (!this.rangeProvider) {
++			this.rangeProvider = new IndentRangeProvider(editorModel); // fallback
++		}
+ 		this.foldingStateMemento = null;
+ 		return this.rangeProvider;
+ 	}
+diff --git a/src/vs/monaco.d.ts b/src/vs/monaco.d.ts
+index 543ac0c..386388e 100644
+--- a/src/vs/monaco.d.ts
++++ b/src/vs/monaco.d.ts
+@@ -3020,7 +3020,7 @@ declare namespace monaco.editor {
+ 		 * Selects the folding strategy. 'auto' uses the strategies contributed for the current document, 'indentation' uses the indentation based folding strategy.
+ 		 * Defaults to 'auto'.
+ 		 */
+-		foldingStrategy?: 'auto' | 'indentation';
++		foldingStrategy?: string;
+ 		/**
+ 		 * Enable highlight for folded regions.
+ 		 * Defaults to true.
+@@ -3944,7 +3944,7 @@ declare namespace monaco.editor {
+ 		find: IEditorOption<EditorOption.find, EditorFindOptions>;
+ 		fixedOverflowWidgets: IEditorOption<EditorOption.fixedOverflowWidgets, boolean>;
+ 		folding: IEditorOption<EditorOption.folding, boolean>;
+-		foldingStrategy: IEditorOption<EditorOption.foldingStrategy, 'auto' | 'indentation'>;
++		foldingStrategy: IEditorOption<EditorOption.foldingStrategy, string>;
+ 		foldingHighlight: IEditorOption<EditorOption.foldingHighlight, boolean>;
+ 		unfoldOnClickAfterEndOfLine: IEditorOption<EditorOption.unfoldOnClickAfterEndOfLine, boolean>;
+ 		fontFamily: IEditorOption<EditorOption.fontFamily, string>;
+@@ -6040,6 +6040,10 @@ declare namespace monaco.languages {
+ 	 */
+ 	export interface FoldingRangeProvider {
+ 		/**
++		 * Provides the id of the provider.
++		 */
++		id?: string;
++		/**
+ 		 * Provides the color ranges for a specific model.
+ 		 */
+ 		provideFoldingRanges(model: editor.ITextModel, context: FoldingContext, token: CancellationToken): ProviderResult<FoldingRange[]>;
+diff --git a/src/vs/vscode.d.ts b/src/vs/vscode.d.ts
+index 9e852ec..3cef2b6 100644
+--- a/src/vs/vscode.d.ts
++++ b/src/vs/vscode.d.ts
+@@ -3964,6 +3964,10 @@ declare module 'vscode' {
+ 	 */
+ 	export interface FoldingRangeProvider {
+ 		/**
++		 * Provides the id of the provider.
++		 */
++		readonly id?: string;
++		/**
+ 		 * Returns a list of folding ranges or null and undefined if the provider
+ 		 * does not want to participate or was cancelled.
+ 		 * @param document The document in which the command was invoked.
+diff --git a/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts b/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
+index 4287e53..3b9241a 100644
+--- a/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
++++ b/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
+@@ -529,9 +529,10 @@ export class MainThreadLanguageFeatures implements MainThreadLanguageFeaturesSha
+ 
+ 	// --- folding
+ 
+-	$registerFoldingRangeProvider(handle: number, selector: IDocumentFilterDto[]): void {
++	$registerFoldingRangeProvider(handle: number, id: string | null, selector: IDocumentFilterDto[]): void {
+ 		const proxy = this._proxy;
+ 		this._registrations.set(handle, modes.FoldingRangeProviderRegistry.register(selector, <modes.FoldingRangeProvider>{
++			id,
+ 			provideFoldingRanges: (model, context, token) => {
+ 				return proxy.$provideFoldingRanges(handle, model.uri, context, token);
+ 			}
+diff --git a/src/vs/workbench/api/common/extHost.protocol.ts b/src/vs/workbench/api/common/extHost.protocol.ts
+index 10f51d2..5a9ae43 100644
+--- a/src/vs/workbench/api/common/extHost.protocol.ts
++++ b/src/vs/workbench/api/common/extHost.protocol.ts
+@@ -373,7 +373,7 @@ export interface MainThreadLanguageFeaturesShape extends IDisposable {
+ 	$registerSignatureHelpProvider(handle: number, selector: IDocumentFilterDto[], metadata: ISignatureHelpProviderMetadataDto): void;
+ 	$registerDocumentLinkProvider(handle: number, selector: IDocumentFilterDto[], supportsResolve: boolean): void;
+ 	$registerDocumentColorProvider(handle: number, selector: IDocumentFilterDto[]): void;
+-	$registerFoldingRangeProvider(handle: number, selector: IDocumentFilterDto[]): void;
++	$registerFoldingRangeProvider(handle: number, id: string | null, selector: IDocumentFilterDto[]): void;
+ 	$registerSelectionRangeProvider(handle: number, selector: IDocumentFilterDto[]): void;
+ 	$registerCallHierarchyProvider(handle: number, selector: IDocumentFilterDto[]): void;
+ 	$setLanguageConfiguration(handle: number, languageId: string, configuration: ILanguageConfigurationDto): void;
+diff --git a/src/vs/workbench/api/common/extHostLanguageFeatures.ts b/src/vs/workbench/api/common/extHostLanguageFeatures.ts
+index 479a512..803ac02 100644
+--- a/src/vs/workbench/api/common/extHostLanguageFeatures.ts
++++ b/src/vs/workbench/api/common/extHostLanguageFeatures.ts
+@@ -1803,7 +1803,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
+ 
+ 	registerFoldingRangeProvider(extension: IExtensionDescription, selector: vscode.DocumentSelector, provider: vscode.FoldingRangeProvider): vscode.Disposable {
+ 		const handle = this._addNewAdapter(new FoldingProviderAdapter(this._documents, provider), extension);
+-		this._proxy.$registerFoldingRangeProvider(handle, this._transformDocumentSelector(selector));
++		this._proxy.$registerFoldingRangeProvider(handle, provider.id ?? null, this._transformDocumentSelector(selector));
+ 		return this._createDisposable(handle);
+ 	}
+ 
