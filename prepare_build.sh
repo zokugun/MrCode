@@ -12,8 +12,8 @@ sed -i '' -E 's/vscodium/mrcode/g' prepare_vscode.sh
 sed -i '' -E 's/codium/mrcode/g' prepare_vscode.sh
 
 sed -i '' -E '/extensionAllowedProposedApi=.*/a\
-\  dataFolderName='\''setpath(["dataFolderName"]; ".mrcode")'\''\
-\  darwinBundleIdentifier='\''setpath(["darwinBundleIdentifier"]; "org.zokugun.mrcode")'\''
+dataFolderName='\''setpath(["dataFolderName"]; ".mrcode")'\''\
+darwinBundleIdentifier='\''setpath(["darwinBundleIdentifier"]; "org.zokugun.mrcode")'\''
 ' prepare_vscode.sh
 
 sed -i '' -E 's/\$\{extensionAllowedProposedApi\}/${extensionAllowedProposedApi} | ${dataFolderName} | ${darwinBundleIdentifier}/' prepare_vscode.sh

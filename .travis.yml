@@ -1,0 +1,57 @@
+matrix:
+  include:
+    - os: linux
+      sudo: required
+      env: BUILDARCH=x64
+      dist: trusty
+    - os: linux
+      sudo: required
+      env: BUILDARCH=arm64
+      dist: trusty
+    - os: linux
+      sudo: required
+      env: BUILDARCH=arm
+      dist: trusty
+    - os: osx
+
+language: node_js
+node_js: "12"
+
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH="$HOME/.yarn/bin:$PATH"
+  - ./get_repo.sh
+  - ./prepare_vscodium.sh
+  - ./vscodium/install_deps.sh
+  - ./vscodium/check_tags.sh
+
+script:
+  - ./vscodium/build.sh
+
+before_deploy:
+  - ./vscodium/create_zip.sh
+  - ./vscodium/create_dmg.sh
+  - ./vscodium/sum.sh
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  overwrite: true
+  name: $LATEST_MS_TAG
+  api_key: $GITHUB_TOKEN
+  file_glob: true
+  file:
+    - ./vscodium/*.sha256
+    - ./vscodium/*.zip
+    - ./vscodium/*.tar.gz
+    - ./vscodium/*.dmg
+    - ./vscodium/*.deb
+    - ./vscodium/*.rpm
+    - ./vscodium/*.AppImage
+    - ./vscodium/*.AppImage.zsync
+  on:
+    all_branches: true
+    condition: $SHOULD_BUILD = yes
+
+after_deploy:
+  - ./vscodium/update_version.sh
