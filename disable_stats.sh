@@ -2,10 +2,21 @@
 
 cd build
 
-if [ -f "gulpfile.vscode.js.bak" ]; then
-    cp gulpfile.vscode.js.bak gulpfile.vscode.js
-else 
-    cp gulpfile.vscode.js gulpfile.vscode.js.bak
+exists() { type -t "$1" > /dev/null 2>&1; }
+
+if ! exists gsed; then
+	function gsed() {
+		sed "$@"
+	}
 fi
 
-sed -i '' -E 's/, opts: \{ stats: true \}//g' gulpfile.vscode.js
+function backup() {
+	if [ -f "$1.bak" ]; then
+		cp $1.bak $1
+	else 
+		cp $1 $1.bak
+	fi
+}
+
+backup 'gulpfile.vscode.js'
+gsed -i -E 's/, opts: \{ stats: true \}//g' gulpfile.vscode.js

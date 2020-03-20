@@ -1,5 +1,5 @@
 [MrCode](https://github.com/zokugun/MrCode)
-===================================================
+===========================================
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![current release](https://img.shields.io/github/release/zokugun/MrCode.svg)](./releases)

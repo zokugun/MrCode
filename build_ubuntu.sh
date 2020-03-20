@@ -2,8 +2,6 @@
 
 ./get_repo.sh
 
-# cp -rp src/* vscodium/
-
 cd vscodium || exit
 
 ../prepare.sh
@@ -12,8 +10,6 @@ cd vscodium || exit
 
 cd vscode || exit
 
-../../disable_stats.sh
-
 git apply ../../patches/binary-name.patch
 git apply ../../patches/disable-stats.patch
 git apply ../../patches/editor-open-positioning--sort.patch
@@ -21,4 +17,4 @@ git apply ../../patches/editor-folding-strategy--custom.patch
 
 cd ..
 
-SHOULD_BUILD=yes TRAVIS_OS_NAME=osx ./build.sh
+SHOULD_BUILD=yes BUILDARCH=x64 ./build.sh
