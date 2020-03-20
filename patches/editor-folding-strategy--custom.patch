@@ -101,20 +101,6 @@ index e80d1f6..cb4ff0d 100644
  				this.onFoldingStrategyChanged();
  			}
  			if (e.hasChanged(EditorOption.unfoldOnClickAfterEndOfLine)) {
-@@ -133,6 +135,13 @@ export class FoldingController extends Disposable implements IEditorContribution
- 			}
- 		}));
- 		this.onModelChanged();
-+
-+
-+		editor.invokeWithinContext((editorAccessor) => {
-+			const service = editorAccessor.get(IExtensionManagementService);
-+			console.log(service);
-+		});
-+		// const installedExtensions = this.instantiationService.invokeFunction(getInstalledExtensions);
- 	}
- 
- 	/**
 @@ -244,10 +253,14 @@ export class FoldingController extends Disposable implements IEditorContribution
  		if (this.rangeProvider) {
  			return this.rangeProvider;
