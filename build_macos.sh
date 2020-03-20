@@ -8,6 +8,7 @@ cd vscodium || exit
 
 ../prepare_build.sh
 ../prepare_update.sh
+../prepare_vscode.sh
 
 ./get_repo.sh
 

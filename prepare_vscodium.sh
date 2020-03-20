@@ -4,6 +4,7 @@ cd vscodium || exit
 
 ../prepare_build.sh
 ../prepare_update.sh
+../prepare_vscode.sh
 
 ../prepare_dmg.sh
 ../prepare_sum.sh
