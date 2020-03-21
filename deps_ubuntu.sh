@@ -5,6 +5,7 @@ exists() { type -t "$1" > /dev/null 2>&1; }
 sudo apt-get install libx11-dev libxkbfile-dev
 sudo apt-get install libsecret-1-dev
 sudo apt-get install fakeroot rpm
+sudo apt-get install imagemagick
 
 if ! exists python; then
 	sudo apt install python

@@ -6,4 +6,4 @@
 
 cd vscodium || exit
 
-SHOULD_BUILD=yes BUILDARCH=x64 ./build.sh
+SHOULD_BUILD=yes CI_BUILD=no BUILDARCH=x64 ./build.sh

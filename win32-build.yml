@@ -1,0 +1,76 @@
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: "12.13.0"
+- script: |
+    choco install jq
+  displayName: 'install jq from choco'
+- script: |
+    choco install sed
+  displayName: 'install sed from choco'
+- task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
+  displayName: 'Install Yarn'
+- task: UsePythonVersion@0
+  displayName: 'Use Python 2.x'
+  inputs:
+    versionSpec: 2.x
+- task: ShellScript@2
+  displayName: 'get VSCode sources'
+  inputs:
+    scriptPath: get_repo.sh
+- task: ShellScript@2
+  displayName: 'prepase sources'
+  inputs:
+    scriptPath: prepare.sh
+- powershell: |
+    $LATEST_MS_COMMIT="$(git -C vscode rev-list --tags --max-count=1)"
+    $LATEST_MS_TAG="$(git -C vscode describe --tags)"
+    Write-Host "##vso[task.setvariable variable=LATEST_MS_TAG]$LATEST_MS_TAG"
+    Write-Host "##vso[task.setvariable variable=LATEST_MS_COMMIT]$LATEST_MS_COMMIT"
+    Write-Host "##vso[task.setvariable variable=BUILD_SOURCEVERSION]$LATEST_MS_COMMIT"
+  displayName: 'set env LATEST_MS_TAG, LATEST_MS_COMMIT'
+- task: PowerShell@2
+  inputs:
+    filePath: '.\\vscodium\\check_tags.ps1'
+  env:
+    MAPPED_GITHUB_TOKEN: $(GITHUB_TOKEN)
+- script: |
+    git -C vscodium/vscode status
+  displayName: 'vscode status'
+- powershell: |
+    bash ./vscodium/build.sh
+  displayName: 'go build it!'
+- bash: |
+    if [[ "$SHOULD_BUILD" == "yes" ]]; then mv vscodium\\vscode\\.build\\win32-$(BUILDARCH)\\system-setup\\VSCodeSetup.exe  vscodium\\MrCodeSetup-$(BUILDARCH)-${LATEST_MS_TAG}.exe; fi
+  displayName: 'move the system setup'
+- bash: |
+    if [[ "$SHOULD_BUILD" == "yes" ]]; then mv vscodium\\vscode\\.build\\win32-$(BUILDARCH)\\user-setup\\VSCodeSetup.exe  vscodium\\MrCodeUserSetup-$(BUILDARCH)-${LATEST_MS_TAG}.exe; fi
+  displayName: 'move the user setup'
+- bash: |
+    if [[ "$SHOULD_BUILD" == "yes" ]]; then mv vscodium\\vscode\\.build\\win32-$(BUILDARCH)\\archive\\VSCode-win32-$(BUILDARCH).zip  vscodium\\MrCode-win32-$(BUILDARCH)-${LATEST_MS_TAG}.zip; fi
+  displayName: 'move the zip folder'
+- powershell: |
+    bash ./vscodium/sum.sh
+  condition: eq(variables['SHOULD_BUILD'], 'yes')
+  displayName: 'compute sums'
+- task: CopyFiles@2
+  inputs:
+    contents: |
+      vscodium\\MrCode*.zip
+      vscodium\\MrCodeUserSetup*.exe
+      vscodium\\MrCodeSetup*.exe
+      vscodium\\*.sha256
+    targetFolder: $(Build.ArtifactStagingDirectory)
+  condition: eq(variables['SHOULD_BUILD'], 'yes')
+  displayName: 'copy artifacts to staging directory'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish artifacts'
+  condition: eq(variables['SHOULD_BUILD'], 'yes')
+  inputs:
+    PathtoPublish: $(Build.ArtifactStagingDirectory)
+    ArtifactName: 'everything'
+- bash: ./vscodium/update_version.sh
+  displayName: 'update version json'
+  env:
+    GITHUB_TOKEN: $(GITHUB_TOKEN)
+    GITHUB_USERNAME: $(GITHUB_USERNAME)

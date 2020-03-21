@@ -19,11 +19,13 @@ function backup() {
 cd vscodium || exit
 
 # build.sh
-backup 'build.sh'
-gsed -i -E 's/keep_alive &/date/g' build.sh
-gsed -i -E 's/keep_alive_small &/date/g' build.sh
-gsed -i -E 's/yarn gulp compile-build/yarn gulp compile-build || exit/g' build.sh
-gsed -i -E 's/yarn gulp (vscode-.*-min-ci)/yarn gulp \1 || exit/g' build.sh
+if [[ "$CI_BUILD" == "no" ]]; then
+	backup 'build.sh'
+	gsed -i -E 's/keep_alive &/date/g' build.sh
+	gsed -i -E 's/keep_alive_small &/date/g' build.sh
+	gsed -i -E 's/yarn gulp compile-build/yarn gulp compile-build || exit/g' build.sh
+	# gsed -i -E 's/yarn gulp (vscode-.*-min-ci)/yarn gulp \1 || exit/g' build.sh
+fi
 
 # update
 backup 'patches/update-cache-path.patch'
@@ -77,7 +79,7 @@ gsed -i -E 's|VERSIONS_REPO=.*|VERSIONS_REPO=zokugun/MrCode-versions|' update_ve
 
 # VSCodium-AppImage-Recipe.yml
 backup 'VSCodium-AppImage-Recipe.yml'
-gesed -i -E 's/oss\|vscodium/oss|org.zokugun.mrcode/g' VSCodium-AppImage-Recipe.yml
+gsed -i -E 's/oss\|vscodium/oss|org.zokugun.mrcode/g' VSCodium-AppImage-Recipe.yml
 gsed -i -E 's/VSCodium/MrCode/g' VSCodium-AppImage-Recipe.yml
 gsed -i -E 's/vscodium/mrcode/g' VSCodium-AppImage-Recipe.yml
 gsed -i -E 's/codium/mrcode/g' VSCodium-AppImage-Recipe.yml
@@ -86,14 +88,20 @@ gsed -i -E 's/codium/mrcode/g' VSCodium-AppImage-Recipe.yml
 
 cd vscode || exit
 
-# gulpfile.vscode.js
-backup 'gulpfile.vscode.js'
-gsed -i -E 's/, opts: \{ stats: true \}//g' gulpfile.vscode.js
+# build/gulpfile.vscode.js
+backup 'build/gulpfile.vscode.js'
+gsed -i -E 's/, opts: \{ stats: true \}//g' build/gulpfile.vscode.js
 
 # build/lib/electron.ts
 backup 'build/lib/electron.ts'
 gsed -i -E 's|'\''Microsoft Corporation'\''|'\''Zokugun'\''|g' build/lib/electron.ts
 gsed -i -E 's|Copyright \(C\) 2019 Microsoft\. All rights reserved|Copyright (C) 2020 Zokugun.|g' build/lib/electron.ts
+
+# LICENSE.txt
+backup 'LICENSE.txt'
+gsed -i -E '/Corporation.*/a\
+Copyright (c) 2020 Zokugun
+' LICENSE.txt
 
 # resources/linux/code.appdata.xml
 backup 'resources/linux/code.appdata.xml'
@@ -131,6 +139,5 @@ gsed -i -E 's|summary: .*|summary: MrCode. Code editing.|g' resources/linux/snap
 gsed -i -E '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based on Visual Studio Code.\n|g;}' resources/linux/snap/snapcraft.yaml
 
 git apply ../../patches/binary-name.patch
-git apply ../../patches/disable-stats.patch
 git apply ../../patches/editor-open-positioning--sort.patch
 git apply ../../patches/editor-folding-strategy--custom.patch

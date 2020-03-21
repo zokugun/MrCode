@@ -8,4 +8,4 @@
 
 cd vscodium || exit
 
-SHOULD_BUILD=yes TRAVIS_OS_NAME=osx ./build.sh
+SHOULD_BUILD=yes CI_BUILD=no TRAVIS_OS_NAME=osx ./build.sh
