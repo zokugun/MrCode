@@ -69,12 +69,21 @@ steps:
     targetFolder: $(Build.ArtifactStagingDirectory)
   condition: eq(variables['SHOULD_BUILD'], 'yes')
   displayName: 'copy artifacts to staging directory'
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish artifacts'
-  condition: eq(variables['SHOULD_BUILD'], 'yes')
+- task: GitHubRelease@1
   inputs:
-    PathtoPublish: $(Build.ArtifactStagingDirectory)
-    ArtifactName: 'everything'
+    gitHubConnection: 'github'
+    repositoryName: 'zokugun/MrCode'
+    action: 'edit'
+    tag: '$(LATEST_MS_TAG)'
+    title: '$(LATEST_MS_TAG)'
+    assetUploadMode: 'replace'
+    addChangeLog: false
+# - task: PublishBuildArtifacts@1
+#   displayName: 'Publish artifacts'
+#   condition: eq(variables['SHOULD_BUILD'], 'yes')
+#   inputs:
+#     PathtoPublish: $(Build.ArtifactStagingDirectory)
+#     ArtifactName: 'everything'
 - bash: ./vscodium/update_version.sh
   displayName: 'update version json'
   env:
