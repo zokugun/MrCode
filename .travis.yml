@@ -20,11 +20,11 @@ node_js: "12"
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH="$HOME/.yarn/bin:$PATH"
-  - . get_repo.sh
-  - . install_deps.sh
-  - . prepare.sh
-  - . vscodium/install_deps.sh
-  - . vscodium/check_tags.sh
+  - ./get_repo.sh
+  - ./install_deps.sh
+  - ./prepare.sh
+  - ./vscodium/install_deps.sh
+  - ./vscodium/check_tags.sh
 
 script:
   - ./vscodium/build.sh
