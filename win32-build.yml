@@ -21,12 +21,12 @@ steps:
   inputs:
     scriptPath: get_repo.sh
 - task: ShellScript@2
-  displayName: 'prepase sources'
+  displayName: 'prepare sources'
   inputs:
     scriptPath: prepare.sh
 - powershell: |
-    $LATEST_MS_COMMIT="$(git -C vscode rev-list --tags --max-count=1)"
-    $LATEST_MS_TAG="$(git -C vscode describe --tags)"
+    $LATEST_MS_COMMIT="$(git -C vscodium\\vscode rev-list --tags --max-count=1)"
+    $LATEST_MS_TAG="$(git -C vscodium\\vscode describe --tags)"
     Write-Host "##vso[task.setvariable variable=LATEST_MS_TAG]$LATEST_MS_TAG"
     Write-Host "##vso[task.setvariable variable=LATEST_MS_COMMIT]$LATEST_MS_COMMIT"
     Write-Host "##vso[task.setvariable variable=BUILD_SOURCEVERSION]$LATEST_MS_COMMIT"
