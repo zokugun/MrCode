@@ -56,6 +56,9 @@ gsed -i -E 's/patch -u/patch -t -u/g' prepare_vscode.sh
 # create_dmg.sh
 backup 'create_dmg.sh'
 gsed -i -E 's/VSCodium/MrCode/g' create_dmg.sh
+gsed -i -E '/create-dmg.*/a\
+    echo "new-asset: MrCode.dmg"
+' create_dmg.sh
 
 # sum.sh
 backup 'sum.sh'
@@ -64,6 +67,12 @@ gsed -i -E 's/VSCodium/MrCode/g' sum.sh
 # create_zip.sh
 backup 'create_zip.sh'
 gsed -i -E 's/VSCodium/MrCode/g' create_zip.sh
+gsed -i -E '/zip -r -X -y.*/a\
+    echo "new-asset: MrCode-darwin-${LATEST_MS_TAG}.zip"
+' create_zip.sh
+gsed -i -E '/tar czf.*/a\
+    echo "new-asset: MrCode-linux-${BUILDARCH}-${LATEST_MS_TAG}.tar.gz"
+' create_zip.sh
 
 # check_tags.sh
 backup 'check_tags.sh'
