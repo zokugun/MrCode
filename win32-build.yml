@@ -8,8 +8,10 @@ steps:
 - script: |
     choco install sed
   displayName: 'install sed from choco'
-- task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
+- task: YarnInstaller@3
   displayName: 'Install Yarn'
+  inputs:
+    versionSpec: '1.x'
 - task: UsePythonVersion@0
   displayName: 'Use Python 2.x'
   inputs:

@@ -24,7 +24,7 @@ before_install:
   - ./install_deps.sh
   - ./prepare.sh
   - ./vscodium/install_deps.sh
-  - ./vscodium/check_tags.sh
+  - . vscodium/check_tags.sh
 
 script:
   - ./vscodium/build.sh
