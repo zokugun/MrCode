@@ -1,64 +1,62 @@
 steps:
-- displayName: 'use Node v12'
-  task: NodeTool@0
+- task: NodeTool@0
   inputs:
     versionSpec: "12.13.0"
-- displayName: 'install jq from choco'
-  script: |
+  displayName: 'use Node v12'
+- script: |
     choco install jq
-- displayName: 'install sed from choco'
-  script: |
+  displayName: 'install jq from choco'
+- script: |
     choco install sed
-- displayName: 'install Yarn'
-  task: YarnInstaller@3
+  displayName: 'install sed from choco'
+- task: YarnInstaller@3
   inputs:
     versionSpec: '1.x'
-- displayName: 'use Python 2.x'
-  task: UsePythonVersion@0
+  displayName: 'install Yarn'
+- task: UsePythonVersion@0
   inputs:
     versionSpec: 2.x
-- displayName: 'get VSCode sources'
-  task: ShellScript@2
+  displayName: 'use Python 2.x'
+- task: ShellScript@2
   inputs:
     scriptPath: get_repo.sh
-- displayName: 'prepare sources'
-  task: ShellScript@2
+  displayName: 'get VSCode sources'
+- task: ShellScript@2
   inputs:
     scriptPath: prepare.sh
-- displayName: 'set env LATEST_MS_TAG, LATEST_MS_COMMIT'
-  powershell: |
+  displayName: 'prepare sources'
+- powershell: |
     $LATEST_MS_COMMIT="$(git -C vscodium\\vscode rev-list --tags --max-count=1)"
     $LATEST_MS_TAG="$(git -C vscodium\\vscode describe --tags)"
     Write-Host "##vso[task.setvariable variable=LATEST_MS_TAG]$LATEST_MS_TAG"
     Write-Host "##vso[task.setvariable variable=LATEST_MS_COMMIT]$LATEST_MS_COMMIT"
     Write-Host "##vso[task.setvariable variable=BUILD_SOURCEVERSION]$LATEST_MS_COMMIT"
-- displayName: 'check tags'
-  task: PowerShell@2
+  displayName: 'set env LATEST_MS_TAG, LATEST_MS_COMMIT'
+- task: PowerShell@2
   inputs:
     filePath: '.\\vscodium\\check_tags.ps1'
   env:
     MAPPED_GITHUB_TOKEN: $(GITHUB_TOKEN)
-- displayName: 'vscode status'
-  script: |
+  displayName: 'check tags'
+- script: |
     git -C vscodium/vscode status
-- displayName: 'go build it!'
-  powershell: |
+  displayName: 'vscode status'
+- powershell: |
     Set-Location -ErrorAction Stop vscodium
 
     bash ./build.sh
-- displayName: 'move files'
-  condition: eq(variables['SHOULD_BUILD'], 'yes')
-  bash: |
+  displayName: 'go build it!'
+- bash: |
     mv vscodium\\vscode\\.build\\win32-$(BUILDARCH)\\system-setup\\VSCodeSetup.exe  MrCodeSetup-$(BUILDARCH)-${LATEST_MS_TAG}.exe
     mv vscodium\\vscode\\.build\\win32-$(BUILDARCH)\\user-setup\\VSCodeSetup.exe  MrCodeUserSetup-$(BUILDARCH)-${LATEST_MS_TAG}.exe
     mv vscodium\\vscode\\.build\\win32-$(BUILDARCH)\\archive\\VSCode-win32-$(BUILDARCH).zip  MrCode-win32-$(BUILDARCH)-${LATEST_MS_TAG}.zip
-- displayName: 'compute sums'
   condition: eq(variables['SHOULD_BUILD'], 'yes')
-  powershell: |
+  displayName: 'move files'
+- powershell: |
     bash ./vscodium/sum.sh
-- displayName: 'copy artifacts to staging directory'
   condition: eq(variables['SHOULD_BUILD'], 'yes')
-  task: CopyFiles@2
+  displayName: 'compute sums'
+- task: CopyFiles@2
   inputs:
     contents: |
       MrCode*.zip
@@ -66,9 +64,9 @@ steps:
       MrCodeSetup*.exe
       *.sha256
     targetFolder: $(Build.ArtifactStagingDirectory)
-- displayName: 'release to GitHub'
   condition: eq(variables['SHOULD_BUILD'], 'yes')
-  task: GitHubRelease@1
+  displayName: 'copy artifacts to staging directory'
+- task: GitHubRelease@1
   inputs:
     gitHubConnection: 'release'
     repositoryName: 'zokugun/MrCode'
@@ -77,8 +75,11 @@ steps:
     title: '$(LATEST_MS_TAG)'
     assetUploadMode: 'replace'
     addChangeLog: false
-- displayName: 'update version.json'
-  bash: ./vscodium/update_version.sh
+  condition: eq(variables['SHOULD_BUILD'], 'yes')
+  displayName: 'release to GitHub'
+- bash: ./vscodium/update_version.sh
   env:
     GITHUB_TOKEN: $(GITHUB_TOKEN)
     GITHUB_USERNAME: $(GITHUB_USERNAME)
+  condition: eq(variables['SHOULD_BUILD'], 'yes')
+  displayName: 'update versions'
