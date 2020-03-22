@@ -71,13 +71,14 @@ steps:
   displayName: 'copy artifacts to staging directory'
 - task: GitHubRelease@1
   inputs:
-    gitHubConnection: 'github'
+    gitHubConnection: 'release'
     repositoryName: 'zokugun/MrCode'
     action: 'edit'
     tag: '$(LATEST_MS_TAG)'
     title: '$(LATEST_MS_TAG)'
     assetUploadMode: 'replace'
     addChangeLog: false
+  displayName: 'release'
 # - task: PublishBuildArtifacts@1
 #   displayName: 'Publish artifacts'
 #   condition: eq(variables['SHOULD_BUILD'], 'yes')

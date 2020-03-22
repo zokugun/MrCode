@@ -63,6 +63,8 @@ gsed -i -E '/create-dmg.*/a\
 # sum.sh
 backup 'sum.sh'
 gsed -i -E 's/VSCodium/MrCode/g' sum.sh
+gsed -i -E 's/(checksum|shasum) (.*)\.sha1/# \1 \2.sha1/g' sum.sh
+gsed -i -E 's/checksum -a sha256.*/checksum -a sha256 "$1" > "$1.sha256"/' sum.sh
 
 # create_zip.sh
 backup 'create_zip.sh'
