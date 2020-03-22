@@ -60,11 +60,12 @@ steps:
   displayName: 'compute sums'
 - task: CopyFiles@2
   inputs:
+    sourceFolder: vscodium
     contents: |
-      vscodium\\MrCode*.zip
-      vscodium\\MrCodeUserSetup*.exe
-      vscodium\\MrCodeSetup*.exe
-      vscodium\\*.sha256
+      MrCode*.zip
+      MrCodeUserSetup*.exe
+      MrCodeSetup*.exe
+      *.sha256
     targetFolder: $(Build.ArtifactStagingDirectory)
   condition: eq(variables['SHOULD_BUILD'], 'yes')
   displayName: 'copy artifacts to staging directory'
