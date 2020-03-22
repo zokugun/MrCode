@@ -1,9 +1,9 @@
 #!/bin/bash
 
-./get_repo.sh
+set -o allexport; source .env; set +o allexport
 
-./prepare.sh
+. get_repo.sh
 
-cd vscodium || exit
+. prepare.sh
 
-SHOULD_BUILD=yes CI_BUILD=no BUILDARCH=x64 ./build.sh
+SHOULD_BUILD=yes CI_BUILD=no BUILDARCH=x64 . build.sh

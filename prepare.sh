@@ -85,6 +85,7 @@ gsed -i -E 's|VSCodium/vscodium|zokugun/MrCode|g' update_version.sh
 gsed -i -E 's/vscodium/mrcode/g' update_version.sh
 gsed -i -E 's/VSCodium/MrCode/g' update_version.sh
 gsed -i -E 's|VERSIONS_REPO=.*|VERSIONS_REPO='\''zokugun/MrCode-versions'\''|' update_version.sh
+gsed -i -E 's/cd versions/cd MrCode-versions/g' update_version.sh
 
 # VSCodium-AppImage-Recipe.yml
 backup 'VSCodium-AppImage-Recipe.yml'
