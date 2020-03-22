@@ -32,6 +32,7 @@ steps:
     Write-Host "##vso[task.setvariable variable=BUILD_SOURCEVERSION]$LATEST_MS_COMMIT"
   displayName: 'set env LATEST_MS_TAG, LATEST_MS_COMMIT'
 - task: PowerShell@2
+  displayName: 'check tags'
   inputs:
     filePath: '.\\vscodium\\check_tags.ps1'
   env:
@@ -40,7 +41,9 @@ steps:
     git -C vscodium/vscode status
   displayName: 'vscode status'
 - powershell: |
-    bash ./vscodium/build.sh
+    Set-Location -ErrorAction Stop vscodium
+
+    bash ./build.sh
   displayName: 'go build it!'
 - bash: |
     if [[ "$SHOULD_BUILD" == "yes" ]]; then mv vscodium\\vscode\\.build\\win32-$(BUILDARCH)\\system-setup\\VSCodeSetup.exe  vscodium\\MrCodeSetup-$(BUILDARCH)-${LATEST_MS_TAG}.exe; fi

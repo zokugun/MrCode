@@ -143,4 +143,3 @@ git apply ../../patches/editor-open-positioning--sort.patch
 git apply ../../patches/editor-folding-strategy--custom.patch
 
 cd ..
-cd ..

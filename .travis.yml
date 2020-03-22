@@ -23,16 +23,16 @@ before_install:
   - . get_repo.sh
   - . install_deps.sh
   - . prepare.sh
-  - . vscodium/install_deps.sh
-  - . vscodium/check_tags.sh
+  - . install_deps.sh
+  - . check_tags.sh
 
 script:
-  - ./vscodium/build.sh
+  - ./build.sh
 
 before_deploy:
-  - ./vscodium/create_zip.sh
-  - ./vscodium/create_dmg.sh
-  - ./vscodium/sum.sh
+  - ./create_zip.sh
+  - ./create_dmg.sh
+  - ./sum.sh
 
 deploy:
   provider: releases
@@ -42,17 +42,17 @@ deploy:
   api_key: $GITHUB_TOKEN
   file_glob: true
   file:
-    - ./vscodium/*.sha256
-    - ./vscodium/*.zip
-    - ./vscodium/*.tar.gz
-    - ./vscodium/*.dmg
-    - ./vscodium/*.deb
-    - ./vscodium/*.rpm
-    - ./vscodium/*.AppImage
-    - ./vscodium/*.AppImage.zsync
+    - ./*.sha256
+    - ./*.zip
+    - ./*.tar.gz
+    - ./*.dmg
+    - ./*.deb
+    - ./*.rpm
+    - ./*.AppImage
+    - ./*.AppImage.zsync
   on:
     all_branches: true
     condition: $SHOULD_BUILD = yes
 
 after_deploy:
-  - ./vscodium/update_version.sh
+  - ./update_version.sh
