@@ -70,9 +70,9 @@ MrCode stores your settings at:
 
 Use the following scripts to migrate:
 
-- [Windows](./migrate-windows.md)
-- [macOS](./migrate-macos.md)
-- [Linux](./migrate-linux.md)
+- [Windows](./docs/migrate-windows.md)
+- [macOS](./docs/migrate-macos.md)
+- [Linux](./docs/migrate-linux.md)
 
 License
 -------
