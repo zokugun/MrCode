@@ -62,52 +62,21 @@ This allows you to open files or directories in MrCode directly from your termin
 Migrating to MrCode
 -------------------
 
-### Backup VSCode
-
-Visual Studio Code stores your settings at:
-
-- __Windows__: `%APPDATA%\Code\User`
-- __macOS__: `~/Library/Application Support/Code/User`
-- __Linux__: `~/.config/Code/User`
-
-Use the following script to export them:
-
-```
-mkdir -p User/snippets
-
-# Backup settings files
-cp ~/Library/Application\ Support/Code/User/keybindings.json User/
-cp ~/Library/Application\ Support/Code/User/settings.json User/
-cp ~/Library/Application\ Support/Code/User/snippets/* User/snippets/
-
-# Export extension list
-code --list-extensions | sort -f -o vscode-extensions.txt
-```
-
-### Restore to MrCode
-
 MrCode stores your settings at:
 
 - __Windows__: `%APPDATA%\MrCode\User`
 - __macOS__: `~/Library/Application Support/MrCode/User`
 - __Linux__: `~/.config/MrCode/User`
 
-Use the following script to import them:
+Use the following scripts to migrate:
 
-```
-# Restore settings files
-cp -R User/* ~/Library/Application\ Support/MrCode/User/
-
-# Import extensions
-for LINE in $(cat "vscode-extensions.txt")
-do
-  printf "%b%s%b\n" "\e[44m" "$LINE" "\e[49m"
-  mrcode --install-extension "$LINE"
-  echo -e "\n"
-done
-```
+- [Windows](./migrate-windows.md)
+- [macOS](./migrate-macos.md)
+- [Linux](./migrate-linux.md)
 
 License
 -------
 
 [MIT](http://www.opensource.org/licenses/mit-license.php)
+
+**Enjoy!**
