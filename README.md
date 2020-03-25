@@ -2,7 +2,9 @@
 ===========================================
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![current release](https://img.shields.io/github/release/zokugun/MrCode.svg)](./releases)
+[![current release](https://img.shields.io/github/release/zokugun/MrCode.svg?colorB=green)](./releases)
+[![build status](https://dev.azure.com/daiyam/MrCode/_apis/build/status/zokugun.MrCode?branchName=master)](https://dev.azure.com/daiyam/MrCode/_build/latest?definitionId=2&branchName=master)
+[![build status](https://travis-ci.org/zokugun/MrCode.svg?branch=master)](https://travis-ci.org/zokugun/MrCode)
 
 MrCode is a liberated version of [VSCode](https://github.com/microsoft/vscode). It's based on [VSCodium](https://github.com/VSCodium/vscodium) and so have the same [licensing issue](https://github.com/VSCodium/vscodium/blob/master/DOCS.md#proprietary-debugging-tools).
 
