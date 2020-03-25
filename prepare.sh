@@ -16,7 +16,11 @@ function backup() {
 	fi
 }
 
+cp -rp src/* vscodium/
+
 cd vscodium || exit
+
+rm src/resources/win32/ruby.png.ico
 
 # build.sh
 if [[ "$CI_BUILD" == "no" ]]; then
