@@ -59,7 +59,7 @@ gsed -i -E 's/patch -u/patch -t -u/g' prepare_vscode.sh
 
 # sign_mac_app.sh
 backup 'sign_mac_app.sh'
-gsed -i -E 's/VSCodium/MrCode/g' sign_mac_app.sh
+cp ../sign_mac_app.sh .
 
 # create_dmg.sh
 backup 'create_dmg.sh'
