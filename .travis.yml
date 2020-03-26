@@ -30,6 +30,7 @@ script:
   - ./build.sh
 
 before_deploy:
+  - ./sign_mac_app.sh
   - ./create_zip.sh
   - ./create_dmg.sh
   - ./sum.sh

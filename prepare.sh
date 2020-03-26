@@ -52,10 +52,14 @@ reportIssueUrl='\''setpath(["reportIssueUrl"]; "https://github.com/zokugun/MrCod
 
 gsed -i -E 's/\$\{extensionAllowedProposedApi\}/${extensionAllowedProposedApi} | ${dataFolderName} | ${darwinBundleIdentifier} | ${licenseUrl} | ${reportIssueUrl}/' prepare_vscode.sh
 
-gsed -i -E $'s/mv product\.json product\.json\.bak/if [ ! -f "product.json.bak" ]; then\\\n    mv product.json product.json.bak\\\n  fi/g' prepare_vscode.sh
+gsed -i -E $'s/mv product\.json product\.json\.bak/if [ ! -f "product.json.bak" ]; then\\\n  mv product.json product.json.bak\\\nfi/g' prepare_vscode.sh
 
 gsed -i -E 's/patch -u/patch -t -u/g' prepare_vscode.sh
 # }}}
+
+# sign_mac_app.sh
+backup 'sign_mac_app.sh'
+gsed -i -E 's/VSCodium/MrCode/g' sign_mac_app.sh
 
 # create_dmg.sh
 backup 'create_dmg.sh'
