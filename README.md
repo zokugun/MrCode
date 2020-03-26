@@ -1,12 +1,15 @@
-[MrCode](https://github.com/zokugun/MrCode)
-===========================================
+<div align="center">
+<img src="./src/src/resources/linux/code.png" width="200"/>
+<h1><a href="https://github.com/zokugun/MrCode">MrCode</a></h1>
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![current release](https://img.shields.io/github/release/zokugun/MrCode.svg?colorB=green)](./releases)
 [![build status](https://dev.azure.com/daiyam/MrCode/_apis/build/status/zokugun.MrCode?branchName=master)](https://dev.azure.com/daiyam/MrCode/_build/latest?definitionId=2&branchName=master)
 [![build status](https://travis-ci.org/zokugun/MrCode.svg?branch=master)](https://travis-ci.org/zokugun/MrCode)
 
-MrCode is a liberated version of [VSCode](https://github.com/microsoft/vscode). It's based on [VSCodium](https://github.com/VSCodium/vscodium) and so have the same [licensing issue](https://github.com/VSCodium/vscodium/blob/master/DOCS.md#proprietary-debugging-tools).
+</div>
+
+MrCode is a _liberated_ version of [VSCode](https://github.com/microsoft/vscode). It's based on [VSCodium](https://github.com/VSCodium/vscodium) and so have the same [licensing issue](https://github.com/VSCodium/vscodium/blob/master/DOCS.md#proprietary-debugging-tools).
 
 Download
 --------
@@ -46,20 +49,15 @@ By setting `editor.foldingStrategy = 'explicit'`, it will only use the folding r
 
 [PR](https://github.com/microsoft/vscode/pull/54200)
 
-How do I open MrCode from the terminal?
----------------------------------------
+Supported OS
+------------
 
-- Go to the command palette (View | Command Palette...)
-- Choose `Shell command: Install 'mrcode' command in PATH`.
-
-![](https://user-images.githubusercontent.com/587742/77121228-018f3a80-6a3b-11ea-8189-9dfe080d1a65.jpg)
-
-This allows you to open files or directories in MrCode directly from your terminal:
-
-```bash
-~/in-my-project $ mrcode . # open this directory
-~/in-my-project $ mrcode file.txt # open this file
-```
+- [x] Linux x64 (`AppImage`, `deb`, `rpm`, `tar.gz`)
+- [x] Linux arm64 (`deb`, `tar.gz`)
+- [x] Linux armhf (`deb`, `tar.gz`)
+- [x] macOS (`dmg`, `zip`)
+- [x] Windows x64 (`exe`, `zip`)
+- [x] Windows x86 (`exe`, `zip`)
 
 Migrating to MrCode
 -------------------
@@ -75,6 +73,21 @@ Use the following scripts to migrate:
 - [Windows](./docs/migrate-windows.md)
 - [macOS](./docs/migrate-macos.md)
 - [Linux](./docs/migrate-linux.md)
+
+How do I open MrCode from the terminal?
+---------------------------------------
+
+- Go to the command palette (View | Command Palette...)
+- Choose `Shell command: Install 'mrcode' command in PATH`.
+
+![](https://user-images.githubusercontent.com/587742/77121228-018f3a80-6a3b-11ea-8189-9dfe080d1a65.jpg)
+
+This allows you to open files or directories in MrCode directly from your terminal:
+
+```bash
+~/in-my-project $ mrcode . # open this directory
+~/in-my-project $ mrcode file.txt # open this file
+```
 
 License
 -------
