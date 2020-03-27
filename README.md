@@ -37,15 +37,17 @@ It can be controlled by 2 new settings:
 
 ### editor.foldingStrategy
 
-The setting `editor.foldingStrategy` is extends to support only the folding strategy of a extension.
+The setting `editor.foldingStrategy` is extended to use the folding ranges provided by only one extension.
 
-For example:
+For example, if you are using the extension [Explicit Folding](https://github.com/zokugun/vscode-explicit-folding):
 
-I have the extension [Explicit Folding](https://github.com/zokugun/vscode-explicit-folding) which allows to manually control how to folds your code.
+Traditionally, VSCode is using the folding ranges provided:
+- by the folding range provider defined by the setting `editor.foldingStrategy` (`auto` or `indentation`)
+- <ins>**and**</ins> by the folding range provider defined by that extension
 
-VSCode will use the folding ranges defined by this extension with the others folding ranges either defined by the langauge or by the indentation.
-
-By setting `editor.foldingStrategy = 'explicit'`, it will only use the folding ranges of that extension. (`explicit` is the id given to the FoldingProvider of that extension)
+With [MrCode](https://github.com/zokugun/MrCode), it's using the folding ranges provided:
+- by the folding range provider defined by the setting `editor.foldingStrategy` (`auto` or `indentation`)
+- <ins>**or**</ins> by the folding range provider defined by that extension if `editor.foldingStrategy` is set to `explicit`
 
 [PR](https://github.com/microsoft/vscode/pull/54200)
 

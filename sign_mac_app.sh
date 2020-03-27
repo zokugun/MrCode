@@ -8,7 +8,10 @@ if [[ "$SHOULD_BUILD" == "yes" ]]; then
       cd VSCode-darwin
 
 	  KEYCHAIN=build.keychain
-      CERTIFICATE_P12=MrCode.p12
+
+	  CERTIFICATE_OSX_ID=$(echo $CERTIFICATE_OSX_ID | base64 --decode)
+	  CERTIFICATE_OSX_PASSWORD=$(echo $CERTIFICATE_OSX_PASSWORD | base64 --decode)
+      CERTIFICATE_P12='MrCode.p12'
 
       echo $CERTIFICATE_OSX_P12 | base64 --decode > $CERTIFICATE_P12
 
