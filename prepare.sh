@@ -163,8 +163,8 @@ backup 'resources/linux/snap/snapcraft.yaml'
 gsed -i -E 's|summary: .*|summary: MrCode. Code editing.|g' resources/linux/snap/snapcraft.yaml
 gsed -i -E '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based on Visual Studio Code.\n|g;}' resources/linux/snap/snapcraft.yaml
 
-git apply ../../patches/binary-name.patch
-git apply ../../patches/editor-open-positioning--sort.patch
-git apply ../../patches/editor-folding-strategy--custom.patch
+git apply --3way ../../patches/binary-name.patch
+git apply --3way ../../patches/editor-open-positioning--sort.patch
+git apply --3way ../../patches/editor-folding-strategy--custom.patch
 
 cd ..

@@ -91,6 +91,11 @@ This allows you to open files or directories in MrCode directly from your termin
 ~/in-my-project $ mrcode file.txt # open this file
 ```
 
+News
+----
+
+- [VS Code Updates](https://code.visualstudio.com/updates)
+
 License
 -------
 
