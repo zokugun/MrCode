@@ -53,7 +53,7 @@ index 4278ec1..e2d5e47 100644
 @@ -62,6 +62,10 @@ export class LanguageFeatureRegistry<T> {
  		});
  	}
-	
+ 
 +	entries(): T[] {
 +		return this._entries.map(entry => entry.provider);
 +	}
@@ -66,13 +66,13 @@ index e80d1f6..cb4ff0d 100644
 --- a/src/vs/editor/contrib/folding/folding.ts
 +++ b/src/vs/editor/contrib/folding/folding.ts
 @@ -61,7 +63,7 @@ export class FoldingController extends Disposable implements IEditorContribution
-	
+ 
  	private readonly editor: ICodeEditor;
  	private _isEnabled: boolean;
 -	private _useFoldingProviders: boolean;
 +	private _foldingStrategy: string;
  	private _unfoldOnClickAfterEndOfLine: boolean;
-	
+ 
  	private readonly foldingDecorationProvider: FoldingDecorationProvider;
 @@ -91,7 +93,7 @@ export class FoldingController extends Disposable implements IEditorContribution
  		this.editor = editor;
@@ -81,7 +81,7 @@ index e80d1f6..cb4ff0d 100644
 -		this._useFoldingProviders = options.get(EditorOption.foldingStrategy) !== 'indentation';
 +		this._foldingStrategy = options.get(EditorOption.foldingStrategy);
  		this._unfoldOnClickAfterEndOfLine = options.get(EditorOption.unfoldOnClickAfterEndOfLine);
-	
+ 
  		this.foldingModel = null;
 @@ -125,7 +127,7 @@ export class FoldingController extends Disposable implements IEditorContribution
  				this.onModelContentChanged();
@@ -104,7 +104,7 @@ index e80d1f6..cb4ff0d 100644
 +				this.rangeProvider = new SyntaxRangeProvider(editorModel, foldingProviders);
 +			}
 +		}
-	
+ 
 -		if (this._useFoldingProviders && this.foldingModel) {
 +		if (this.foldingModel && (this._foldingStrategy === 'auto' || (this._foldingStrategy !== 'indentation' && !this.rangeProvider))) {
  			let foldingProviders = FoldingRangeProviderRegistry.ordered(this.foldingModel.textModel);
@@ -174,9 +174,9 @@ index 4287e53..3b9241a 100644
 --- a/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
 +++ b/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
 @@ -529,9 +529,10 @@ export class MainThreadLanguageFeatures implements MainThreadLanguageFeaturesSha
-	
+ 
  	// --- folding
-	
+ 
 -	$registerFoldingRangeProvider(handle: number, selector: IDocumentFilterDto[]): void {
 +	$registerFoldingRangeProvider(handle: number, id: string | null, selector: IDocumentFilterDto[]): void {
  		const proxy = this._proxy;
@@ -203,11 +203,11 @@ index 479a512..803ac02 100644
 --- a/src/vs/workbench/api/common/extHostLanguageFeatures.ts
 +++ b/src/vs/workbench/api/common/extHostLanguageFeatures.ts
 @@ -1803,7 +1803,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
-	
+ 
  	registerFoldingRangeProvider(extension: IExtensionDescription, selector: vscode.DocumentSelector, provider: vscode.FoldingRangeProvider): vscode.Disposable {
  		const handle = this._addNewAdapter(new FoldingProviderAdapter(this._documents, provider), extension);
 -		this._proxy.$registerFoldingRangeProvider(handle, this._transformDocumentSelector(selector));
 +		this._proxy.$registerFoldingRangeProvider(handle, provider.id ?? null, this._transformDocumentSelector(selector));
  		return this._createDisposable(handle);
  	}
-	
+ 

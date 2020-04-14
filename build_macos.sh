@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./reset.sh
+
 set -o allexport; source .env; set +o allexport
 
 . get_repo.sh
