@@ -2,8 +2,8 @@
 <img src="./src/src/resources/linux/code.png" width="200"/>
 <h1><a href="https://github.com/zokugun/MrCode">MrCode</a></h1>
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![current release](https://img.shields.io/github/release/zokugun/MrCode.svg?colorB=green)](./releases)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zokugun/MrCode/blob/master/LICENSE)
+[![current release](https://img.shields.io/github/release/zokugun/MrCode.svg?colorB=green)](https://github.com/zokugun/MrCode/releases)
 [![build status](https://dev.azure.com/daiyam/MrCode/_apis/build/status/zokugun.MrCode?branchName=master)](https://dev.azure.com/daiyam/MrCode/_build/latest?definitionId=2&branchName=master)
 [![build status](https://travis-ci.org/zokugun/MrCode.svg?branch=master)](https://travis-ci.org/zokugun/MrCode)
 
