@@ -36,7 +36,7 @@ deploy:
   provider: releases
   skip_cleanup: true
   overwrite: true
-  name: $LATEST_MS_TAG
+  tag_name: $LATEST_MS_TAG
   token: $GITHUB_TOKEN
   file_glob: true
   file:

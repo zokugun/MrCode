@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -d vscodium ]; then
-  cd vscodium 
+  cd vscodium
   git fetch --all
 else
   git clone https://github.com/VSCodium/vscodium.git
