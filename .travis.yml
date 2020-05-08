@@ -31,6 +31,7 @@ before_deploy:
   - ./create_zip.sh
   - ./create_dmg.sh
   - ./sum.sh
+  - export TRAVIS_TAG=$LATEST_MS_TAG
 
 deploy:
   provider: releases
