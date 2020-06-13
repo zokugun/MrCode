@@ -1,9 +1,9 @@
 diff --git a/src/vs/workbench/browser/parts/editor/editor.ts b/src/vs/workbench/browser/parts/editor/editor.ts
-index 371455d..e3fe0ee 100644
+index 677643377f..e38e7b79d7 100644
 --- a/src/vs/workbench/browser/parts/editor/editor.ts
 +++ b/src/vs/workbench/browser/parts/editor/editor.ts
-@@ -34,6 +34,8 @@ export const DEFAULT_EDITOR_PART_OPTIONS: IEditorPartOptions = {
- 	showIcons: true,
+@@ -37,6 +37,8 @@ export const DEFAULT_EDITOR_PART_OPTIONS: IEditorPartOptions = {
+ 	hasIcons: true, // 'vs-seti' is our default icon theme
  	enablePreview: true,
  	openPositioning: 'right',
 +	openPositioningSortOrder: 'asc',
@@ -12,10 +12,10 @@ index 371455d..e3fe0ee 100644
  	closeEmptyGroups: true,
  	labelFormat: 'default',
 diff --git a/src/vs/workbench/browser/workbench.contribution.ts b/src/vs/workbench/browser/workbench.contribution.ts
-index 2fa180e..e2b8837 100644
+index 18196e719a..0fc212f43f 100644
 --- a/src/vs/workbench/browser/workbench.contribution.ts
 +++ b/src/vs/workbench/browser/workbench.contribution.ts
-@@ -108,9 +108,21 @@ import { workbenchConfigurationNodeBase } from 'vs/workbench/common/configuratio
+@@ -123,9 +123,21 @@ import { workbenchConfigurationNodeBase } from 'vs/workbench/common/configuratio
  			},
  			'workbench.editor.openPositioning': {
  				'type': 'string',
@@ -40,10 +40,10 @@ index 2fa180e..e2b8837 100644
  			'workbench.editor.openSideBySideDirection': {
  				'type': 'string',
 diff --git a/src/vs/workbench/common/editor.ts b/src/vs/workbench/common/editor.ts
-index 8b3c8a4..0fef9c5 100644
+index 95aa89bbc8..e8dc1e5b0d 100644
 --- a/src/vs/workbench/common/editor.ts
 +++ b/src/vs/workbench/common/editor.ts
-@@ -1296,7 +1296,9 @@ interface IEditorPartConfiguration {
+@@ -1186,7 +1186,9 @@ interface IEditorPartConfiguration {
  	enablePreview?: boolean;
  	enablePreviewFromQuickOpen?: boolean;
  	closeOnFileDelete?: boolean;
@@ -55,17 +55,17 @@ index 8b3c8a4..0fef9c5 100644
  	closeEmptyGroups?: boolean;
  	revealIfOpen?: boolean;
 diff --git a/src/vs/workbench/common/editor/editorGroup.ts b/src/vs/workbench/common/editor/editorGroup.ts
-index 3ff8760..c7c583f 100644
+index 178aa1d792..98e7d83028 100644
 --- a/src/vs/workbench/common/editor/editorGroup.ts
 +++ b/src/vs/workbench/common/editor/editorGroup.ts
 @@ -4,7 +4,7 @@
   *--------------------------------------------------------------------------------------------*/
  
  import { Event, Emitter } from 'vs/base/common/event';
--import { Extensions, IEditorInputFactoryRegistry, EditorInput, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, CloseDirection, SideBySideEditorInput, IEditorInput, EditorsOrder } from 'vs/workbench/common/editor';
-+import { Extensions, IEditorInputFactoryRegistry, EditorInput, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, CloseDirection, SideBySideEditorInput, IEditorInput, EditorsOrder, Verbosity } from 'vs/workbench/common/editor';
+-import { Extensions, IEditorInputFactoryRegistry, EditorInput, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, SideBySideEditorInput, IEditorInput, EditorsOrder } from 'vs/workbench/common/editor';
++import { Extensions, IEditorInputFactoryRegistry, EditorInput, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, SideBySideEditorInput, IEditorInput, EditorsOrder, Verbosity } from 'vs/workbench/common/editor';
  import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
- import { IConfigurationService, IConfigurationChangeEvent } from 'vs/platform/configuration/common/configuration';
+ import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
  import { dispose, Disposable, DisposableStore } from 'vs/base/common/lifecycle';
 @@ -15,7 +15,8 @@ const EditorOpenPositioning = {
  	LEFT: 'left',
@@ -77,9 +77,9 @@ index 3ff8760..c7c583f 100644
  };
  
  export interface EditorCloseEvent extends IEditorCloseEvent {
-@@ -92,7 +93,9 @@ export class EditorGroup extends Disposable {
- 	private preview: EditorInput | null = null; // editor in preview state
+@@ -98,7 +99,9 @@ export class EditorGroup extends Disposable {
  	private active: EditorInput | null = null;  // editor in active state
+ 	private sticky: number = -1; // index of first editor in sticky state
  
 -	private editorOpenPositioning: ('left' | 'right' | 'first' | 'last') | undefined;
 +	private editorOpenPositioning: ('left' | 'right' | 'first' | 'last' | 'sort') | undefined;
@@ -88,17 +88,17 @@ index 3ff8760..c7c583f 100644
  	private focusRecentEditorAfterClose: boolean | undefined;
  
  	constructor(
-@@ -118,6 +121,8 @@ export class EditorGroup extends Disposable {
+@@ -124,6 +127,8 @@ export class EditorGroup extends Disposable {
  
- 	private onConfigurationUpdated(event?: IConfigurationChangeEvent): void {
+ 	private onConfigurationUpdated(): void {
  		this.editorOpenPositioning = this.configurationService.getValue('workbench.editor.openPositioning');
 +		this.editorOpenPositioningSortOrder = this.configurationService.getValue('workbench.editor.openPositioningSortOrder');
 +		this.editorOpenPositioningSortRule = this.configurationService.getValue('workbench.editor.openPositioningSortRule');
  		this.focusRecentEditorAfterClose = this.configurationService.getValue('workbench.editor.focusRecentEditorAfterClose');
- 	}
  
-@@ -185,6 +190,63 @@ export class EditorGroup extends Disposable {
- 				}
+ 		if (this.configurationService.getValue('workbench.editor.showTabs') === false) {
+@@ -208,6 +213,63 @@ export class EditorGroup extends Disposable {
+ 				targetIndex = this.editors.length;
  			}
  
 +			// Insert in Order
@@ -158,6 +158,6 @@ index 3ff8760..c7c583f 100644
 +				}
 +			}
 +
- 			// Insert to the RIGHT of active editor
+ 			// Insert to LEFT or RIGHT of active editor
  			else {
- 				targetIndex = indexOfActive + 1;
+ 

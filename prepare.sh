@@ -23,13 +23,15 @@ cd vscodium || exit
 rm src/resources/win32/ruby.png.ico
 
 # build.sh
+backup 'build.sh'
+
 if [[ "$CI_BUILD" == "no" ]]; then
-	backup 'build.sh'
 	gsed -i -E 's/keep_alive &/date/g' build.sh
 	gsed -i -E 's/keep_alive_small &/date/g' build.sh
 	gsed -i -E 's/yarn gulp compile-build/yarn gulp compile-build || exit/g' build.sh
-	# gsed -i -E 's/yarn gulp (vscode-.*-min-ci)/yarn gulp \1 || exit/g' build.sh
 fi
+
+gsed -i -z -E 's/\s+yarn gulp vscode-reh-darwin-min-ci\n\s+yarn gulp vscode-reh-web-darwin-min-ci//g' build.sh
 
 # update
 backup 'patches/update-cache-path.patch'
@@ -42,15 +44,22 @@ gsed -i -E 's/Microsoft\.VSCodium/Zokugun.MrCode/g' prepare_vscode.sh
 gsed -i -E 's/VSCodium/MrCode/g' prepare_vscode.sh
 gsed -i -E 's/vscodium/mrcode/g' prepare_vscode.sh
 gsed -i -E 's/codium/mrcode/g' prepare_vscode.sh
+gsed -i -E 's/vscode-server-oss/mrcode-server/g' prepare_vscode.sh
 
 gsed -i -E '/extensionAllowedProposedApi=.*/a\
 dataFolderName='\''setpath(["dataFolderName"]; ".mrcode")'\''\
 darwinBundleIdentifier='\''setpath(["darwinBundleIdentifier"]; "org.zokugun.mrcode")'\''\
 licenseUrl='\''setpath(["licenseUrl"]; "https://github.com/zokugun/MrCode/blob/master/LICENSE")'\''\
-reportIssueUrl='\''setpath(["reportIssueUrl"]; "https://github.com/zokugun/MrCode/issues/new")'\''
+reportIssueUrl='\''setpath(["reportIssueUrl"]; "https://github.com/zokugun/MrCode/issues/new")'\''\
+enableTelemetry='\''setpath(["enableTelemetry"]; false)'\''
 ' prepare_vscode.sh
+gsed -i -E 's|extensionsGallery=.*|extensionsGallery='\''setpath(["extensionsGallery"]; {"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery", "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index", "itemUrl": "https://marketplace.visualstudio.com/items"})'\''|g' prepare_vscode.sh
+gsed -i -E 's|extensionAllowedProposedApi=.*|extensionAllowedProposedApi='\''setpath(["extensionAllowedProposedApi"]; getpath(["extensionAllowedProposedApi"]) + ["ms-vsliveshare.vsliveshare", "ms-vscode-remote.remote-containers", "ms-vscode-remote.remote-ssh", "ms-vscode-remote.remote-ssh-edit", "ms-vscode-remote.remote-ssh-explorer", "ms-vscode-remote.vscode-remote-extensionpack", "ms-vscode.js-debug", "ms-python.python"])'\''|g' prepare_vscode.sh
+gsed -i -z -E 's/linkProtectionTrustedDomains=[^\n]*\n//g' prepare_vscode.sh
 
-gsed -i -E 's/\$\{extensionAllowedProposedApi\}/${extensionAllowedProposedApi} | ${dataFolderName} | ${darwinBundleIdentifier} | ${licenseUrl} | ${reportIssueUrl}/' prepare_vscode.sh
+
+gsed -i -E 's/\$\{linkProtectionTrustedDomains\} \| //' prepare_vscode.sh
+gsed -i -E 's/\$\{extensionAllowedProposedApi\}/${extensionAllowedProposedApi} | ${dataFolderName} | ${darwinBundleIdentifier} | ${licenseUrl} | ${reportIssueUrl} | ${enableTelemetry}/' prepare_vscode.sh
 
 gsed -i -E $'s/mv product\.json product\.json\.bak/if [ ! -f "product.json.bak" ]; then\\\n  mv product.json product.json.bak\\\nfi/g' prepare_vscode.sh
 
@@ -108,6 +117,12 @@ gsed -i -E 's/oss\|vscodium/oss|org.zokugun.mrcode/g' VSCodium-AppImage-Recipe.y
 gsed -i -E 's/VSCodium/MrCode/g' VSCodium-AppImage-Recipe.yml
 gsed -i -E 's/vscodium/mrcode/g' VSCodium-AppImage-Recipe.yml
 gsed -i -E 's/codium/mrcode/g' VSCodium-AppImage-Recipe.yml
+
+# src/resources/linux/appimage/pkg2appimage
+backup 'src/resources/linux/appimage/pkg2appimage'
+gsed -i -E 's/VSCodium/MrCode/g' src/resources/linux/appimage/pkg2appimage
+gsed -i -E 's/vscodium/mrcode/g' src/resources/linux/appimage/pkg2appimage
+gsed -i -E 's/CODIUM/MRCODE/g' src/resources/linux/appimage/pkg2appimage
 
 . get_repo.sh
 
