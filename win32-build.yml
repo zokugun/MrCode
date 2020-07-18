@@ -34,7 +34,7 @@ steps:
   displayName: 'set env LATEST_MS_TAG, LATEST_MS_COMMIT'
 - task: PowerShell@2
   inputs:
-    filePath: '.\\vscodium\\check_tags.ps1'
+    filePath: '.\\check_tags.ps1'
   env:
     MAPPED_GITHUB_TOKEN: $(GITHUB_TOKEN)
   displayName: 'check tags'
