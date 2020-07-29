@@ -1,0 +1,14 @@
+diff --git a/src/vs/workbench/services/dialogs/browser/abstractFileDialogService.ts b/src/vs/workbench/services/dialogs/browser/abstractFileDialogService.ts
+index 1260a83..6bd0f8f 100644
+--- a/src/vs/workbench/services/dialogs/browser/abstractFileDialogService.ts
++++ b/src/vs/workbench/services/dialogs/browser/abstractFileDialogService.ts
+@@ -294,8 +294,8 @@ export abstract class AbstractFileDialogService implements IFileDialogService {
+ 		// - All Languages
+ 		// - No Extension
+ 		options.filters = coalesce([
+-			matchingFilter,
+ 			{ name: nls.localize('allFiles', "All Files"), extensions: ['*'] },
++			matchingFilter,
+ 			...filters,
+ 			{ name: nls.localize('noExt', "No Extension"), extensions: [''] }
+ 		]);
