@@ -181,6 +181,5 @@ gsed -i -E '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based o
 git apply --3way ../../patches/binary-name.patch
 git apply --3way ../../patches/editor-open-positioning--sort.patch
 git apply --3way ../../patches/editor-folding-strategy--custom.patch
-git apply --3way ../../patches/dialog-save-options.patch
 
 cd ..
