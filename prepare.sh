@@ -66,17 +66,6 @@ gsed -i -E $'s/mv product\.json product\.json\.bak/if [ ! -f "product.json.bak" 
 gsed -i -E 's/patch -u/patch -t -u/g' prepare_vscode.sh
 # }}}
 
-# sign_mac_app.sh
-backup 'sign_mac_app.sh'
-cp ../sign_mac_app.sh .
-
-# create_dmg.sh
-backup 'create_dmg.sh'
-gsed -i -E 's/VSCodium/MrCode/g' create_dmg.sh
-gsed -i -E '/create-dmg.*/a\
-    echo "new-asset: MrCode.dmg"
-' create_dmg.sh
-
 # sum.sh
 backup 'sum.sh'
 gsed -i -E 's/VSCodium/MrCode/g' sum.sh
@@ -88,20 +77,11 @@ gsed -i -E '/    fi.*/a\
 	cat "$1.sha256"
 ' sum.sh
 
-# create_zip.sh
-backup 'create_zip.sh'
-gsed -i -E 's/VSCodium/MrCode/g' create_zip.sh
-gsed -i -E '/zip -r -X -y.*/a\
-    echo "new-asset: MrCode-darwin-${LATEST_MS_TAG}.zip"
-' create_zip.sh
-gsed -i -E '/tar czf.*/a\
-    echo "new-asset: MrCode-linux-${BUILDARCH}-${LATEST_MS_TAG}.tar.gz"
-' create_zip.sh
-
 # check_tags.sh
 backup 'check_tags.sh'
 gsed -i -E 's|VSCodium/vscodium|zokugun/MrCode|g' check_tags.sh
 gsed -i -E 's/VSCodium/MrCode/g' check_tags.sh
+gsed -i -E 's/darwin-\$LATEST_MS_TAG/darwin-\$VSCODE_ARCH-\$LATEST_MS_TAG/g' check_tags.sh
 
 # update_version.sh
 backup 'update_version.sh'
@@ -110,6 +90,10 @@ gsed -i -E 's/vscodium/mrcode/g' update_version.sh
 gsed -i -E 's/VSCodium/MrCode/g' update_version.sh
 gsed -i -E 's|VERSIONS_REPO=.*|VERSIONS_REPO='\''zokugun/MrCode-versions'\''|' update_version.sh
 gsed -i -E 's/cd versions/cd MrCode-versions/g' update_version.sh
+
+# create_appimage.sh
+backup 'create_appimage.sh'
+gsed -i -E 's/VSCodium/MrCode/g' create_appimage.sh
 
 # VSCodium-AppImage-Recipe.yml
 backup 'VSCodium-AppImage-Recipe.yml'
@@ -178,8 +162,8 @@ backup 'resources/linux/snap/snapcraft.yaml'
 gsed -i -E 's|summary: .*|summary: MrCode. Code editing.|g' resources/linux/snap/snapcraft.yaml
 gsed -i -E '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based on Visual Studio Code.\n|g;}' resources/linux/snap/snapcraft.yaml
 
-git apply --3way ../../patches/binary-name.patch
-git apply --3way ../../patches/editor-open-positioning--sort.patch
-git apply --3way ../../patches/editor-folding-strategy--custom.patch
+git apply ../../patches/binary-name.patch
+git apply ../../patches/editor-open-positioning--sort.patch
+git apply ../../patches/editor-folding-strategy--custom.patch
 
 cd ..

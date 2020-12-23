@@ -57,7 +57,7 @@ Supported OS
 - [x] Linux x64 (`AppImage`, `deb`, `rpm`, `tar.gz`)
 - [x] Linux arm64 (`deb`, `tar.gz`)
 - [x] Linux armhf (`deb`, `tar.gz`)
-- [x] macOS (`dmg`, `zip`)
+- [x] macOS x64 (`dmg`, `zip`)
 - [x] Windows x64 (`exe`, `zip`)
 - [x] Windows x86 (`exe`, `zip`)
 

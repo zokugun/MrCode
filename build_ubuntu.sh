@@ -6,4 +6,4 @@ set -o allexport; source .env; set +o allexport
 
 . prepare.sh
 
-SHOULD_BUILD=yes CI_BUILD=no BUILDARCH=x64 . build.sh
+SHOULD_BUILD=yes CI_BUILD=no VSCODE_ARCH=x64 . build.sh

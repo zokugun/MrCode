@@ -1,8 +1,8 @@
 diff --git a/src/vs/workbench/browser/parts/editor/editor.ts b/src/vs/workbench/browser/parts/editor/editor.ts
-index 677643377f..e38e7b79d7 100644
+index c05ce6d..61ff10e 100644
 --- a/src/vs/workbench/browser/parts/editor/editor.ts
 +++ b/src/vs/workbench/browser/parts/editor/editor.ts
-@@ -37,6 +37,8 @@ export const DEFAULT_EDITOR_PART_OPTIONS: IEditorPartOptions = {
+@@ -35,6 +35,8 @@ export const DEFAULT_EDITOR_PART_OPTIONS: IEditorPartOptions = {
  	hasIcons: true, // 'vs-seti' is our default icon theme
  	enablePreview: true,
  	openPositioning: 'right',
@@ -12,10 +12,10 @@ index 677643377f..e38e7b79d7 100644
  	closeEmptyGroups: true,
  	labelFormat: 'default',
 diff --git a/src/vs/workbench/browser/workbench.contribution.ts b/src/vs/workbench/browser/workbench.contribution.ts
-index 18196e719a..0fc212f43f 100644
+index fdc9947..731370a 100644
 --- a/src/vs/workbench/browser/workbench.contribution.ts
 +++ b/src/vs/workbench/browser/workbench.contribution.ts
-@@ -123,9 +123,21 @@ import { workbenchConfigurationNodeBase } from 'vs/workbench/common/configuratio
+@@ -140,10 +140,22 @@ import { isStandalone } from 'vs/base/browser/browser';
  			},
  			'workbench.editor.openPositioning': {
  				'type': 'string',
@@ -24,7 +24,7 @@ index 18196e719a..0fc212f43f 100644
  				'default': 'right',
 -				'markdownDescription': nls.localize({ comment: ['This is the description for a setting. Values surrounded by single quotes are not to be translated.'], key: 'editorOpenPositioning' }, "Controls where editors open. Select `left` or `right` to open editors to the left or right of the currently active one. Select `first` or `last` to open editors independently from the currently active one.")
 +				'markdownDescription': nls.localize({ comment: ['This is the description for a setting. Values surrounded by single quotes are not to be translated.'], key: 'editorOpenPositioning' }, "Controls where editors open. Select `left` or `right` to open editors to the left or right of the currently active one. Select `first` or `last` to open editors independently from the currently active one. Select `sort` to open editors in alphabetical order.")
-+			},
+ 			},
 +			'workbench.editor.openPositioningSortOrder': {
 +				'type': 'string',
 +				'enum': ['asc', 'desc'],
@@ -36,14 +36,15 @@ index 18196e719a..0fc212f43f 100644
 +				'enum': ['name-local', 'name-absolute', 'absolute'],
 +				'default': 'name-local',
 +				'description': nls.localize('openPositioningSortRule', "Controls how the open editors are sorted.")
- 			},
++			},
  			'workbench.editor.openSideBySideDirection': {
  				'type': 'string',
+ 				'enum': ['right', 'down'],
 diff --git a/src/vs/workbench/common/editor.ts b/src/vs/workbench/common/editor.ts
-index 95aa89bbc8..e8dc1e5b0d 100644
+index f104149..38c77c0 100644
 --- a/src/vs/workbench/common/editor.ts
 +++ b/src/vs/workbench/common/editor.ts
-@@ -1186,7 +1186,9 @@ interface IEditorPartConfiguration {
+@@ -1276,7 +1276,9 @@ interface IEditorPartConfiguration {
  	enablePreview?: boolean;
  	enablePreviewFromQuickOpen?: boolean;
  	closeOnFileDelete?: boolean;
@@ -55,7 +56,7 @@ index 95aa89bbc8..e8dc1e5b0d 100644
  	closeEmptyGroups?: boolean;
  	revealIfOpen?: boolean;
 diff --git a/src/vs/workbench/common/editor/editorGroup.ts b/src/vs/workbench/common/editor/editorGroup.ts
-index 178aa1d792..98e7d83028 100644
+index 8d7410a..4db7acd 100644
 --- a/src/vs/workbench/common/editor/editorGroup.ts
 +++ b/src/vs/workbench/common/editor/editorGroup.ts
 @@ -4,7 +4,7 @@
@@ -77,7 +78,7 @@ index 178aa1d792..98e7d83028 100644
  };
  
  export interface EditorCloseEvent extends IEditorCloseEvent {
-@@ -98,7 +99,9 @@ export class EditorGroup extends Disposable {
+@@ -103,7 +104,9 @@ export class EditorGroup extends Disposable {
  	private active: EditorInput | null = null;  // editor in active state
  	private sticky: number = -1; // index of first editor in sticky state
  
@@ -88,16 +89,16 @@ index 178aa1d792..98e7d83028 100644
  	private focusRecentEditorAfterClose: boolean | undefined;
  
  	constructor(
-@@ -124,6 +127,8 @@ export class EditorGroup extends Disposable {
+@@ -129,6 +132,8 @@ export class EditorGroup extends Disposable {
  
  	private onConfigurationUpdated(): void {
  		this.editorOpenPositioning = this.configurationService.getValue('workbench.editor.openPositioning');
 +		this.editorOpenPositioningSortOrder = this.configurationService.getValue('workbench.editor.openPositioningSortOrder');
 +		this.editorOpenPositioningSortRule = this.configurationService.getValue('workbench.editor.openPositioningSortRule');
  		this.focusRecentEditorAfterClose = this.configurationService.getValue('workbench.editor.focusRecentEditorAfterClose');
+ 	}
  
- 		if (this.configurationService.getValue('workbench.editor.showTabs') === false) {
-@@ -208,6 +213,63 @@ export class EditorGroup extends Disposable {
+@@ -207,6 +212,63 @@ export class EditorGroup extends Disposable {
  				targetIndex = this.editors.length;
  			}
  

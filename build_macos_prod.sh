@@ -8,8 +8,8 @@ set -o allexport; source .env; set +o allexport
 
 CI_BUILD=no . prepare.sh
 
-SHOULD_BUILD=yes CI_BUILD=no TRAVIS_OS_NAME=osx . build.sh
+SHOULD_BUILD=yes CI_BUILD=no OS_NAME=osx VSCODE_ARCH=x64 . build.sh
 
-cd VSCode-darwin
+cd VSCode-darwin-x64
 
 codesign --deep --force --verbose --sign "$CERTIFICATE_OSX_ID" MrCode.app
