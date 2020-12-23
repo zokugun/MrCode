@@ -1,5 +1,7 @@
 name: linux_build
 
+on: [workflow_dispatch]
+
 jobs:
   linux:
     runs-on: ubuntu-latest
