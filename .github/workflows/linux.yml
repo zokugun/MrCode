@@ -1,4 +1,4 @@
-name: linus
+name: linux
 
 on: [workflow_dispatch]
 
