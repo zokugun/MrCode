@@ -4,8 +4,9 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zokugun/MrCode/blob/master/LICENSE)
 [![current release](https://img.shields.io/github/release/zokugun/MrCode.svg?colorB=green)](https://github.com/zokugun/MrCode/releases)
-[![build status](https://dev.azure.com/daiyam/MrCode/_apis/build/status/zokugun.MrCode?branchName=master)](https://dev.azure.com/daiyam/MrCode/_build/latest?definitionId=2&branchName=master)
-[![build status](https://travis-ci.org/zokugun/MrCode.svg?branch=master)](https://travis-ci.org/zokugun/MrCode)
+[![Windows](https://dev.azure.com/daiyam/MrCode/_apis/build/status/zokugun.MrCode?branchName=master)](https://dev.azure.com/daiyam/MrCode/_build/latest?definitionId=2&branchName=master)
+![macOS](https://github.com/zokugun/MrCode/workflows/macOS/badge.svg)
+![linux](https://github.com/zokugun/MrCode/workflows/linux/badge.svg)
 
 </div>
 

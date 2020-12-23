@@ -1,4 +1,4 @@
-name: linux_build
+name: linus
 
 on: [workflow_dispatch]
 
