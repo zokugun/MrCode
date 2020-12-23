@@ -1,0 +1,97 @@
+name: macos_build
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    env:
+      OS_NAME: "osx"
+      VSCODE_ARCH: "x64"
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.14.1
+
+      - name: Clone VSCodium repo
+        run: |
+          . get_repo.sh
+
+      - name: Install dependencies
+        run: |
+          . install_deps.sh
+
+      - name: Prepare VSCodium
+        run: |
+          . prepare.sh
+
+      - name: Check existing MrCode tags/releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          . check_tags.sh
+
+      - name: Build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./build.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Sign binary
+        env:
+          CERTIFICATE_OSX_P12: ${{ secrets.CERTIFICATE_OSX_P12 }}
+          CERTIFICATE_OSX_PASSWORD: ${{ secrets.CERTIFICATE_OSX_PASSWORD }}
+          CERTIFICATE_OSX_ID: ${{ secrets.CERTIFICATE_OSX_ID }}
+        if: env.SHOULD_BUILD == 'yes'
+        run: |
+          if [ -d "VSCode-darwin-${VSCODE_ARCH}" ]; then # just in case the build failed
+            cd "VSCode-darwin-${VSCODE_ARCH}"
+            export CERTIFICATE_P12=MrCode.p12
+            echo $CERTIFICATE_OSX_P12 | base64 --decode > $CERTIFICATE_P12
+            export KEYCHAIN=build.keychain
+            security create-keychain -p mysecretpassword $KEYCHAIN
+            security default-keychain -s $KEYCHAIN
+            security unlock-keychain -p mysecretpassword $KEYCHAIN
+            security import $CERTIFICATE_P12 -k $KEYCHAIN -P $CERTIFICATE_OSX_PASSWORD -T /usr/bin/codesign
+            security set-key-partition-list -S apple-tool:,apple: -s -k mysecretpassword $KEYCHAIN
+            codesign --deep --force --verbose --sign "$CERTIFICATE_OSX_ID" MrCode.app
+          fi
+
+      - name: Zip release
+        run: |
+          cd "VSCode-darwin-${VSCODE_ARCH}"
+          zip -r -X -y ../MrCode-darwin-${VSCODE_ARCH}-${LATEST_MS_TAG}.zip ./*.app
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: DMG the release
+        run: |
+          pushd "VSCode-darwin-${VSCODE_ARCH}"
+          npx create-dmg MrCode.app ..
+          mv "../MrCode ${LATEST_MS_TAG}.dmg" "../MrCode.${VSCODE_ARCH}.${LATEST_MS_TAG}.dmg"
+          popd
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Generate shasums
+        run: ./sum.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: env.SHOULD_BUILD == 'yes'
+        with:
+          tag_name: ${{ env.LATEST_MS_TAG }}
+          files: |
+            ./*.zip
+            ./*.dmg
+            ./*.sha256
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update versions repo
+        if: env.SHOULD_BUILD == 'yes'
+        run: ./update_version.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }}
+          GITHUB_USERNAME: ${{ github.repository_owner }}
+

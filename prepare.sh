@@ -81,7 +81,7 @@ gsed -i -E '/    fi.*/a\
 backup 'check_tags.sh'
 gsed -i -E 's|VSCodium/vscodium|zokugun/MrCode|g' check_tags.sh
 gsed -i -E 's/VSCodium/MrCode/g' check_tags.sh
-gsed -i -E 's/darwin-\$LATEST_MS_TAG/darwin-\$VSCODE_ARCH-\$LATEST_MS_TAG/g' check_tags.sh
+gsed -i -E 's/darwin-\$LATEST_MS_TAG/darwin-$VSCODE_ARCH-$LATEST_MS_TAG/g' check_tags.sh
 
 # update_version.sh
 backup 'update_version.sh'
@@ -90,6 +90,8 @@ gsed -i -E 's/vscodium/mrcode/g' update_version.sh
 gsed -i -E 's/VSCodium/MrCode/g' update_version.sh
 gsed -i -E 's|VERSIONS_REPO=.*|VERSIONS_REPO='\''zokugun/MrCode-versions'\''|' update_version.sh
 gsed -i -E 's/cd versions/cd MrCode-versions/g' update_version.sh
+gsed -i -E 's/ASSET_NAME=MrCode-darwin-\$\{LATEST_MS_TAG\}\.zip/ASSET_NAME=MrCode-darwin-${VSCODE_ARCH}-${LATEST_MS_TAG}.zip/g' update_version.sh
+gsed -i -E 's|VERSION_PATH="darwin"|VERSION_PATH="darwin/${VSCODE_ARCH}"|g' update_version.sh
 
 # create_appimage.sh
 backup 'create_appimage.sh'
