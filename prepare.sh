@@ -93,10 +93,6 @@ gsed -i -E 's/cd versions/cd MrCode-versions/g' update_version.sh
 gsed -i -E 's/ASSET_NAME=MrCode-darwin-\$\{LATEST_MS_TAG\}\.zip/ASSET_NAME=MrCode-darwin-${VSCODE_ARCH}-${LATEST_MS_TAG}.zip/g' update_version.sh
 gsed -i -E 's|VERSION_PATH="darwin"|VERSION_PATH="darwin/${VSCODE_ARCH}"|g' update_version.sh
 
-# create_appimage.sh
-backup 'create_appimage.sh'
-gsed -i -E 's/VSCodium/MrCode/g' create_appimage.sh
-
 # VSCodium-AppImage-Recipe.yml
 backup 'VSCodium-AppImage-Recipe.yml'
 gsed -i -E 's/oss\|vscodium/oss|org.zokugun.mrcode/g' VSCodium-AppImage-Recipe.yml
@@ -109,6 +105,7 @@ backup 'src/resources/linux/appimage/pkg2appimage'
 gsed -i -E 's/VSCodium/MrCode/g' src/resources/linux/appimage/pkg2appimage
 gsed -i -E 's/vscodium/mrcode/g' src/resources/linux/appimage/pkg2appimage
 gsed -i -E 's/CODIUM/MRCODE/g' src/resources/linux/appimage/pkg2appimage
+gsed -i -E 's/\$\{!#\}\.yml/${!#}/g' src/resources/linux/appimage/pkg2appimage
 
 . get_repo.sh
 
