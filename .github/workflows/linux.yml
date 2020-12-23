@@ -46,28 +46,33 @@ jobs:
       - name: Check existing MrCode tags/releases
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ./vscodium
         run: ./check_tags.sh
 
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           npm_config_arch: ${{ matrix.npm_arch }}
+        working-directory: ./vscodium
         run: ./build.sh
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Archive release
+        working-directory: ./vscodium
         run: |
           cd VSCode-linux-${VSCODE_ARCH}
           tar czf ../MrCode-linux-${VSCODE_ARCH}-${LATEST_MS_TAG}.tar.gz .
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Generate shasums
+        working-directory: ./vscodium
         run: ./sum.sh
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v1
-        if: env.SHOULD_BUILD == 'yes'
         with:
           tag_name: ${{ env.LATEST_MS_TAG }}
           files: |
@@ -78,13 +83,13 @@ jobs:
             ./*.rpm
             ./*.AppImage
             ./*.AppImage.zsync
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Update versions repo
-        if: env.SHOULD_BUILD == 'yes'
-        run: ./update_version.sh
         env:
           GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
+        working-directory: ./vscodium
+        run: ./update_version.sh
+        if: env.SHOULD_BUILD == 'yes'
 

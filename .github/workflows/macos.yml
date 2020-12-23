@@ -31,12 +31,14 @@ jobs:
       - name: Check existing MrCode tags/releases
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ./vscodium
         run: |
           . check_tags.sh
 
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ./vscodium
         run: ./build.sh
         if: env.SHOULD_BUILD == 'yes'
 
@@ -45,7 +47,7 @@ jobs:
           CERTIFICATE_OSX_P12: ${{ secrets.CERTIFICATE_OSX_P12 }}
           CERTIFICATE_OSX_PASSWORD: ${{ secrets.CERTIFICATE_OSX_PASSWORD }}
           CERTIFICATE_OSX_ID: ${{ secrets.CERTIFICATE_OSX_ID }}
-        if: env.SHOULD_BUILD == 'yes'
+        working-directory: ./vscodium
         run: |
           if [ -d "VSCode-darwin-${VSCODE_ARCH}" ]; then # just in case the build failed
             cd "VSCode-darwin-${VSCODE_ARCH}"
@@ -59,14 +61,17 @@ jobs:
             security set-key-partition-list -S apple-tool:,apple: -s -k mysecretpassword $KEYCHAIN
             codesign --deep --force --verbose --sign "$CERTIFICATE_OSX_ID" MrCode.app
           fi
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Zip release
+        working-directory: ./vscodium
         run: |
           cd "VSCode-darwin-${VSCODE_ARCH}"
           zip -r -X -y ../MrCode-darwin-${VSCODE_ARCH}-${LATEST_MS_TAG}.zip ./*.app
         if: env.SHOULD_BUILD == 'yes'
 
       - name: DMG the release
+        working-directory: ./vscodium
         run: |
           pushd "VSCode-darwin-${VSCODE_ARCH}"
           npx create-dmg MrCode.app ..
@@ -75,25 +80,27 @@ jobs:
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Generate shasums
+        working-directory: ./vscodium
         run: ./sum.sh
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v1
-        if: env.SHOULD_BUILD == 'yes'
         with:
           tag_name: ${{ env.LATEST_MS_TAG }}
           files: |
             ./*.zip
             ./*.dmg
             ./*.sha256
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Update versions repo
-        if: env.SHOULD_BUILD == 'yes'
-        run: ./update_version.sh
         env:
           GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
+        working-directory: ./vscodium
+        run: ./update_version.sh
+        if: env.SHOULD_BUILD == 'yes'
 
