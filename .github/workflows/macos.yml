@@ -91,9 +91,9 @@ jobs:
         with:
           tag_name: ${{ env.LATEST_MS_TAG }}
           files: |
-            ./*.zip
-            ./*.dmg
-            ./*.sha256
+            ./vscodium/*.zip
+            ./vscodium/*.dmg
+            ./vscodium/*.sha256
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Update versions repo

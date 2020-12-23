@@ -76,13 +76,13 @@ jobs:
         with:
           tag_name: ${{ env.LATEST_MS_TAG }}
           files: |
-            ./*.sha256
-            ./*.zip
-            ./*.tar.gz
-            ./*.deb
-            ./*.rpm
-            ./*.AppImage
-            ./*.AppImage.zsync
+            ./vscodium/*.sha256
+            ./vscodium/*.zip
+            ./vscodium/*.tar.gz
+            ./vscodium/*.deb
+            ./vscodium/*.rpm
+            ./vscodium/*.AppImage
+            ./vscodium/*.AppImage.zsync
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Update versions repo
