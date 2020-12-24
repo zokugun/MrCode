@@ -1,3 +1,5 @@
 cd vscodium/vscode
 
-git diff > ../../patches/editor-folding-strategy--custom.patch
+git add .
+
+git diff --staged > ../../patches/editor-folding-strategy--custom.patch

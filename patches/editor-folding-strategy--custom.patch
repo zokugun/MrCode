@@ -35,81 +35,566 @@ diff --git a/src/vs/editor/common/modes.ts b/src/vs/editor/common/modes.ts
 index fe0d733..2779b97 100644
 --- a/src/vs/editor/common/modes.ts
 +++ b/src/vs/editor/common/modes.ts
-@@ -1320,6 +1320,11 @@ export interface FoldingRangeProvider {
+@@ -1319,6 +1319,11 @@ export interface FoldingRangeProvider {
+ 	 */
  	onDidChange?: Event<this>;
  
- 	/**
++	/**
 +	 * Provides the id of the provider.
 +	 */
 +	id?: string;
 +
-+	/**
+ 	/**
  	 * Provides the folding ranges for a specific model.
  	 */
- 	provideFoldingRanges(model: model.ITextModel, context: FoldingContext, token: CancellationToken): ProviderResult<FoldingRange[]>;
 diff --git a/src/vs/editor/contrib/folding/folding.ts b/src/vs/editor/contrib/folding/folding.ts
-index 1d48e06..87b95ea 100644
+index 1d48e06..c3cee32 100644
 --- a/src/vs/editor/contrib/folding/folding.ts
 +++ b/src/vs/editor/contrib/folding/folding.ts
-@@ -60,8 +60,8 @@ export class FoldingController extends Disposable implements IEditorContribution
- 	}
+@@ -25,7 +25,7 @@ import { IRange } from 'vs/editor/common/core/range';
+ import { LanguageConfigurationRegistry } from 'vs/editor/common/modes/languageConfigurationRegistry';
+ import { IndentRangeProvider } from 'vs/editor/contrib/folding/indentRangeProvider';
+ import { IPosition } from 'vs/editor/common/core/position';
+-import { FoldingRangeProviderRegistry, FoldingRangeKind } from 'vs/editor/common/modes';
++import { FoldingRangeProvider, FoldingRangeProviderRegistry, FoldingRangeKind } from 'vs/editor/common/modes';
+ import { SyntaxRangeProvider, ID_SYNTAX_PROVIDER } from './syntaxRangeProvider';
+ import { CancellationToken } from 'vs/base/common/cancellation';
+ import { InitializingRangeProvider, ID_INIT_PROVIDER } from 'vs/editor/contrib/folding/intializingRangeProvider';
+@@ -34,6 +34,8 @@ import { onUnexpectedError } from 'vs/base/common/errors';
+ import { RawContextKey, IContextKey, IContextKeyService } from 'vs/platform/contextkey/common/contextkey';
+ import { registerThemingParticipant, ThemeIcon } from 'vs/platform/theme/common/themeService';
+ import { registerColor, editorSelectionBackground, transparent, iconForeground } from 'vs/platform/theme/common/colorRegistry';
++import { NoopRangeProvider } from 'vs/editor/contrib/folding/noopRangeProvider';
++import { IndentFoldingProvider } from 'vs/editor/contrib/folding/indentFoldingProvider';
+ 
+ const CONTEXT_FOLDING_ENABLED = new RawContextKey<boolean>('foldingEnabled', false);
+ 
+@@ -49,6 +51,11 @@ interface FoldingStateMemento {
+ 	provider?: string;
+ }
+ 
++enum StrategyMode {
++	AND,
++	OR,
++}
++
+ export class FoldingController extends Disposable implements IEditorContribution {
+ 
+ 	public static ID = 'editor.contrib.folding';
+@@ -61,7 +68,6 @@ export class FoldingController extends Disposable implements IEditorContribution
  
  	private readonly editor: ICodeEditor;
-+	private _foldingStrategy: string;
  	private _isEnabled: boolean;
 -	private _useFoldingProviders: boolean;
  	private _unfoldOnClickAfterEndOfLine: boolean;
  	private _restoringViewState: boolean;
  
-@@ -91,8 +91,8 @@ export class FoldingController extends Disposable implements IEditorContribution
+@@ -84,6 +90,9 @@ export class FoldingController extends Disposable implements IEditorContribution
+ 	private readonly localToDispose = this._register(new DisposableStore());
+ 	private mouseDownInfo: { lineNumber: number, iconClicked: boolean } | null;
+ 
++	private strategyMode: StrategyMode = 0;
++	private strategyProviderIds: string[] = [];
++
+ 	constructor(
+ 		editor: ICodeEditor,
+ 		@IContextKeyService private readonly contextKeyService: IContextKeyService
+@@ -91,8 +100,8 @@ export class FoldingController extends Disposable implements IEditorContribution
  		super();
  		this.editor = editor;
  		const options = this.editor.getOptions();
-+		this._foldingStrategy = options.get(EditorOption.foldingStrategy);
++		this.setStrategy(options.get(EditorOption.foldingStrategy));
  		this._isEnabled = options.get(EditorOption.folding);
 -		this._useFoldingProviders = options.get(EditorOption.foldingStrategy) !== 'indentation';
  		this._unfoldOnClickAfterEndOfLine = options.get(EditorOption.unfoldOnClickAfterEndOfLine);
  		this._restoringViewState = false;
  
-@@ -127,7 +127,7 @@ export class FoldingController extends Disposable implements IEditorContribution
+@@ -127,7 +136,7 @@ export class FoldingController extends Disposable implements IEditorContribution
  				this.onModelContentChanged();
  			}
  			if (e.hasChanged(EditorOption.foldingStrategy)) {
 -				this._useFoldingProviders = this.editor.getOptions().get(EditorOption.foldingStrategy) !== 'indentation';
-+				this._foldingStrategy = this.editor.getOptions().get(EditorOption.foldingStrategy);
++				this.setStrategy(this.editor.getOptions().get(EditorOption.foldingStrategy))
  				this.onFoldingStrategyChanged();
  			}
  			if (e.hasChanged(EditorOption.unfoldOnClickAfterEndOfLine)) {
-@@ -251,10 +251,15 @@ export class FoldingController extends Disposable implements IEditorContribution
+@@ -251,26 +260,119 @@ export class FoldingController extends Disposable implements IEditorContribution
  		if (this.rangeProvider) {
  			return this.rangeProvider;
  		}
 -		this.rangeProvider = new IndentRangeProvider(editorModel); // fallback
  
-+		if (this._foldingStrategy !== 'auto' && this._foldingStrategy !== 'indentation') {
-+			const foldingProviders = FoldingRangeProviderRegistry.all(editorModel).filter(provider => provider.id === this._foldingStrategy);
-+			if (foldingProviders.length > 0) {
-+				this.rangeProvider = new SyntaxRangeProvider(editorModel, foldingProviders, () => this.onModelContentChanged());
-+			}
-+		}
++		if (this.foldingModel) {
++			if (this.strategyMode === StrategyMode.AND) {
++				const foldingProviders: Array<FoldingRangeProvider> = [];
++
++				for (const id of this.strategyProviderIds) {
++					if (id === 'language') {
++						const providers = FoldingRangeProviderRegistry.ordered(this.foldingModel.textModel).filter(provider => provider.id === null);
++
++						if (providers.length === 0 && this.foldingStateMemento && this.foldingStateMemento.collapsedRegions) {
++							return this.createInitializingRangeProvider(editorModel);
++						} else {
++							foldingProviders.push(...providers);
++						}
++					} else if (id === 'indentation') {
++						foldingProviders.push(new IndentFoldingProvider());
++					} else {
++						const providers = FoldingRangeProviderRegistry.ordered(editorModel).filter(provider => provider.id === id);
++						foldingProviders.push(...providers);
++					}
++				}
  
 -		if (this._useFoldingProviders && this.foldingModel) {
-+		if (this.foldingModel && (this._foldingStrategy === 'auto' || (this._foldingStrategy !== 'indentation' && !this.rangeProvider))) {
- 			let foldingProviders = FoldingRangeProviderRegistry.ordered(this.foldingModel.textModel);
- 			if (foldingProviders.length === 0 && this.foldingStateMemento && this.foldingStateMemento.collapsedRegions) {
- 				const rangeProvider = this.rangeProvider = new InitializingRangeProvider(editorModel, this.foldingStateMemento.collapsedRegions, () => {
-@@ -267,6 +272,11 @@ export class FoldingController extends Disposable implements IEditorContribution
+-			let foldingProviders = FoldingRangeProviderRegistry.ordered(this.foldingModel.textModel);
+-			if (foldingProviders.length === 0 && this.foldingStateMemento && this.foldingStateMemento.collapsedRegions) {
+-				const rangeProvider = this.rangeProvider = new InitializingRangeProvider(editorModel, this.foldingStateMemento.collapsedRegions, () => {
+-					// if after 30 the InitializingRangeProvider is still not replaced, force a refresh
+-					this.foldingStateMemento = null;
+-					this.onFoldingStrategyChanged();
+-				}, 30000);
+-				return rangeProvider; // keep memento in case there are still no foldingProviders on the next request.
+-			} else if (foldingProviders.length > 0) {
  				this.rangeProvider = new SyntaxRangeProvider(editorModel, foldingProviders, () => this.onModelContentChanged());
  			}
- 		}
++			else {
++				for (const id of this.strategyProviderIds) {
++					if (id === 'language') {
++						const providers = FoldingRangeProviderRegistry.ordered(this.foldingModel.textModel).filter(provider => provider.id === null);
 +
-+		if (!this.rangeProvider) {
-+			this.rangeProvider = new IndentRangeProvider(editorModel); // fallback
++						if (providers.length === 0 && this.foldingStateMemento && this.foldingStateMemento.collapsedRegions) {
++							return this.createInitializingRangeProvider(editorModel);
++						} else if (providers.length > 0) {
++							this.rangeProvider = new SyntaxRangeProvider(editorModel, providers, () => this.onModelContentChanged());
++							break;
++						}
++					} else if (id === 'indentation') {
++						this.rangeProvider = new IndentRangeProvider(editorModel);
++						break;
++					} else {
++						const foldingProviders = FoldingRangeProviderRegistry.ordered(editorModel).filter(provider => provider.id === id);
++
++						if (foldingProviders.length > 0) {
++							this.rangeProvider = new SyntaxRangeProvider(editorModel, foldingProviders, () => this.onModelContentChanged());
++							break;
++						}
++					}
++				}
++			}
 +		}
 +
++		if (!this.rangeProvider) {
++			this.rangeProvider = new NoopRangeProvider();
+ 		}
++
  		this.foldingStateMemento = null;
++
  		return this.rangeProvider;
  	}
+ 
++	private createInitializingRangeProvider(editorModel: ITextModel) {
++		const rangeProvider = new InitializingRangeProvider(editorModel, this.foldingStateMemento!.collapsedRegions!, () => {
++			// if after 30s the InitializingRangeProvider is still not replaced, force a refresh
++			this.foldingStateMemento = null;
++			this.onFoldingStrategyChanged();
++		}, 30000);
++
++		this.rangeProvider = rangeProvider;
++
++		return rangeProvider;
++	}
++
++	private setStrategy(strategy: string): void {
++		if (strategy === 'auto') {
++			return this.setDefaultStrategy();
++		}
++
++		const args = strategy.split(/\s*\b\s*/);
++
++		if (args.length === 1) {
++			this.strategyMode = StrategyMode.OR;
++			this.strategyProviderIds = [args[0]]
++			return;
++		}
++
++		const operator = args[1];
++		for (let i = 3; i < args.length; i += 2) {
++			if (args[i] !== operator) {
++				return this.setDefaultStrategy();
++			}
++		}
++
++		if (operator === '&') {
++			this.strategyMode = StrategyMode.AND;
++		} else if (operator === '|') {
++			this.strategyMode = StrategyMode.OR;
++		} else {
++			return this.setDefaultStrategy();
++		}
++
++		this.strategyProviderIds = args.reduce((acc: Array<string>, val: string, index: number) => {
++			if (index % 2 === 0) {
++				acc.push(val);
++			}
++
++			return acc;
++		}, [])
++	}
++
++	private setDefaultStrategy(): void {
++		this.strategyMode = StrategyMode.OR;
++		this.strategyProviderIds = ['language', 'indentation'];
++	}
++
+ 	public getFoldingModel() {
+ 		return this.foldingModelPromise;
+ 	}
+diff --git a/src/vs/editor/contrib/folding/indentFoldingProvider.ts b/src/vs/editor/contrib/folding/indentFoldingProvider.ts
+new file mode 100644
+index 0000000..0a324e0
+--- /dev/null
++++ b/src/vs/editor/contrib/folding/indentFoldingProvider.ts
+@@ -0,0 +1,15 @@
++import { CancellationToken } from 'vs/base/common/cancellation';
++import { ITextModel } from 'vs/editor/common/model';
++import { FoldingContext, FoldingRange, FoldingRangeProvider, ProviderResult } from 'vs/editor/common/modes';
++import { LanguageConfigurationRegistry } from 'vs/editor/common/modes/languageConfigurationRegistry';
++import { computeRanges } from 'vs/editor/contrib/folding/indentRangeProvider';
++
++export class IndentFoldingProvider implements FoldingRangeProvider {
++	provideFoldingRanges(model: ITextModel, context: FoldingContext, token: CancellationToken): ProviderResult<FoldingRange[]> {
++		let foldingRules = LanguageConfigurationRegistry.getFoldingRules(model.getLanguageIdentifier().id);
++		let offSide = foldingRules && !!foldingRules.offSide;
++		let markers = foldingRules && foldingRules.markers;
++
++		return Promise.resolve(computeRanges(model, offSide, markers).toFoldingRanges(model));
++	}
++}
+diff --git a/src/vs/editor/contrib/folding/indentRangeProvider.ts b/src/vs/editor/contrib/folding/indentRangeProvider.ts
+index da1c2bc..e452e54 100644
+--- a/src/vs/editor/contrib/folding/indentRangeProvider.ts
++++ b/src/vs/editor/contrib/folding/indentRangeProvider.ts
+@@ -10,6 +10,7 @@ import { TextModel } from 'vs/editor/common/model/textModel';
+ import { RangeProvider } from './folding';
+ import { LanguageConfigurationRegistry } from 'vs/editor/common/modes/languageConfigurationRegistry';
+ import { CancellationToken } from 'vs/base/common/cancellation';
++import { FoldingRange, FoldingRangeKind } from 'vs/editor/common/modes';
+ 
+ const MAX_FOLDING_REGIONS_FOR_INDENT_LIMIT = 5000;
+ 
+@@ -28,7 +29,7 @@ export class IndentRangeProvider implements RangeProvider {
+ 		let foldingRules = LanguageConfigurationRegistry.getFoldingRules(this.editorModel.getLanguageIdentifier().id);
+ 		let offSide = foldingRules && !!foldingRules.offSide;
+ 		let markers = foldingRules && foldingRules.markers;
+-		return Promise.resolve(computeRanges(this.editorModel, offSide, markers));
++		return Promise.resolve(computeRanges(this.editorModel, offSide, markers).toFoldingRegions(this.editorModel));
+ 	}
+ }
+ 
+@@ -61,7 +62,43 @@ export class RangesCollector {
+ 		}
+ 	}
+ 
+-	public toIndentRanges(model: ITextModel) {
++	public toFoldingRanges(model: ITextModel) {
++		const foldingRanges: FoldingRange[] = [];
++
++		if (this._length <= this._foldingRangesLimit) {
++			// reverse and create arrays of the exact length
++			for (let i = this._length - 1, k = 0; i >= 0; i--, k++) {
++				foldingRanges.push({ start: this._startIndexes[i], end: this._endIndexes[i], kind: FoldingRangeKind.Region });
++			}
++		} else {
++			let entries = 0;
++			let maxIndent = this._indentOccurrences.length;
++			for (let i = 0; i < this._indentOccurrences.length; i++) {
++				let n = this._indentOccurrences[i];
++				if (n) {
++					if (n + entries > this._foldingRangesLimit) {
++						maxIndent = i;
++						break;
++					}
++					entries += n;
++				}
++			}
++			const tabSize = model.getOptions().tabSize;
++			// reverse and create arrays of the exact length
++			for (let i = this._length - 1; i >= 0; i--) {
++				let startIndex = this._startIndexes[i];
++				let lineContent = model.getLineContent(startIndex);
++				let indent = TextModel.computeIndentLevel(lineContent, tabSize);
++				if (indent < maxIndent || (indent === maxIndent && entries++ < this._foldingRangesLimit)) {
++					foldingRanges.push({ start: startIndex, end: this._endIndexes[i], kind: FoldingRangeKind.Region });
++				}
++			}
++		}
++
++		return foldingRanges;
++	}
++
++	public toFoldingRegions(model: ITextModel) {
+ 		if (this._length <= this._foldingRangesLimit) {
+ 			// reverse and create arrays of the exact length
+ 			let startIndexes = new Uint32Array(this._length);
+@@ -111,7 +148,7 @@ interface PreviousRegion {
+ 	line: number; // start line of the region. Only used for marker regions.
+ }
+ 
+-export function computeRanges(model: ITextModel, offSide: boolean, markers?: FoldingMarkers, foldingRangesLimit = MAX_FOLDING_REGIONS_FOR_INDENT_LIMIT): FoldingRegions {
++export function computeRanges(model: ITextModel, offSide: boolean, markers?: FoldingMarkers, foldingRangesLimit = MAX_FOLDING_REGIONS_FOR_INDENT_LIMIT): RangesCollector {
+ 	const tabSize = model.getOptions().tabSize;
+ 	let result = new RangesCollector(foldingRangesLimit);
+ 
+@@ -184,5 +221,5 @@ export function computeRanges(model: ITextModel, offSide: boolean, markers?: Fol
+ 			previousRegions.push({ indent, endAbove: line, line });
+ 		}
+ 	}
+-	return result.toIndentRanges(model);
++	return result;
+ }
+diff --git a/src/vs/editor/contrib/folding/noopRangeProvider.ts b/src/vs/editor/contrib/folding/noopRangeProvider.ts
+new file mode 100644
+index 0000000..6a99b20
+--- /dev/null
++++ b/src/vs/editor/contrib/folding/noopRangeProvider.ts
+@@ -0,0 +1,19 @@
++import { FoldingRegions } from 'vs/editor/contrib/folding/foldingRanges';
++import { RangeProvider } from './folding';
++import { CancellationToken } from 'vs/base/common/cancellation';
++
++export const ID_NOOP_PROVIDER = 'noop';
++
++export class NoopRangeProvider implements RangeProvider {
++	readonly id = ID_NOOP_PROVIDER;
++
++	constructor() {
++	}
++
++	dispose() {
++	}
++
++	compute(cancelationToken: CancellationToken): Promise<FoldingRegions> {
++		return Promise.resolve(new FoldingRegions(new Uint32Array(0), new Uint32Array(0)));
++	}
++}
+diff --git a/src/vs/editor/contrib/folding/test/foldingModel.test.ts b/src/vs/editor/contrib/folding/test/foldingModel.test.ts
+index a646fa7..3846593 100644
+--- a/src/vs/editor/contrib/folding/test/foldingModel.test.ts
++++ b/src/vs/editor/contrib/folding/test/foldingModel.test.ts
+@@ -142,7 +142,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, undefined);
++			let ranges = computeRanges(textModel, false, undefined).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 3, false);
+@@ -181,7 +181,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, undefined);
++			let ranges = computeRanges(textModel, false, undefined).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 3, false);
+@@ -227,7 +227,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, undefined);
++			let ranges = computeRanges(textModel, false, undefined).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 3, false);
+@@ -239,7 +239,7 @@ suite('Folding Model', () => {
+ 
+ 			textModel.applyEdits([EditOperation.insert(new Position(4, 1), '//hello\n')]);
+ 
+-			foldingModel.update(computeRanges(textModel, false, undefined));
++			foldingModel.update(computeRanges(textModel, false, undefined).toFoldingRegions(textModel));
+ 
+ 			assertRanges(foldingModel, [r(1, 3, true), r(5, 8, false), r(6, 7, true)]);
+ 		} finally {
+@@ -267,7 +267,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, undefined);
++			let ranges = computeRanges(textModel, false, undefined).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 12, false);
+@@ -281,7 +281,7 @@ suite('Folding Model', () => {
+ 
+ 			textModel.applyEdits([EditOperation.delete(new Range(6, 11, 9, 0))]);
+ 
+-			foldingModel.update(computeRanges(textModel, false, undefined));
++			foldingModel.update(computeRanges(textModel, false, undefined).toFoldingRegions(textModel));
+ 
+ 			assertRanges(foldingModel, [r(1, 9, false), r(2, 8, false), r(3, 5, false), r(6, 8, false)]);
+ 		} finally {
+@@ -304,7 +304,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, undefined);
++			let ranges = computeRanges(textModel, false, undefined).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 3, false);
+@@ -346,7 +346,7 @@ suite('Folding Model', () => {
+ 
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ });
++			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ }).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 2, false);
+@@ -396,7 +396,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ });
++			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ }).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 10, false);
+@@ -442,7 +442,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ });
++			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ }).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 2, false);
+@@ -498,7 +498,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, { start: /^\s*\/\/#region$/, end: /^\s*\/\/#endregion$/ });
++			let ranges = computeRanges(textModel, false, { start: /^\s*\/\/#region$/, end: /^\s*\/\/#endregion$/ }).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 2, false);
+@@ -554,7 +554,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ });
++			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ }).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 2, false);
+@@ -606,7 +606,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ });
++			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ }).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 2, false);
+@@ -653,7 +653,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ });
++			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ }).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 2, false);
+@@ -698,7 +698,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ });
++			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ }).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 3, false);
+@@ -731,7 +731,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, undefined);
++			let ranges = computeRanges(textModel, false, undefined).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 6, false);
+diff --git a/src/vs/editor/contrib/folding/test/foldingRanges.test.ts b/src/vs/editor/contrib/folding/test/foldingRanges.test.ts
+index 214135a..ce80d8b 100644
+--- a/src/vs/editor/contrib/folding/test/foldingRanges.test.ts
++++ b/src/vs/editor/contrib/folding/test/foldingRanges.test.ts
+@@ -27,7 +27,7 @@ suite('FoldingRanges', () => {
+ 			lines.push('#endregion');
+ 		}
+ 		let model = createTextModel(lines.join('\n'));
+-		let actual = computeRanges(model, false, markers, MAX_FOLDING_REGIONS);
++		let actual = computeRanges(model, false, markers, MAX_FOLDING_REGIONS).toFoldingRegions(model);
+ 		assert.equal(actual.length, nRegions, 'len');
+ 		for (let i = 0; i < nRegions; i++) {
+ 			assert.equal(actual.getStartLineNumber(i), i + 1, 'start' + i);
+@@ -55,7 +55,7 @@ suite('FoldingRanges', () => {
+ 
+ 		let textModel = createTextModel(lines.join('\n'));
+ 		try {
+-			let actual = computeRanges(textModel, false, markers);
++			let actual = computeRanges(textModel, false, markers).toFoldingRegions(textModel);
+ 			// let r0 = r(1, 2);
+ 			// let r1 = r(3, 12);
+ 			// let r2 = r(4, 11);
+@@ -92,7 +92,7 @@ suite('FoldingRanges', () => {
+ 			lines.push('#endregion');
+ 		}
+ 		let model = createTextModel(lines.join('\n'));
+-		let actual = computeRanges(model, false, markers, MAX_FOLDING_REGIONS);
++		let actual = computeRanges(model, false, markers, MAX_FOLDING_REGIONS).toFoldingRegions(model);
+ 		assert.equal(actual.length, nRegions, 'len');
+ 		for (let i = 0; i < nRegions; i++) {
+ 			actual.setCollapsed(i, i % 3 === 0);
+diff --git a/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts b/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts
+index 9db5f45..d08de7a 100644
+--- a/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts
++++ b/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts
+@@ -44,7 +44,7 @@ suite('Hidden Range Model', () => {
+ 
+ 		assert.equal(hiddenRangeModel.hasRanges(), false);
+ 
+-		let ranges = computeRanges(textModel, false, undefined);
++		let ranges = computeRanges(textModel, false, undefined).toFoldingRegions(textModel);
+ 		foldingModel.update(ranges);
+ 
+ 		foldingModel.toggleCollapseState([foldingModel.getRegionAtLine(1)!, foldingModel.getRegionAtLine(6)!]);
+diff --git a/src/vs/editor/contrib/folding/test/indentFold.test.ts b/src/vs/editor/contrib/folding/test/indentFold.test.ts
+index ccdb26a..0c93e4d 100644
+--- a/src/vs/editor/contrib/folding/test/indentFold.test.ts
++++ b/src/vs/editor/contrib/folding/test/indentFold.test.ts
+@@ -50,7 +50,7 @@ suite('Indentation Folding', () => {
+ 		let model = createTextModel(lines.join('\n'));
+ 
+ 		function assertLimit(maxEntries: number, expectedRanges: IndentRange[], message: string) {
+-			let indentRanges = computeRanges(model, true, undefined, maxEntries);
++			let indentRanges = computeRanges(model, true, undefined, maxEntries).toFoldingRegions(model);
+ 			assert.ok(indentRanges.length <= maxEntries, 'max ' + message);
+ 			let actual: IndentRange[] = [];
+ 			for (let i = 0; i < indentRanges.length; i++) {
+diff --git a/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts b/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts
+index 8a4dbe7..7c28c76 100644
+--- a/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts
++++ b/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts
+@@ -16,7 +16,7 @@ interface ExpectedIndentRange {
+ 
+ function assertRanges(lines: string[], expected: ExpectedIndentRange[], offside: boolean, markers?: FoldingMarkers): void {
+ 	let model = createTextModel(lines.join('\n'));
+-	let actual = computeRanges(model, offside, markers);
++	let actual = computeRanges(model, offside, markers).toFoldingRegions(model);
+ 
+ 	let actualRanges: ExpectedIndentRange[] = [];
+ 	for (let i = 0; i < actual.length; i++) {
 diff --git a/src/vs/monaco.d.ts b/src/vs/monaco.d.ts
 index 2cb6913..c35ba97 100644
 --- a/src/vs/monaco.d.ts
@@ -132,33 +617,33 @@ index 2cb6913..c35ba97 100644
  		foldingHighlight: IEditorOption<EditorOption.foldingHighlight, boolean>;
  		unfoldOnClickAfterEndOfLine: IEditorOption<EditorOption.unfoldOnClickAfterEndOfLine, boolean>;
  		fontFamily: IEditorOption<EditorOption.fontFamily, string>;
-@@ -6233,6 +6233,10 @@ declare namespace monaco.languages {
+@@ -6232,6 +6232,10 @@ declare namespace monaco.languages {
+ 		 * An optional event to signal that the folding ranges from this provider have changed.
  		 */
  		onDidChange?: IEvent<this>;
- 		/**
++		/**
 +		 * Provides the id of the provider.
 +		 */
 +		id?: string;
-+		/**
+ 		/**
  		 * Provides the folding ranges for a specific model.
  		 */
- 		provideFoldingRanges(model: editor.ITextModel, context: FoldingContext, token: CancellationToken): ProviderResult<FoldingRange[]>;
 diff --git a/src/vs/vscode.d.ts b/src/vs/vscode.d.ts
 index e1c2dd3..3c095eb 100644
 --- a/src/vs/vscode.d.ts
 +++ b/src/vs/vscode.d.ts
-@@ -4347,6 +4347,11 @@ declare module 'vscode' {
+@@ -4346,6 +4346,11 @@ declare module 'vscode' {
+ 		 */
  		onDidChangeFoldingRanges?: Event<void>;
  
- 		/**
++		/**
 +		 * Provides the id of the provider.
 +		 */
 +		readonly id?: string;
 +
-+		/**
+ 		/**
  		 * Returns a list of folding ranges or null and undefined if the provider
  		 * does not want to participate or was cancelled.
- 		 * @param document The document in which the command was invoked.
 diff --git a/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts b/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
 index ddea8e0..42b6d96 100644
 --- a/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
