@@ -1,8 +1,17 @@
 diff --git a/build/gulpfile.vscode.js b/build/gulpfile.vscode.js
-index 42a9c2b..829a40d 100644
+index 6d3a369..57009d4 100644
 --- a/build/gulpfile.vscode.js
 +++ b/build/gulpfile.vscode.js
-@@ -466,7 +466,7 @@ const generateVSCodeConfigurationTask = task.define('generate-vscode-configurati
+@@ -276,7 +276,7 @@ function packageTask(platform, arch, sourceFolderName, destinationFolderName, op
+ 			all = es.merge(all, gulp.src('resources/linux/code.png', { base: '.' }));
+ 		} else if (platform === 'darwin') {
+ 			const shortcut = gulp.src('resources/darwin/bin/code.sh')
+-				.pipe(rename('bin/code'));
++				.pipe(rename('bin/' + product.applicationName));
+ 
+ 			all = es.merge(all, shortcut);
+ 		}
+@@ -483,7 +483,7 @@ const generateVSCodeConfigurationTask = task.define('generate-vscode-configurati
  		const arch = process.env['VSCODE_ARCH'];
  		const appRoot = path.join(buildDir, `VSCode-darwin-${arch}`);
  		const appName = process.env.VSCODE_QUALITY === 'insider' ? 'Visual\\ Studio\\ Code\\ -\\ Insiders.app' : 'Visual\\ Studio\\ Code.app';
@@ -12,10 +21,10 @@ index 42a9c2b..829a40d 100644
  			`${appPath} --export-default-configuration='${allConfigDetailsPath}' --wait --user-data-dir='${userDataDir}' --extensions-dir='${extensionsDir}'`,
  			(err, stdout, stderr) => {
 diff --git a/src/vs/platform/native/electron-main/nativeHostMainService.ts b/src/vs/platform/native/electron-main/nativeHostMainService.ts
-index e24efa8..c64e3f7 100644
+index 50c4460..bf73260 100644
 --- a/src/vs/platform/native/electron-main/nativeHostMainService.ts
 +++ b/src/vs/platform/native/electron-main/nativeHostMainService.ts
-@@ -427,7 +427,7 @@ export class NativeHostMainService extends Disposable implements INativeHostMain
+@@ -430,7 +430,7 @@ export class NativeHostMainService extends Disposable implements INativeHostMain
  
  		// macOS
  		if (this.environmentService.isBuilt) {

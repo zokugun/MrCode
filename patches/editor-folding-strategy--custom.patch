@@ -1,5 +1,5 @@
 diff --git a/src/vs/editor/common/config/editorOptions.ts b/src/vs/editor/common/config/editorOptions.ts
-index 1c6b481..d29031d 100644
+index bce8553..e5f1cb5 100644
 --- a/src/vs/editor/common/config/editorOptions.ts
 +++ b/src/vs/editor/common/config/editorOptions.ts
 @@ -532,7 +532,7 @@ export interface IEditorOptions {
@@ -11,7 +11,7 @@ index 1c6b481..d29031d 100644
  	/**
  	 * Enable highlight for folded regions.
  	 * Defaults to true.
-@@ -3978,16 +3978,10 @@ export const EditorOptions = {
+@@ -4055,16 +4055,10 @@ export const EditorOptions = {
  		EditorOption.folding, 'folding', true,
  		{ description: nls.localize('folding', "Controls whether the editor has code folding enabled.") }
  	)),
@@ -32,7 +32,7 @@ index 1c6b481..d29031d 100644
  	)),
  	foldingHighlight: register(new EditorBooleanOption(
 diff --git a/src/vs/editor/common/modes.ts b/src/vs/editor/common/modes.ts
-index fe0d733..2779b97 100644
+index 204a450..68d43ae 100644
 --- a/src/vs/editor/common/modes.ts
 +++ b/src/vs/editor/common/modes.ts
 @@ -1319,6 +1319,11 @@ export interface FoldingRangeProvider {
@@ -596,10 +596,10 @@ index 8a4dbe7..7c28c76 100644
  	let actualRanges: ExpectedIndentRange[] = [];
  	for (let i = 0; i < actual.length; i++) {
 diff --git a/src/vs/monaco.d.ts b/src/vs/monaco.d.ts
-index 2cb6913..c35ba97 100644
+index 227452e..4efaead 100644
 --- a/src/vs/monaco.d.ts
 +++ b/src/vs/monaco.d.ts
-@@ -3083,7 +3083,7 @@ declare namespace monaco.editor {
+@@ -3095,7 +3095,7 @@ declare namespace monaco.editor {
  		 * Selects the folding strategy. 'auto' uses the strategies contributed for the current document, 'indentation' uses the indentation based folding strategy.
  		 * Defaults to 'auto'.
  		 */
@@ -608,7 +608,7 @@ index 2cb6913..c35ba97 100644
  		/**
  		 * Enable highlight for folded regions.
  		 * Defaults to true.
-@@ -4065,7 +4065,7 @@ declare namespace monaco.editor {
+@@ -4110,7 +4110,7 @@ declare namespace monaco.editor {
  		find: IEditorOption<EditorOption.find, EditorFindOptions>;
  		fixedOverflowWidgets: IEditorOption<EditorOption.fixedOverflowWidgets, boolean>;
  		folding: IEditorOption<EditorOption.folding, boolean>;
@@ -617,7 +617,7 @@ index 2cb6913..c35ba97 100644
  		foldingHighlight: IEditorOption<EditorOption.foldingHighlight, boolean>;
  		unfoldOnClickAfterEndOfLine: IEditorOption<EditorOption.unfoldOnClickAfterEndOfLine, boolean>;
  		fontFamily: IEditorOption<EditorOption.fontFamily, string>;
-@@ -6232,6 +6232,10 @@ declare namespace monaco.languages {
+@@ -6290,6 +6290,10 @@ declare namespace monaco.languages {
  		 * An optional event to signal that the folding ranges from this provider have changed.
  		 */
  		onDidChange?: IEvent<this>;
@@ -629,10 +629,10 @@ index 2cb6913..c35ba97 100644
  		 * Provides the folding ranges for a specific model.
  		 */
 diff --git a/src/vs/vscode.d.ts b/src/vs/vscode.d.ts
-index e1c2dd3..3c095eb 100644
+index 7c5c682..99a59a1 100644
 --- a/src/vs/vscode.d.ts
 +++ b/src/vs/vscode.d.ts
-@@ -4346,6 +4346,11 @@ declare module 'vscode' {
+@@ -4360,6 +4360,11 @@ declare module 'vscode' {
  		 */
  		onDidChangeFoldingRanges?: Event<void>;
  
@@ -645,10 +645,10 @@ index e1c2dd3..3c095eb 100644
  		 * Returns a list of folding ranges or null and undefined if the provider
  		 * does not want to participate or was cancelled.
 diff --git a/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts b/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
-index ddea8e0..42b6d96 100644
+index 391cc7a..f5376d2 100644
 --- a/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
 +++ b/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
-@@ -567,8 +567,9 @@ export class MainThreadLanguageFeatures implements MainThreadLanguageFeaturesSha
+@@ -593,8 +593,9 @@ export class MainThreadLanguageFeatures implements MainThreadLanguageFeaturesSha
  
  	// --- folding
  
@@ -660,11 +660,11 @@ index ddea8e0..42b6d96 100644
  				return this._proxy.$provideFoldingRanges(handle, model.uri, context, token);
  			}
 diff --git a/src/vs/workbench/api/common/extHost.protocol.ts b/src/vs/workbench/api/common/extHost.protocol.ts
-index b97a962..f75ff11 100644
+index be7a14f..9d6b61c 100644
 --- a/src/vs/workbench/api/common/extHost.protocol.ts
 +++ b/src/vs/workbench/api/common/extHost.protocol.ts
-@@ -399,7 +399,7 @@ export interface MainThreadLanguageFeaturesShape extends IDisposable {
- 	$registerSignatureHelpProvider(handle: number, selector: IDocumentFilterDto[], metadata: ISignatureHelpProviderMetadataDto): void;
+@@ -406,7 +406,7 @@ export interface MainThreadLanguageFeaturesShape extends IDisposable {
+ 	$emitInlineHintsEvent(eventHandle: number, event?: any): void;
  	$registerDocumentLinkProvider(handle: number, selector: IDocumentFilterDto[], supportsResolve: boolean): void;
  	$registerDocumentColorProvider(handle: number, selector: IDocumentFilterDto[]): void;
 -	$registerFoldingRangeProvider(handle: number, selector: IDocumentFilterDto[], eventHandle: number | undefined): void;
@@ -673,10 +673,10 @@ index b97a962..f75ff11 100644
  	$registerSelectionRangeProvider(handle: number, selector: IDocumentFilterDto[]): void;
  	$registerCallHierarchyProvider(handle: number, selector: IDocumentFilterDto[]): void;
 diff --git a/src/vs/workbench/api/common/extHostLanguageFeatures.ts b/src/vs/workbench/api/common/extHostLanguageFeatures.ts
-index 49cde88..64b0df0 100644
+index 34ca106..3e3ad77 100644
 --- a/src/vs/workbench/api/common/extHostLanguageFeatures.ts
 +++ b/src/vs/workbench/api/common/extHostLanguageFeatures.ts
-@@ -1809,7 +1809,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
+@@ -1848,7 +1848,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
  		const eventHandle = typeof provider.onDidChangeFoldingRanges === 'function' ? this._nextHandle() : undefined;
  
  		this._adapter.set(handle, new AdapterData(new FoldingProviderAdapter(this._documents, provider), extension));
