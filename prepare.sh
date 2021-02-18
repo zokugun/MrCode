@@ -20,8 +20,6 @@ cp -rp src/* vscodium/
 
 cd vscodium || exit
 
-rm src/resources/win32/ruby.png.ico
-
 # build.sh
 backup 'build.sh'
 
