@@ -73,7 +73,7 @@ By default, VSCode show the last line so its default value is `true`.
 
 The folding ranges aren't modified by that setting if the folding ranges are provided:
 - by the builtin indentation provider
-- or by an extension with the flag `isManagingLastLine` equals to `true`.
+- or by a provider with the flag `isManagingLastLine` equals to `true`.
 
 Supported OS
 ------------
