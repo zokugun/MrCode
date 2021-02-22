@@ -78,13 +78,9 @@ The folding ranges aren't modified by that setting if the folding ranges are pro
 Supported OS
 ------------
 
-- [x] Linux x64 (`AppImage`, `deb`, `rpm`, `tar.gz`)
-- [x] Linux arm64 (`deb`, `tar.gz`)
-- [x] Linux armhf (`deb`, `tar.gz`)
-- [x] macOS x64 (`dmg`, `zip`)
-- [x] Windows x64 (`exe`, `zip`)
-- [x] Windows x86 (`exe`, `zip`)
-- [x] Windows arm64 (`exe`, `zip`)
+- [x] Linux (`AppImage`, `deb`, `rpm`, `tar.gz`) (`x64`, `arm64`, `armhf`)
+- [x] macOS 10.10+  (`x64`)
+- [x] Windows 7, 8, 10 (`x64`, `x86`, `arm64`)
 
 Migrating to MrCode
 -------------------
