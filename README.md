@@ -15,7 +15,7 @@ MrCode is a _liberated_ version of [VSCode](https://github.com/microsoft/vscode)
 Download
 --------
 
-[Download latest release here](./releases)
+[Download latest release here](https://github.com/zokugun/MrCode/releases)
 
 Why liberated?
 --------------
@@ -78,9 +78,9 @@ The folding ranges aren't modified by that setting if the folding ranges are pro
 Supported OS
 ------------
 
-- [x] Linux (`AppImage`, `deb`, `rpm`, `tar.gz`) (`x64`, `arm64`, `armhf`)
-- [x] macOS 10.10+  (`x64`)
 - [x] Windows 7, 8, 10 (`x64`, `x86`, `arm64`)
+- [x] macOS 10.10+ (`x64`)
+- [x] Linux (`AppImage`, `deb`, `rpm`, `tar.gz`) (`x64`, `arm64`, `armhf`)
 
 Migrating to MrCode
 -------------------
