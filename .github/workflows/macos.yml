@@ -43,25 +43,43 @@ jobs:
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Sign binary
+        if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
         env:
-          CERTIFICATE_OSX_P12: ${{ secrets.CERTIFICATE_OSX_P12 }}
-          CERTIFICATE_OSX_PASSWORD: ${{ secrets.CERTIFICATE_OSX_PASSWORD }}
+          CERTIFICATE_OSX_P12_BASE64: ${{ secrets.CERTIFICATE_OSX_P12 }}
+          CERTIFICATE_OSX_P12_PASSWORD: ${{ secrets.CERTIFICATE_OSX_PASSWORD }}
+          CERTIFICATE_OSX_KEYCHAIN_PASSWORD: ${{ secrets.CERTIFICATE_OSX_KEYCHAIN_PASSWORD }}
           CERTIFICATE_OSX_ID: ${{ secrets.CERTIFICATE_OSX_ID }}
-        working-directory: ./vscodium
         run: |
-          if [ -d "VSCode-darwin-${VSCODE_ARCH}" ]; then # just in case the build failed
+          # just in case the build failed
+          if [ -d "VSCode-darwin-${VSCODE_ARCH}" ];
+          then
             cd "VSCode-darwin-${VSCODE_ARCH}"
-            export CERTIFICATE_P12=MrCode.p12
-            echo $CERTIFICATE_OSX_P12 | base64 --decode > $CERTIFICATE_P12
-            export KEYCHAIN=build.keychain
-            security create-keychain -p mysecretpassword $KEYCHAIN
-            security default-keychain -s $KEYCHAIN
-            security unlock-keychain -p mysecretpassword $KEYCHAIN
-            security import $CERTIFICATE_P12 -k $KEYCHAIN -P $CERTIFICATE_OSX_PASSWORD -T /usr/bin/codesign
-            security set-key-partition-list -S apple-tool:,apple: -s -k mysecretpassword $KEYCHAIN
-            codesign --deep --force --verbose --sign "$CERTIFICATE_OSX_ID" MrCode.app
+
+            # create variables
+            CERTIFICATE_PATH=$RUNNER_TEMP/app.p12
+            KEYCHAIN_PATH=$RUNNER_TEMP/app.keychain-db
+
+            # import certificate from secrets
+            echo -n "$CERTIFICATE_OSX_P12_BASE64" | base64 --decode --output $CERTIFICATE_PATH
+
+            # create temporary keychain
+            security create-keychain -p $CERTIFICATE_OSX_KEYCHAIN_PASSWORD $KEYCHAIN_PATH
+            security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+            security unlock-keychain -p $CERTIFICATE_OSX_KEYCHAIN_PASSWORD $KEYCHAIN_PATH
+
+            # import certificate to keychain
+            security import $CERTIFICATE_PATH -P $CERTIFICATE_OSX_P12_PASSWORD -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+            security list-keychain -d user -s $KEYCHAIN_PATH
+
+            # set as default
+            security default-keychain -s $KEYCHAIN_PATH
+
+            # signing
+            codesign --deep --force --verbose --sign "$CERTIFICATE_OSX_ID" VSCodium.app
+
+            # clean up keychain
+            security delete-keychain $KEYCHAIN_PATH
           fi
-        if: env.SHOULD_BUILD == 'yes'
 
       - name: Zip release
         working-directory: ./vscodium
