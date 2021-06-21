@@ -50,8 +50,7 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.CERTIFICATE_OSX_KEYCHAIN_PASSWORD }}
           IDENTITY: ${{ secrets.CERTIFICATE_OSX_ID }}
         run: |
-          if [ -d "VSCode-darwin-${VSCODE_ARCH}" ];
-          then
+          if [ -d "VSCode-darwin-${VSCODE_ARCH}" ]; then
             cd "VSCode-darwin-${VSCODE_ARCH}"
 
             # create variables
