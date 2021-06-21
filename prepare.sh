@@ -154,7 +154,15 @@ backup 'resources/linux/snap/snapcraft.yaml'
 gsed -i -E 's|summary: .*|summary: MrCode. Code editing.|g' resources/linux/snap/snapcraft.yaml
 gsed -i -E '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based on Visual Studio Code.\n|g;}' resources/linux/snap/snapcraft.yaml
 
-git apply ../../patches/editor-open-positioning--sort.patch
-git apply ../../patches/editor-folding-strategy--custom.patch
+for file in ../../patches/*.patch;
+do
+    if [ -f "$file" ];
+    then
+        echo "applying $(basename -- $file)"
+        if ! git apply --ignore-whitespace $file; then
+            echo "failed to apply $(basename -- $file)" 1>&2
+        fi
+    fi
+done
 
 cd ..

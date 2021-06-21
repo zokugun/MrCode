@@ -84,17 +84,81 @@ index f42c4ee..c319451 100644
  	 * An optional event to signal that the folding ranges from this provider have changed.
  	 */
 diff --git a/src/vs/editor/common/standalone/standaloneEnums.ts b/src/vs/editor/common/standalone/standaloneEnums.ts
-index c8389af..5033648 100644
+index c8389af..5943805 100644
 --- a/src/vs/editor/common/standalone/standaloneEnums.ts
 +++ b/src/vs/editor/common/standalone/standaloneEnums.ts
-@@ -265,6 +265,7 @@ export enum EditorOption {
+@@ -265,38 +265,39 @@ export enum EditorOption {
  	selectionHighlight = 95,
  	selectOnLineNumbers = 96,
  	showFoldingControls = 97,
-+	showFoldingLastLine = 999,
- 	showUnused = 98,
- 	snippetSuggestions = 99,
- 	smartSelect = 100,
+-	showUnused = 98,
+-	snippetSuggestions = 99,
+-	smartSelect = 100,
+-	smoothScrolling = 101,
+-	stickyTabStops = 102,
+-	stopRenderingLineAfter = 103,
+-	suggest = 104,
+-	suggestFontSize = 105,
+-	suggestLineHeight = 106,
+-	suggestOnTriggerCharacters = 107,
+-	suggestSelection = 108,
+-	tabCompletion = 109,
+-	tabIndex = 110,
+-	unusualLineTerminators = 111,
+-	useShadowDOM = 112,
+-	useTabStops = 113,
+-	wordSeparators = 114,
+-	wordWrap = 115,
+-	wordWrapBreakAfterCharacters = 116,
+-	wordWrapBreakBeforeCharacters = 117,
+-	wordWrapColumn = 118,
+-	wordWrapOverride1 = 119,
+-	wordWrapOverride2 = 120,
+-	wrappingIndent = 121,
+-	wrappingStrategy = 122,
+-	showDeprecated = 123,
+-	inlayHints = 124,
+-	editorClassName = 125,
+-	pixelRatio = 126,
+-	tabFocusMode = 127,
+-	layoutInfo = 128,
+-	wrappingInfo = 129
++	showFoldingLastLine = 98,
++	showUnused = 99,
++	snippetSuggestions = 100,
++	smartSelect = 101,
++	smoothScrolling = 102,
++	stickyTabStops = 103,
++	stopRenderingLineAfter = 104,
++	suggest = 105,
++	suggestFontSize = 106,
++	suggestLineHeight = 107,
++	suggestOnTriggerCharacters = 108,
++	suggestSelection = 109,
++	tabCompletion = 110,
++	tabIndex = 111,
++	unusualLineTerminators = 112,
++	useShadowDOM = 113,
++	useTabStops = 114,
++	wordSeparators = 115,
++	wordWrap = 116,
++	wordWrapBreakAfterCharacters = 117,
++	wordWrapBreakBeforeCharacters = 118,
++	wordWrapColumn = 119,
++	wordWrapOverride1 = 120,
++	wordWrapOverride2 = 121,
++	wrappingIndent = 122,
++	wrappingStrategy = 123,
++	showDeprecated = 124,
++	inlayHints = 125,
++	editorClassName = 126,
++	pixelRatio = 127,
++	tabFocusMode = 128,
++	layoutInfo = 129,
++	wrappingInfo = 130
+ }
+ 
+ /**
 @@ -841,4 +842,4 @@ export enum WrappingIndent {
  	 * DeepIndent => wrapped lines get +2 indentation toward the parent.
  	 */
@@ -752,7 +816,7 @@ index c416210..12d19dd 100644
  			if (indentRanges) {
  				for (let i = 0; i < indentRanges.length; i++) {
 diff --git a/src/vs/monaco.d.ts b/src/vs/monaco.d.ts
-index 0958d5b..d2a7e21 100644
+index 0958d5b..9a2c337 100644
 --- a/src/vs/monaco.d.ts
 +++ b/src/vs/monaco.d.ts
 @@ -3133,7 +3133,7 @@ declare namespace monaco.editor {
@@ -776,14 +840,78 @@ index 0958d5b..d2a7e21 100644
  		/**
  		 * Controls whether clicking on the empty content after a folded line will unfold the line.
  		 * Defaults to false.
-@@ -4112,6 +4117,7 @@ declare namespace monaco.editor {
+@@ -4112,38 +4117,39 @@ declare namespace monaco.editor {
  		selectionHighlight = 95,
  		selectOnLineNumbers = 96,
  		showFoldingControls = 97,
-+		showFoldingLastLine = 999,
- 		showUnused = 98,
- 		snippetSuggestions = 99,
- 		smartSelect = 100,
+-		showUnused = 98,
+-		snippetSuggestions = 99,
+-		smartSelect = 100,
+-		smoothScrolling = 101,
+-		stickyTabStops = 102,
+-		stopRenderingLineAfter = 103,
+-		suggest = 104,
+-		suggestFontSize = 105,
+-		suggestLineHeight = 106,
+-		suggestOnTriggerCharacters = 107,
+-		suggestSelection = 108,
+-		tabCompletion = 109,
+-		tabIndex = 110,
+-		unusualLineTerminators = 111,
+-		useShadowDOM = 112,
+-		useTabStops = 113,
+-		wordSeparators = 114,
+-		wordWrap = 115,
+-		wordWrapBreakAfterCharacters = 116,
+-		wordWrapBreakBeforeCharacters = 117,
+-		wordWrapColumn = 118,
+-		wordWrapOverride1 = 119,
+-		wordWrapOverride2 = 120,
+-		wrappingIndent = 121,
+-		wrappingStrategy = 122,
+-		showDeprecated = 123,
+-		inlayHints = 124,
+-		editorClassName = 125,
+-		pixelRatio = 126,
+-		tabFocusMode = 127,
+-		layoutInfo = 128,
+-		wrappingInfo = 129
++		showFoldingLastLine = 98,
++		showUnused = 99,
++		snippetSuggestions = 100,
++		smartSelect = 101,
++		smoothScrolling = 102,
++		stickyTabStops = 103,
++		stopRenderingLineAfter = 104,
++		suggest = 105,
++		suggestFontSize = 106,
++		suggestLineHeight = 107,
++		suggestOnTriggerCharacters = 108,
++		suggestSelection = 109,
++		tabCompletion = 110,
++		tabIndex = 111,
++		unusualLineTerminators = 112,
++		useShadowDOM = 113,
++		useTabStops = 114,
++		wordSeparators = 115,
++		wordWrap = 116,
++		wordWrapBreakAfterCharacters = 117,
++		wordWrapBreakBeforeCharacters = 118,
++		wordWrapColumn = 119,
++		wordWrapOverride1 = 120,
++		wordWrapOverride2 = 121,
++		wrappingIndent = 122,
++		wrappingStrategy = 123,
++		showDeprecated = 124,
++		inlayHints = 125,
++		editorClassName = 126,
++		pixelRatio = 127,
++		tabFocusMode = 128,
++		layoutInfo = 129,
++		wrappingInfo = 130
+ 	}
+ 	export const EditorOptions: {
+ 		acceptSuggestionOnCommitCharacter: IEditorOption<EditorOption.acceptSuggestionOnCommitCharacter, boolean>;
 @@ -4183,7 +4189,7 @@ declare namespace monaco.editor {
  		find: IEditorOption<EditorOption.find, EditorFindOptions>;
  		fixedOverflowWidgets: IEditorOption<EditorOption.fixedOverflowWidgets, boolean>;
