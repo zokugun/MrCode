@@ -81,8 +81,8 @@ jobs:
             ./vscodium/*.tar.gz
             ./vscodium/*.deb
             ./vscodium/*.rpm
-            ./vscodium/*.AppImage
-            ./vscodium/*.AppImage.zsync
+            ./vscodium/MrCode-*.AppImage
+            ./vscodium/MrCode-*.AppImage.zsync
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Update versions repo

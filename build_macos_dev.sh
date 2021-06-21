@@ -6,4 +6,4 @@ cd vscodium
 
 gsed -i -E 's/\. prepare\_vscode\.sh/# . prepare_vscode.sh/g' build.sh
 
-SHOULD_BUILD=yes CI_BUILD=no OS_NAME=osx VSCODE_ARCH=x64 LATEST_MS_COMMIT='1.53.2'. build.sh
+SHOULD_BUILD=yes CI_BUILD=no OS_NAME=osx VSCODE_ARCH=x64 LATEST_MS_COMMIT='1.57.1' . build.sh

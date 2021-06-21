@@ -52,7 +52,6 @@ reportIssueUrl='\''setpath(["reportIssueUrl"]; "https://github.com/zokugun/MrCod
 enableTelemetry='\''setpath(["enableTelemetry"]; false)'\''
 ' prepare_vscode.sh
 gsed -i -E 's|extensionsGallery=.*|extensionsGallery='\''setpath(["extensionsGallery"]; {"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery", "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index", "itemUrl": "https://marketplace.visualstudio.com/items"})'\''|g' prepare_vscode.sh
-gsed -i -E 's|extensionAllowedProposedApi=.*|extensionAllowedProposedApi='\''setpath(["extensionAllowedProposedApi"]; getpath(["extensionAllowedProposedApi"]) + ["ms-vsliveshare.vsliveshare", "ms-vscode-remote.remote-containers", "ms-vscode-remote.remote-ssh", "ms-vscode-remote.remote-ssh-edit", "ms-vscode-remote.remote-ssh-explorer", "ms-vscode-remote.vscode-remote-extensionpack", "ms-vscode.js-debug", "ms-python.python"])'\''|g' prepare_vscode.sh
 gsed -i -z -E 's/linkProtectionTrustedDomains=[^\n]*\n//g' prepare_vscode.sh
 
 
@@ -93,17 +92,13 @@ gsed -i -E 's|VERSION_PATH="darwin"|VERSION_PATH="darwin/${VSCODE_ARCH}"|g' upda
 
 # VSCodium-AppImage-Recipe.yml
 backup 'VSCodium-AppImage-Recipe.yml'
-gsed -i -E 's/oss\|vscodium/oss|org.zokugun.mrcode/g' VSCodium-AppImage-Recipe.yml
 gsed -i -E 's/VSCodium/MrCode/g' VSCodium-AppImage-Recipe.yml
 gsed -i -E 's/vscodium/mrcode/g' VSCodium-AppImage-Recipe.yml
 gsed -i -E 's/codium/mrcode/g' VSCodium-AppImage-Recipe.yml
 
-# src/resources/linux/appimage/pkg2appimage
-backup 'src/resources/linux/appimage/pkg2appimage'
-gsed -i -E 's/VSCodium/MrCode/g' src/resources/linux/appimage/pkg2appimage
-gsed -i -E 's/vscodium/mrcode/g' src/resources/linux/appimage/pkg2appimage
-gsed -i -E 's/CODIUM/MRCODE/g' src/resources/linux/appimage/pkg2appimage
-gsed -i -E 's/\$\{!#\}\.yml/${!#}/g' src/resources/linux/appimage/pkg2appimage
+# create_appimage.sh
+backup 'create_appimage.sh'
+gsed -i -E 's/VSCodium\|vscodium/zokugun|MrCode/' create_appimage.sh
 
 . get_repo.sh
 
@@ -159,7 +154,6 @@ backup 'resources/linux/snap/snapcraft.yaml'
 gsed -i -E 's|summary: .*|summary: MrCode. Code editing.|g' resources/linux/snap/snapcraft.yaml
 gsed -i -E '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based on Visual Studio Code.\n|g;}' resources/linux/snap/snapcraft.yaml
 
-git apply ../../patches/binary-name.patch
 git apply ../../patches/editor-open-positioning--sort.patch
 git apply ../../patches/editor-folding-strategy--custom.patch
 

@@ -12,7 +12,7 @@ nvm install 12
 
 npm i -g yarn
 
-npm install --global windows-build-tools --vs2015
+npm install --global windows-build-tools --vs2017
 
 
 $env:Path += ";C:\Program Files\Git\bin"

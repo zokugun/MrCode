@@ -8,8 +8,8 @@ else
   cd vscodium
 fi
 
-export LATEST_VSCODIUM_COMMIT=$(git rev-list --tags --max-count=1)
-export LATEST_VSCODIUM_TAG=$(git describe --tags ${LATEST_VSCODIUM_COMMIT})
-echo "Got the latest VSCodium tag: ${LATEST_VSCODIUM_TAG}"
-git checkout $LATEST_VSCODIUM_TAG
+# export LATEST_VSCODIUM_COMMIT=$(git rev-list --tags --max-count=1)
+# export LATEST_VSCODIUM_TAG=$(git describe --tags ${LATEST_VSCODIUM_COMMIT})
+# echo "Got the latest VSCodium tag: ${LATEST_VSCODIUM_TAG}"
+# git checkout $LATEST_VSCODIUM_TAG
 cd ..

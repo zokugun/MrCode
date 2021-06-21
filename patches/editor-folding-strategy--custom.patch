@@ -1,8 +1,8 @@
 diff --git a/src/vs/editor/common/config/editorOptions.ts b/src/vs/editor/common/config/editorOptions.ts
-index bce8553..1e77ec9 100644
+index 4d45c26..8f76a71 100644
 --- a/src/vs/editor/common/config/editorOptions.ts
 +++ b/src/vs/editor/common/config/editorOptions.ts
-@@ -532,7 +532,7 @@ export interface IEditorOptions {
+@@ -542,7 +542,7 @@ export interface IEditorOptions {
  	 * Selects the folding strategy. 'auto' uses the strategies contributed for the current document, 'indentation' uses the indentation based folding strategy.
  	 * Defaults to 'auto'.
  	 */
@@ -11,7 +11,7 @@ index bce8553..1e77ec9 100644
  	/**
  	 * Enable highlight for folded regions.
  	 * Defaults to true.
-@@ -543,6 +543,11 @@ export interface IEditorOptions {
+@@ -553,6 +553,11 @@ export interface IEditorOptions {
  	 * Defaults to 'mouseover'.
  	 */
  	showFoldingControls?: 'always' | 'mouseover';
@@ -23,7 +23,7 @@ index bce8553..1e77ec9 100644
  	/**
  	 * Controls whether clicking on the empty content after a folded line will unfold the line.
  	 * Defaults to false.
-@@ -3806,6 +3811,7 @@ export const enum EditorOption {
+@@ -3903,6 +3908,7 @@ export const enum EditorOption {
  	selectionHighlight,
  	selectOnLineNumbers,
  	showFoldingControls,
@@ -31,7 +31,7 @@ index bce8553..1e77ec9 100644
  	showUnused,
  	snippetSuggestions,
  	smartSelect,
-@@ -4055,16 +4061,10 @@ export const EditorOptions = {
+@@ -4171,16 +4177,10 @@ export const EditorOptions = {
  		EditorOption.folding, 'folding', true,
  		{ description: nls.localize('folding', "Controls whether the editor has code folding enabled.") }
  	)),
@@ -51,7 +51,7 @@ index bce8553..1e77ec9 100644
  		}
  	)),
  	foldingHighlight: register(new EditorBooleanOption(
-@@ -4327,6 +4327,10 @@ export const EditorOptions = {
+@@ -4443,6 +4443,10 @@ export const EditorOptions = {
  			description: nls.localize('showFoldingControls', "Controls when the folding controls on the gutter are shown.")
  		}
  	)),
@@ -63,10 +63,10 @@ index bce8553..1e77ec9 100644
  		EditorOption.showUnused, 'showUnused', true,
  		{ description: nls.localize('showUnused', "Controls fading out of unused code.") }
 diff --git a/src/vs/editor/common/modes.ts b/src/vs/editor/common/modes.ts
-index 204a450..5f40723 100644
+index f42c4ee..c319451 100644
 --- a/src/vs/editor/common/modes.ts
 +++ b/src/vs/editor/common/modes.ts
-@@ -1314,6 +1314,16 @@ export interface FoldingContext {
+@@ -1441,6 +1441,16 @@ export interface FoldingContext {
   */
  export interface FoldingRangeProvider {
  
@@ -84,81 +84,26 @@ index 204a450..5f40723 100644
  	 * An optional event to signal that the folding ranges from this provider have changed.
  	 */
 diff --git a/src/vs/editor/common/standalone/standaloneEnums.ts b/src/vs/editor/common/standalone/standaloneEnums.ts
-index ad85fc8..6561504 100644
+index c8389af..5033648 100644
 --- a/src/vs/editor/common/standalone/standaloneEnums.ts
 +++ b/src/vs/editor/common/standalone/standaloneEnums.ts
-@@ -262,37 +262,38 @@ export enum EditorOption {
- 	selectionHighlight = 92,
- 	selectOnLineNumbers = 93,
- 	showFoldingControls = 94,
--	showUnused = 95,
--	snippetSuggestions = 96,
--	smartSelect = 97,
--	smoothScrolling = 98,
--	stickyTabStops = 99,
--	stopRenderingLineAfter = 100,
--	suggest = 101,
--	suggestFontSize = 102,
--	suggestLineHeight = 103,
--	suggestOnTriggerCharacters = 104,
--	suggestSelection = 105,
--	tabCompletion = 106,
--	tabIndex = 107,
--	unusualLineTerminators = 108,
--	useTabStops = 109,
--	wordSeparators = 110,
--	wordWrap = 111,
--	wordWrapBreakAfterCharacters = 112,
--	wordWrapBreakBeforeCharacters = 113,
--	wordWrapColumn = 114,
--	wordWrapOverride1 = 115,
--	wordWrapOverride2 = 116,
--	wrappingIndent = 117,
--	wrappingStrategy = 118,
--	showDeprecated = 119,
--	inlineHints = 120,
--	editorClassName = 121,
--	pixelRatio = 122,
--	tabFocusMode = 123,
--	layoutInfo = 124,
--	wrappingInfo = 125
-+	showFoldingLastLine = 95,
-+	showUnused = 96,
-+	snippetSuggestions = 97,
-+	smartSelect = 98,
-+	smoothScrolling = 99,
-+	stickyTabStops = 100,
-+	stopRenderingLineAfter = 101,
-+	suggest = 102,
-+	suggestFontSize = 103,
-+	suggestLineHeight = 104,
-+	suggestOnTriggerCharacters = 105,
-+	suggestSelection = 106,
-+	tabCompletion = 107,
-+	tabIndex = 108,
-+	unusualLineTerminators = 109,
-+	useTabStops = 110,
-+	wordSeparators = 111,
-+	wordWrap = 112,
-+	wordWrapBreakAfterCharacters = 113,
-+	wordWrapBreakBeforeCharacters = 114,
-+	wordWrapColumn = 115,
-+	wordWrapOverride1 = 116,
-+	wordWrapOverride2 = 117,
-+	wrappingIndent = 118,
-+	wrappingStrategy = 119,
-+	showDeprecated = 120,
-+	inlineHints = 121,
-+	editorClassName = 122,
-+	pixelRatio = 123,
-+	tabFocusMode = 124,
-+	layoutInfo = 125,
-+	wrappingInfo = 126
- }
- 
- /**
+@@ -265,6 +265,7 @@ export enum EditorOption {
+ 	selectionHighlight = 95,
+ 	selectOnLineNumbers = 96,
+ 	showFoldingControls = 97,
++	showFoldingLastLine = 999,
+ 	showUnused = 98,
+ 	snippetSuggestions = 99,
+ 	smartSelect = 100,
+@@ -841,4 +842,4 @@ export enum WrappingIndent {
+ 	 * DeepIndent => wrapped lines get +2 indentation toward the parent.
+ 	 */
+ 	DeepIndent = 3
+-}
+\ No newline at end of file
++}
 diff --git a/src/vs/editor/contrib/folding/folding.ts b/src/vs/editor/contrib/folding/folding.ts
-index 1d48e06..37cb56c 100644
+index de52951..448f669 100644
 --- a/src/vs/editor/contrib/folding/folding.ts
 +++ b/src/vs/editor/contrib/folding/folding.ts
 @@ -25,7 +25,7 @@ import { IRange } from 'vs/editor/common/core/range';
@@ -190,7 +135,7 @@ index 1d48e06..37cb56c 100644
 +
  export class FoldingController extends Disposable implements IEditorContribution {
  
- 	public static ID = 'editor.contrib.folding';
+ 	public static readonly ID = 'editor.contrib.folding';
 @@ -61,7 +68,6 @@ export class FoldingController extends Disposable implements IEditorContribution
  
  	private readonly editor: ICodeEditor;
@@ -220,7 +165,7 @@ index 1d48e06..37cb56c 100644
  		this._unfoldOnClickAfterEndOfLine = options.get(EditorOption.unfoldOnClickAfterEndOfLine);
  		this._restoringViewState = false;
  
-@@ -115,23 +126,32 @@ export class FoldingController extends Disposable implements IEditorContribution
+@@ -115,23 +126,28 @@ export class FoldingController extends Disposable implements IEditorContribution
  		this._register(this.editor.onDidChangeModel(() => this.onModelChanged()));
  
  		this._register(this.editor.onDidChangeConfiguration((e: ConfigurationChangedEvent) => {
@@ -232,36 +177,33 @@ index 1d48e06..37cb56c 100644
  				this.foldingEnabled.set(this._isEnabled);
  				this.onModelChanged();
  			}
-+
  			if (e.hasChanged(EditorOption.showFoldingControls) || e.hasChanged(EditorOption.foldingHighlight)) {
 -				const options = this.editor.getOptions();
  				this.foldingDecorationProvider.autoHideFoldingControls = options.get(EditorOption.showFoldingControls) === 'mouseover';
  				this.foldingDecorationProvider.showFoldingHighlights = options.get(EditorOption.foldingHighlight);
  				this.onModelContentChanged();
  			}
-+
  			if (e.hasChanged(EditorOption.foldingStrategy)) {
 -				this._useFoldingProviders = this.editor.getOptions().get(EditorOption.foldingStrategy) !== 'indentation';
 +				this.setStrategy(options.get(EditorOption.foldingStrategy))
- 				this.onFoldingStrategyChanged();
- 			}
-+
-+			if (e.hasChanged(EditorOption.showFoldingLastLine)) {
-+				this.showFoldingLastLine = options.get(EditorOption.showFoldingLastLine);
 +				this.onFoldingStrategyChanged();
 +			}
-+
++			if (e.hasChanged(EditorOption.showFoldingLastLine)) {
++				this.showFoldingLastLine = options.get(EditorOption.showFoldingLastLine);
+ 				this.onFoldingStrategyChanged();
+ 			}
  			if (e.hasChanged(EditorOption.unfoldOnClickAfterEndOfLine)) {
 -				this._unfoldOnClickAfterEndOfLine = this.editor.getOptions().get(EditorOption.unfoldOnClickAfterEndOfLine);
 +				this._unfoldOnClickAfterEndOfLine = options.get(EditorOption.unfoldOnClickAfterEndOfLine);
  			}
  		}));
  		this.onModelChanged();
-@@ -251,26 +271,118 @@ export class FoldingController extends Disposable implements IEditorContribution
+@@ -251,26 +267,114 @@ export class FoldingController extends Disposable implements IEditorContribution
  		if (this.rangeProvider) {
  			return this.rangeProvider;
  		}
 -		this.rangeProvider = new IndentRangeProvider(editorModel); // fallback
++		this.rangeProvider = new NoopRangeProvider(); // fallback
  
 +		if (this.foldingModel) {
 +			if (this.strategyMode === StrategyMode.AND) {
@@ -283,7 +225,18 @@ index 1d48e06..37cb56c 100644
 +						foldingProviders.push(...providers);
 +					}
 +				}
-+
+ 
+-		if (this._useFoldingProviders && this.foldingModel) {
+-			let foldingProviders = FoldingRangeProviderRegistry.ordered(this.foldingModel.textModel);
+-			if (foldingProviders.length === 0 && this.foldingStateMemento && this.foldingStateMemento.collapsedRegions) {
+-				const rangeProvider = this.rangeProvider = new InitializingRangeProvider(editorModel, this.foldingStateMemento.collapsedRegions, () => {
+-					// if after 30 the InitializingRangeProvider is still not replaced, force a refresh
+-					this.foldingStateMemento = null;
+-					this.onFoldingStrategyChanged();
+-				}, 30000);
+-				return rangeProvider; // keep memento in case there are still no foldingProviders on the next request.
+-			} else if (foldingProviders.length > 0) {
+-				this.rangeProvider = new SyntaxRangeProvider(editorModel, foldingProviders, () => this.onModelContentChanged());
 +				this.rangeProvider = new SyntaxRangeProvider(editorModel, foldingProviders, this.showFoldingLastLine, () => this.onModelContentChanged());
 +			} else {
 +				for (const id of this.strategyProviderIds) {
@@ -301,18 +254,7 @@ index 1d48e06..37cb56c 100644
 +						break;
 +					} else {
 +						const foldingProviders = FoldingRangeProviderRegistry.ordered(editorModel).filter(provider => provider.id === id);
- 
--		if (this._useFoldingProviders && this.foldingModel) {
--			let foldingProviders = FoldingRangeProviderRegistry.ordered(this.foldingModel.textModel);
--			if (foldingProviders.length === 0 && this.foldingStateMemento && this.foldingStateMemento.collapsedRegions) {
--				const rangeProvider = this.rangeProvider = new InitializingRangeProvider(editorModel, this.foldingStateMemento.collapsedRegions, () => {
--					// if after 30 the InitializingRangeProvider is still not replaced, force a refresh
--					this.foldingStateMemento = null;
--					this.onFoldingStrategyChanged();
--				}, 30000);
--				return rangeProvider; // keep memento in case there are still no foldingProviders on the next request.
--			} else if (foldingProviders.length > 0) {
--				this.rangeProvider = new SyntaxRangeProvider(editorModel, foldingProviders, () => this.onModelContentChanged());
++
 +						if (foldingProviders.length > 0) {
 +							this.rangeProvider = new SyntaxRangeProvider(editorModel, foldingProviders, this.showFoldingLastLine, () => this.onModelContentChanged());
 +							break;
@@ -322,12 +264,7 @@ index 1d48e06..37cb56c 100644
  			}
  		}
 +
-+		if (!this.rangeProvider) {
-+			this.rangeProvider = new NoopRangeProvider();
-+		}
-+
  		this.foldingStateMemento = null;
-+
  		return this.rangeProvider;
  	}
  
@@ -517,7 +454,7 @@ index 0000000..6a99b20
 +	}
 +}
 diff --git a/src/vs/editor/contrib/folding/syntaxRangeProvider.ts b/src/vs/editor/contrib/folding/syntaxRangeProvider.ts
-index 898694b..98ebedc 100644
+index 898694b..f58855e 100644
 --- a/src/vs/editor/contrib/folding/syntaxRangeProvider.ts
 +++ b/src/vs/editor/contrib/folding/syntaxRangeProvider.ts
 @@ -28,7 +28,7 @@ export class SyntaxRangeProvider implements RangeProvider {
@@ -547,7 +484,7 @@ index 898694b..98ebedc 100644
  	let rangeData: IFoldingRangeData[] | null = null;
  	let promises = providers.map((provider, i) => {
  		return Promise.resolve(provider.provideFoldingRanges(model, foldingContext, cancellationToken)).then(ranges => {
-@@ -65,10 +65,24 @@ function collectSyntaxRanges(providers: FoldingRangeProvider[], model: ITextMode
+@@ -65,10 +65,23 @@ function collectSyntaxRanges(providers: FoldingRangeProvider[], model: ITextMode
  				if (!Array.isArray(rangeData)) {
  					rangeData = [];
  				}
@@ -556,7 +493,6 @@ index 898694b..98ebedc 100644
 -				for (let r of ranges) {
 -					if (r.start > 0 && r.end > r.start && r.end <= nLines) {
 -						rangeData.push({ start: r.start, end: r.end, rank: i, kind: r.kind });
-+
 +				if (provider.isManagingLastLine || showFoldingLastLine) {
 +					for (let r of ranges) {
 +						if (r.start > 0 && r.end > r.start && r.end <= nLines) {
@@ -576,10 +512,10 @@ index 898694b..98ebedc 100644
  				}
  			}
 diff --git a/src/vs/editor/contrib/folding/test/foldingModel.test.ts b/src/vs/editor/contrib/folding/test/foldingModel.test.ts
-index a646fa7..3846593 100644
+index fb82759..e8cf0d1 100644
 --- a/src/vs/editor/contrib/folding/test/foldingModel.test.ts
 +++ b/src/vs/editor/contrib/folding/test/foldingModel.test.ts
-@@ -142,7 +142,7 @@ suite('Folding Model', () => {
+@@ -145,7 +145,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -588,7 +524,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 3, false);
-@@ -181,7 +181,7 @@ suite('Folding Model', () => {
+@@ -184,7 +184,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -597,7 +533,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 3, false);
-@@ -227,7 +227,7 @@ suite('Folding Model', () => {
+@@ -230,7 +230,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -606,7 +542,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 3, false);
-@@ -239,7 +239,7 @@ suite('Folding Model', () => {
+@@ -242,7 +242,7 @@ suite('Folding Model', () => {
  
  			textModel.applyEdits([EditOperation.insert(new Position(4, 1), '//hello\n')]);
  
@@ -615,7 +551,7 @@ index a646fa7..3846593 100644
  
  			assertRanges(foldingModel, [r(1, 3, true), r(5, 8, false), r(6, 7, true)]);
  		} finally {
-@@ -267,7 +267,7 @@ suite('Folding Model', () => {
+@@ -270,7 +270,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -624,7 +560,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 12, false);
-@@ -281,7 +281,7 @@ suite('Folding Model', () => {
+@@ -284,7 +284,7 @@ suite('Folding Model', () => {
  
  			textModel.applyEdits([EditOperation.delete(new Range(6, 11, 9, 0))]);
  
@@ -633,7 +569,7 @@ index a646fa7..3846593 100644
  
  			assertRanges(foldingModel, [r(1, 9, false), r(2, 8, false), r(3, 5, false), r(6, 8, false)]);
  		} finally {
-@@ -304,7 +304,7 @@ suite('Folding Model', () => {
+@@ -307,7 +307,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -642,7 +578,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 3, false);
-@@ -346,7 +346,7 @@ suite('Folding Model', () => {
+@@ -349,7 +349,7 @@ suite('Folding Model', () => {
  
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -651,7 +587,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 2, false);
-@@ -396,7 +396,7 @@ suite('Folding Model', () => {
+@@ -399,7 +399,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -660,7 +596,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 10, false);
-@@ -442,7 +442,7 @@ suite('Folding Model', () => {
+@@ -445,7 +445,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -669,7 +605,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 2, false);
-@@ -498,7 +498,7 @@ suite('Folding Model', () => {
+@@ -501,7 +501,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -678,7 +614,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 2, false);
-@@ -554,7 +554,7 @@ suite('Folding Model', () => {
+@@ -557,7 +557,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -687,7 +623,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 2, false);
-@@ -606,7 +606,7 @@ suite('Folding Model', () => {
+@@ -609,7 +609,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -696,7 +632,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 2, false);
-@@ -653,7 +653,7 @@ suite('Folding Model', () => {
+@@ -656,7 +656,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -705,7 +641,7 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 2, false);
-@@ -698,7 +698,7 @@ suite('Folding Model', () => {
+@@ -701,7 +701,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -714,7 +650,16 @@ index a646fa7..3846593 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 3, false);
-@@ -731,7 +731,7 @@ suite('Folding Model', () => {
+@@ -741,7 +741,7 @@ suite('Folding Model', () => {
+ 		try {
+ 			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
+ 
+-			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ });
++			let ranges = computeRanges(textModel, false, { start: /^\/\/#region$/, end: /^\/\/#endregion$/ }).toFoldingRegions(textModel);
+ 			foldingModel.update(ranges);
+ 
+ 			let r1 = r(1, 2, false);
+@@ -784,7 +784,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -724,7 +669,7 @@ index a646fa7..3846593 100644
  
  			let r1 = r(1, 6, false);
 diff --git a/src/vs/editor/contrib/folding/test/foldingRanges.test.ts b/src/vs/editor/contrib/folding/test/foldingRanges.test.ts
-index 214135a..ce80d8b 100644
+index d656202..b3a1c4b 100644
 --- a/src/vs/editor/contrib/folding/test/foldingRanges.test.ts
 +++ b/src/vs/editor/contrib/folding/test/foldingRanges.test.ts
 @@ -27,7 +27,7 @@ suite('FoldingRanges', () => {
@@ -733,9 +678,9 @@ index 214135a..ce80d8b 100644
  		let model = createTextModel(lines.join('\n'));
 -		let actual = computeRanges(model, false, markers, MAX_FOLDING_REGIONS);
 +		let actual = computeRanges(model, false, markers, MAX_FOLDING_REGIONS).toFoldingRegions(model);
- 		assert.equal(actual.length, nRegions, 'len');
+ 		assert.strictEqual(actual.length, nRegions, 'len');
  		for (let i = 0; i < nRegions; i++) {
- 			assert.equal(actual.getStartLineNumber(i), i + 1, 'start' + i);
+ 			assert.strictEqual(actual.getStartLineNumber(i), i + 1, 'start' + i);
 @@ -55,7 +55,7 @@ suite('FoldingRanges', () => {
  
  		let textModel = createTextModel(lines.join('\n'));
@@ -751,16 +696,16 @@ index 214135a..ce80d8b 100644
  		let model = createTextModel(lines.join('\n'));
 -		let actual = computeRanges(model, false, markers, MAX_FOLDING_REGIONS);
 +		let actual = computeRanges(model, false, markers, MAX_FOLDING_REGIONS).toFoldingRegions(model);
- 		assert.equal(actual.length, nRegions, 'len');
+ 		assert.strictEqual(actual.length, nRegions, 'len');
  		for (let i = 0; i < nRegions; i++) {
  			actual.setCollapsed(i, i % 3 === 0);
 diff --git a/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts b/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts
-index 9db5f45..d08de7a 100644
+index 7a3f524..db4ecc8 100644
 --- a/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts
 +++ b/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts
 @@ -44,7 +44,7 @@ suite('Hidden Range Model', () => {
  
- 		assert.equal(hiddenRangeModel.hasRanges(), false);
+ 		assert.strictEqual(hiddenRangeModel.hasRanges(), false);
  
 -		let ranges = computeRanges(textModel, false, undefined);
 +		let ranges = computeRanges(textModel, false, undefined).toFoldingRegions(textModel);
@@ -768,7 +713,7 @@ index 9db5f45..d08de7a 100644
  
  		foldingModel.toggleCollapseState([foldingModel.getRegionAtLine(1)!, foldingModel.getRegionAtLine(6)!]);
 diff --git a/src/vs/editor/contrib/folding/test/indentFold.test.ts b/src/vs/editor/contrib/folding/test/indentFold.test.ts
-index ccdb26a..0c93e4d 100644
+index 76f3399..5605106 100644
 --- a/src/vs/editor/contrib/folding/test/indentFold.test.ts
 +++ b/src/vs/editor/contrib/folding/test/indentFold.test.ts
 @@ -50,7 +50,7 @@ suite('Indentation Folding', () => {
@@ -781,7 +726,7 @@ index ccdb26a..0c93e4d 100644
  			let actual: IndentRange[] = [];
  			for (let i = 0; i < indentRanges.length; i++) {
 diff --git a/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts b/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts
-index 8a4dbe7..7c28c76 100644
+index 58fa7ab..1b25ad7 100644
 --- a/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts
 +++ b/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts
 @@ -16,7 +16,7 @@ interface ExpectedIndentRange {
@@ -794,7 +739,7 @@ index 8a4dbe7..7c28c76 100644
  	let actualRanges: ExpectedIndentRange[] = [];
  	for (let i = 0; i < actual.length; i++) {
 diff --git a/src/vs/editor/contrib/folding/test/syntaxFold.test.ts b/src/vs/editor/contrib/folding/test/syntaxFold.test.ts
-index 915ba17..04f0738 100644
+index c416210..12d19dd 100644
 --- a/src/vs/editor/contrib/folding/test/syntaxFold.test.ts
 +++ b/src/vs/editor/contrib/folding/test/syntaxFold.test.ts
 @@ -74,7 +74,7 @@ suite('Syntax folding', () => {
@@ -807,10 +752,10 @@ index 915ba17..04f0738 100644
  			if (indentRanges) {
  				for (let i = 0; i < indentRanges.length; i++) {
 diff --git a/src/vs/monaco.d.ts b/src/vs/monaco.d.ts
-index 227452e..ce6ae1c 100644
+index 0958d5b..d2a7e21 100644
 --- a/src/vs/monaco.d.ts
 +++ b/src/vs/monaco.d.ts
-@@ -3095,7 +3095,7 @@ declare namespace monaco.editor {
+@@ -3133,7 +3133,7 @@ declare namespace monaco.editor {
  		 * Selects the folding strategy. 'auto' uses the strategies contributed for the current document, 'indentation' uses the indentation based folding strategy.
  		 * Defaults to 'auto'.
  		 */
@@ -819,7 +764,7 @@ index 227452e..ce6ae1c 100644
  		/**
  		 * Enable highlight for folded regions.
  		 * Defaults to true.
-@@ -3106,6 +3106,11 @@ declare namespace monaco.editor {
+@@ -3144,6 +3144,11 @@ declare namespace monaco.editor {
  		 * Defaults to 'mouseover'.
  		 */
  		showFoldingControls?: 'always' | 'mouseover';
@@ -831,77 +776,15 @@ index 227452e..ce6ae1c 100644
  		/**
  		 * Controls whether clicking on the empty content after a folded line will unfold the line.
  		 * Defaults to false.
-@@ -4042,37 +4047,38 @@ declare namespace monaco.editor {
- 		selectionHighlight = 92,
- 		selectOnLineNumbers = 93,
- 		showFoldingControls = 94,
--		showUnused = 95,
--		snippetSuggestions = 96,
--		smartSelect = 97,
--		smoothScrolling = 98,
--		stickyTabStops = 99,
--		stopRenderingLineAfter = 100,
--		suggest = 101,
--		suggestFontSize = 102,
--		suggestLineHeight = 103,
--		suggestOnTriggerCharacters = 104,
--		suggestSelection = 105,
--		tabCompletion = 106,
--		tabIndex = 107,
--		unusualLineTerminators = 108,
--		useTabStops = 109,
--		wordSeparators = 110,
--		wordWrap = 111,
--		wordWrapBreakAfterCharacters = 112,
--		wordWrapBreakBeforeCharacters = 113,
--		wordWrapColumn = 114,
--		wordWrapOverride1 = 115,
--		wordWrapOverride2 = 116,
--		wrappingIndent = 117,
--		wrappingStrategy = 118,
--		showDeprecated = 119,
--		inlineHints = 120,
--		editorClassName = 121,
--		pixelRatio = 122,
--		tabFocusMode = 123,
--		layoutInfo = 124,
--		wrappingInfo = 125
-+		showFoldingLastLine = 95,
-+		showUnused = 96,
-+		snippetSuggestions = 97,
-+		smartSelect = 98,
-+		smoothScrolling = 99,
-+		stickyTabStops = 100,
-+		stopRenderingLineAfter = 101,
-+		suggest = 102,
-+		suggestFontSize = 103,
-+		suggestLineHeight = 104,
-+		suggestOnTriggerCharacters = 105,
-+		suggestSelection = 106,
-+		tabCompletion = 107,
-+		tabIndex = 108,
-+		unusualLineTerminators = 109,
-+		useTabStops = 110,
-+		wordSeparators = 111,
-+		wordWrap = 112,
-+		wordWrapBreakAfterCharacters = 113,
-+		wordWrapBreakBeforeCharacters = 114,
-+		wordWrapColumn = 115,
-+		wordWrapOverride1 = 116,
-+		wordWrapOverride2 = 117,
-+		wrappingIndent = 118,
-+		wrappingStrategy = 119,
-+		showDeprecated = 120,
-+		inlineHints = 121,
-+		editorClassName = 122,
-+		pixelRatio = 123,
-+		tabFocusMode = 124,
-+		layoutInfo = 125,
-+		wrappingInfo = 126
- 	}
- 	export const EditorOptions: {
- 		acceptSuggestionOnCommitCharacter: IEditorOption<EditorOption.acceptSuggestionOnCommitCharacter, boolean>;
-@@ -4110,7 +4116,7 @@ declare namespace monaco.editor {
+@@ -4112,6 +4117,7 @@ declare namespace monaco.editor {
+ 		selectionHighlight = 95,
+ 		selectOnLineNumbers = 96,
+ 		showFoldingControls = 97,
++		showFoldingLastLine = 999,
+ 		showUnused = 98,
+ 		snippetSuggestions = 99,
+ 		smartSelect = 100,
+@@ -4183,7 +4189,7 @@ declare namespace monaco.editor {
  		find: IEditorOption<EditorOption.find, EditorFindOptions>;
  		fixedOverflowWidgets: IEditorOption<EditorOption.fixedOverflowWidgets, boolean>;
  		folding: IEditorOption<EditorOption.folding, boolean>;
@@ -910,15 +793,15 @@ index 227452e..ce6ae1c 100644
  		foldingHighlight: IEditorOption<EditorOption.foldingHighlight, boolean>;
  		unfoldOnClickAfterEndOfLine: IEditorOption<EditorOption.unfoldOnClickAfterEndOfLine, boolean>;
  		fontFamily: IEditorOption<EditorOption.fontFamily, string>;
-@@ -4171,6 +4177,7 @@ declare namespace monaco.editor {
+@@ -4244,6 +4250,7 @@ declare namespace monaco.editor {
  		selectionHighlight: IEditorOption<EditorOption.selectionHighlight, boolean>;
  		selectOnLineNumbers: IEditorOption<EditorOption.selectOnLineNumbers, boolean>;
  		showFoldingControls: IEditorOption<EditorOption.showFoldingControls, 'always' | 'mouseover'>;
 +		showFoldingLastLine: IEditorOption<EditorOption.showFoldingLastLine, boolean>;
  		showUnused: IEditorOption<EditorOption.showUnused, boolean>;
  		showDeprecated: IEditorOption<EditorOption.showDeprecated, boolean>;
- 		inlineHints: IEditorOption<EditorOption.inlineHints, any>;
-@@ -6286,6 +6293,14 @@ declare namespace monaco.languages {
+ 		inlayHints: IEditorOption<EditorOption.inlayHints, any>;
+@@ -6420,6 +6427,14 @@ declare namespace monaco.languages {
  	 * A provider of folding ranges for editor models.
  	 */
  	export interface FoldingRangeProvider {
@@ -934,10 +817,10 @@ index 227452e..ce6ae1c 100644
  		 * An optional event to signal that the folding ranges from this provider have changed.
  		 */
 diff --git a/src/vs/vscode.d.ts b/src/vs/vscode.d.ts
-index 7c5c682..0ea832b 100644
+index 77b7c54..fd3c3f7 100644
 --- a/src/vs/vscode.d.ts
 +++ b/src/vs/vscode.d.ts
-@@ -4355,6 +4355,16 @@ declare module 'vscode' {
+@@ -4533,6 +4533,16 @@ declare module 'vscode' {
  	 */
  	export interface FoldingRangeProvider {
  
@@ -955,10 +838,10 @@ index 7c5c682..0ea832b 100644
  		 * An optional event to signal that the folding ranges from this provider have changed.
  		 */
 diff --git a/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts b/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
-index 391cc7a..a5e3279 100644
+index 16a59ac..ed590cd 100644
 --- a/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
 +++ b/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
-@@ -593,8 +593,10 @@ export class MainThreadLanguageFeatures implements MainThreadLanguageFeaturesSha
+@@ -633,8 +633,10 @@ export class MainThreadLanguageFeatures implements MainThreadLanguageFeaturesSha
  
  	// --- folding
  
@@ -971,11 +854,11 @@ index 391cc7a..a5e3279 100644
  				return this._proxy.$provideFoldingRanges(handle, model.uri, context, token);
  			}
 diff --git a/src/vs/workbench/api/common/extHost.protocol.ts b/src/vs/workbench/api/common/extHost.protocol.ts
-index be7a14f..35fba20 100644
+index a6bd90d..f771ae4 100644
 --- a/src/vs/workbench/api/common/extHost.protocol.ts
 +++ b/src/vs/workbench/api/common/extHost.protocol.ts
-@@ -406,7 +406,7 @@ export interface MainThreadLanguageFeaturesShape extends IDisposable {
- 	$emitInlineHintsEvent(eventHandle: number, event?: any): void;
+@@ -407,7 +407,7 @@ export interface MainThreadLanguageFeaturesShape extends IDisposable {
+ 	$emitInlayHintsEvent(eventHandle: number, event?: any): void;
  	$registerDocumentLinkProvider(handle: number, selector: IDocumentFilterDto[], supportsResolve: boolean): void;
  	$registerDocumentColorProvider(handle: number, selector: IDocumentFilterDto[]): void;
 -	$registerFoldingRangeProvider(handle: number, selector: IDocumentFilterDto[], eventHandle: number | undefined): void;
@@ -984,10 +867,10 @@ index be7a14f..35fba20 100644
  	$registerSelectionRangeProvider(handle: number, selector: IDocumentFilterDto[]): void;
  	$registerCallHierarchyProvider(handle: number, selector: IDocumentFilterDto[]): void;
 diff --git a/src/vs/workbench/api/common/extHostLanguageFeatures.ts b/src/vs/workbench/api/common/extHostLanguageFeatures.ts
-index 34ca106..a180751 100644
+index 05ab94c..748ec67 100644
 --- a/src/vs/workbench/api/common/extHostLanguageFeatures.ts
 +++ b/src/vs/workbench/api/common/extHostLanguageFeatures.ts
-@@ -1848,7 +1848,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
+@@ -2005,7 +2005,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
  		const eventHandle = typeof provider.onDidChangeFoldingRanges === 'function' ? this._nextHandle() : undefined;
  
  		this._adapter.set(handle, new AdapterData(new FoldingProviderAdapter(this._documents, provider), extension));
