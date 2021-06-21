@@ -36,14 +36,14 @@ jobs:
           . check_tags.sh
 
       - name: Build
+        if: env.SHOULD_BUILD == 'yes'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./vscodium
         run: ./build.sh
-        if: env.SHOULD_BUILD == 'yes'
 
       - name: Sign binary
-        if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
+        if: env.SHOULD_BUILD == 'yes'
         env:
           CERTIFICATE_OSX_P12_BASE64: ${{ secrets.CERTIFICATE_OSX_P12 }}
           CERTIFICATE_OSX_P12_PASSWORD: ${{ secrets.CERTIFICATE_OSX_PASSWORD }}
@@ -82,27 +82,28 @@ jobs:
           fi
 
       - name: Zip release
+        if: env.SHOULD_BUILD == 'yes'
         working-directory: ./vscodium
         run: |
           cd "VSCode-darwin-${VSCODE_ARCH}"
           zip -r -X -y ../MrCode-darwin-${VSCODE_ARCH}-${LATEST_MS_TAG}.zip ./*.app
-        if: env.SHOULD_BUILD == 'yes'
 
       - name: DMG the release
+        if: env.SHOULD_BUILD == 'yes'
         working-directory: ./vscodium
         run: |
           pushd "VSCode-darwin-${VSCODE_ARCH}"
           npx create-dmg MrCode.app ..
           mv "../MrCode ${LATEST_MS_TAG}.dmg" "../MrCode.${VSCODE_ARCH}.${LATEST_MS_TAG}.dmg"
           popd
-        if: env.SHOULD_BUILD == 'yes'
 
       - name: Generate shasums
+        if: env.SHOULD_BUILD == 'yes'
         working-directory: ./vscodium
         run: ./sum.sh
-        if: env.SHOULD_BUILD == 'yes'
 
       - name: Release
+        if: env.SHOULD_BUILD == 'yes'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v1
@@ -112,13 +113,12 @@ jobs:
             ./vscodium/*.zip
             ./vscodium/*.dmg
             ./vscodium/*.sha256
-        if: env.SHOULD_BUILD == 'yes'
 
       - name: Update versions repo
+        if: env.SHOULD_BUILD == 'yes'
         env:
           GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
         working-directory: ./vscodium
         run: ./update_version.sh
-        if: env.SHOULD_BUILD == 'yes'
 
