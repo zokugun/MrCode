@@ -50,7 +50,6 @@ jobs:
           KEYCHAIN_PASSWORD: ${{ secrets.CERTIFICATE_OSX_KEYCHAIN_PASSWORD }}
           IDENTITY: ${{ secrets.CERTIFICATE_OSX_ID }}
         run: |
-          # just in case the build failed
           if [ -d "VSCode-darwin-${VSCODE_ARCH}" ];
           then
             cd "VSCode-darwin-${VSCODE_ARCH}"
