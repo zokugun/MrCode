@@ -51,32 +51,31 @@ jobs:
           IDENTITY: ${{ secrets.CERTIFICATE_OSX_ID }}
         working-directory: ./vscodium
         run: |
-          if [ -d "VSCode-darwin-${VSCODE_ARCH}" ]; then
+          if [ -d "VSCode-darwin-${VSCODE_ARCH}" ];
+          then
             cd "VSCode-darwin-${VSCODE_ARCH}"
 
-            echo "create variables"
+            echo "+ create variables"
             CERTIFICATE_PATH=$RUNNER_TEMP/app.p12
             KEYCHAIN_PATH=$RUNNER_TEMP/app.keychain-db
 
-            echo "import certificate from secrets"
+            echo "+ import certificate from secrets"
             echo -n "$P12_BASE64" | base64 --decode --output $CERTIFICATE_PATH
 
-            echo "create temporary keychain"
+            echo "+ create temporary keychain"
             security create-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
             security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
             security default-keychain -s $KEYCHAIN_PATH
             security unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
 
-            echo "import certificate to keychain"
+            echo "+ import certificate to keychain"
             security import $CERTIFICATE_PATH -P $P12_PASSWORD -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
-            # security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
+            security set-key-partition-list -S apple-tool:,apple: -s -k $KEYCHAIN_PASSWORD $KEYCHAIN_PATH
             security list-keychain -d user -s $KEYCHAIN_PATH
+            security find-identity $KEYCHAIN_PATH
 
-            echo "signing"
+            echo "+ signing"
             codesign --deep --force --verbose --sign "$IDENTITY" MrCode.app
-
-            echo "clean up keychain"
-            security delete-keychain $KEYCHAIN_PATH
           fi
 
       - name: Zip release
@@ -119,3 +118,13 @@ jobs:
           GITHUB_USERNAME: ${{ github.repository_owner }}
         working-directory: ./vscodium
         run: ./update_version.sh
+
+      - name: Clean up keychain
+        if: ${{ always() }}
+        run: |
+          KEYCHAIN_PATH=$RUNNER_TEMP/app.keychain-db
+
+          if [ -f "$KEYCHAIN_PATH" ];
+          then
+            security delete-keychain $KEYCHAIN_PATH
+          end
