@@ -84,14 +84,14 @@ jobs:
           cd "VSCode-darwin-${VSCODE_ARCH}"
           zip -r -X -y ../MrCode-darwin-${VSCODE_ARCH}-${LATEST_MS_TAG}.zip ./*.app
 
-      - name: DMG the release
-        if: env.SHOULD_BUILD == 'yes'
-        working-directory: ./vscodium
-        run: |
-          pushd "VSCode-darwin-${VSCODE_ARCH}"
-          npx create-dmg MrCode.app ..
-          mv "../MrCode ${LATEST_MS_TAG}.dmg" "../MrCode.${VSCODE_ARCH}.${LATEST_MS_TAG}.dmg"
-          popd
+      # - name: DMG the release
+      #   if: env.SHOULD_BUILD == 'yes'
+      #   working-directory: ./vscodium
+      #   run: |
+      #     pushd "VSCode-darwin-${VSCODE_ARCH}"
+      #     npx create-dmg MrCode.app ..
+      #     mv "../MrCode ${LATEST_MS_TAG}.dmg" "../MrCode.${VSCODE_ARCH}.${LATEST_MS_TAG}.dmg"
+      #     popd
 
       - name: Generate shasums
         if: env.SHOULD_BUILD == 'yes'
