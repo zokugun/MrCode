@@ -45,10 +45,10 @@ jobs:
       - name: Sign binary
         if: env.SHOULD_BUILD == 'yes'
         env:
-          P12_BASE64: ${{ secrets.CERTIFICATE_OSX_P12 }}
-          P12_PASSWORD: ${{ secrets.CERTIFICATE_OSX_PASSWORD }}
-          KEYCHAIN_PASSWORD: ${{ secrets.CERTIFICATE_OSX_KEYCHAIN_PASSWORD }}
-          IDENTITY: ${{ secrets.CERTIFICATE_OSX_ID }}
+          P12_BASE64: ${{ secrets.MACOS_P12_BASE64 }}
+          P12_PASSWORD: ${{ secrets.MACOS_P12_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.MACOS_KEYCHAIN_PASSWORD }}
+          IDENTITY: ${{ secrets.MACOS_IDENTITY }}
         working-directory: ./vscodium
         run: |
           if [ -d "VSCode-darwin-${VSCODE_ARCH}" ];
