@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 exists() { type -t "$1" > /dev/null 2>&1; }
 
 if ! exists gsed; then
@@ -159,7 +161,8 @@ do
     if [ -f "$file" ];
     then
         echo "applying $(basename -- $file)"
-        if ! git apply --ignore-whitespace $file; then
+        if ! git apply --ignore-whitespace "$file";
+        then
             echo "failed to apply $(basename -- $file)" 1>&2
         fi
     fi

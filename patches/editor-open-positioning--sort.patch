@@ -1,8 +1,8 @@
 diff --git a/src/vs/workbench/browser/parts/editor/editor.ts b/src/vs/workbench/browser/parts/editor/editor.ts
-index 0761fee..3c72894 100644
+index 6fd048f..5645190 100644
 --- a/src/vs/workbench/browser/parts/editor/editor.ts
 +++ b/src/vs/workbench/browser/parts/editor/editor.ts
-@@ -36,6 +36,8 @@ export const DEFAULT_EDITOR_PART_OPTIONS: IEditorPartOptions = {
+@@ -35,6 +35,8 @@ export const DEFAULT_EDITOR_PART_OPTIONS: IEditorPartOptions = {
  	hasIcons: true, // 'vs-seti' is our default icon theme
  	enablePreview: true,
  	openPositioning: 'right',
@@ -12,10 +12,10 @@ index 0761fee..3c72894 100644
  	closeEmptyGroups: true,
  	labelFormat: 'default',
 diff --git a/src/vs/workbench/browser/workbench.contribution.ts b/src/vs/workbench/browser/workbench.contribution.ts
-index 30687a9..0e03a43 100644
+index 3a017b9..8a4e689 100644
 --- a/src/vs/workbench/browser/workbench.contribution.ts
 +++ b/src/vs/workbench/browser/workbench.contribution.ts
-@@ -170,9 +170,21 @@ const registry = Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Con
+@@ -167,9 +167,21 @@ const registry = Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Con
  			},
  			'workbench.editor.openPositioning': {
  				'type': 'string',
@@ -40,10 +40,10 @@ index 30687a9..0e03a43 100644
  			'workbench.editor.openSideBySideDirection': {
  				'type': 'string',
 diff --git a/src/vs/workbench/common/editor.ts b/src/vs/workbench/common/editor.ts
-index c2ac875..4092ac1 100644
+index 8b7f255..70809b9 100644
 --- a/src/vs/workbench/common/editor.ts
 +++ b/src/vs/workbench/common/editor.ts
-@@ -766,7 +766,9 @@ interface IEditorPartConfiguration {
+@@ -815,7 +815,9 @@ interface IEditorPartConfiguration {
  	enablePreviewFromQuickOpen?: boolean;
  	enablePreviewFromCodeNavigation?: boolean;
  	closeOnFileDelete?: boolean;
@@ -55,15 +55,15 @@ index c2ac875..4092ac1 100644
  	closeEmptyGroups?: boolean;
  	revealIfOpen?: boolean;
 diff --git a/src/vs/workbench/common/editor/editorGroupModel.ts b/src/vs/workbench/common/editor/editorGroupModel.ts
-index ec7c3b4..bd02c41 100644
+index 1bf2263..5d58108 100644
 --- a/src/vs/workbench/common/editor/editorGroupModel.ts
 +++ b/src/vs/workbench/common/editor/editorGroupModel.ts
 @@ -4,7 +4,7 @@
   *--------------------------------------------------------------------------------------------*/
  
  import { Event, Emitter } from 'vs/base/common/event';
--import { IEditorInputFactoryRegistry, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, IEditorInput, EditorsOrder, EditorExtensions } from 'vs/workbench/common/editor';
-+import { IEditorInputFactoryRegistry, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, IEditorInput, EditorsOrder, EditorExtensions, Verbosity } from 'vs/workbench/common/editor';
+-import { IEditorInputFactoryRegistry, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, IEditorInput, EditorsOrder, EditorExtensions, IUntypedEditorInput } from 'vs/workbench/common/editor';
++import { IEditorInputFactoryRegistry, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, IEditorInput, EditorsOrder, EditorExtensions, IUntypedEditorInput, Verbosity } from 'vs/workbench/common/editor';
  import { EditorInput } from 'vs/workbench/common/editor/editorInput';
  import { SideBySideEditorInput } from 'vs/workbench/common/editor/sideBySideEditorInput';
  import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';

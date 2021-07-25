@@ -1,6 +1,10 @@
 name: windows
 
-on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "*"
 
 jobs:
   windows:
