@@ -118,7 +118,7 @@ gsed -i -E 's|Copyright \(C\) 2019 Microsoft\. All rights reserved|Copyright (C)
 # LICENSE.txt
 backup 'LICENSE.txt'
 gsed -i -E '/Corporation.*/a\
-Copyright (c) 2020 Zokugun
+Copyright (c) 2020-present Zokugun
 ' LICENSE.txt
 
 # resources/linux/code.appdata.xml

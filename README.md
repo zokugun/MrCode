@@ -10,7 +10,7 @@
 
 </div>
 
-MrCode is my spin of [VSCode](https://github.com/microsoft/vscode) / [VSCodium](https://github.com/VSCodium/vscodium).
+MrCode is a custom build of [VSCodium](https://github.com/VSCodium/vscodium) / [VSCode](https://github.com/microsoft/vscode).
 
 Download
 --------
@@ -31,6 +31,11 @@ Supported OS
 - [x] Windows 7, 8, 10 (`x64`, `x86`, `arm64`)
 - [x] macOS 10.10+ (`x64`)
 - [x] Linux (`AppImage`, `deb`, `rpm`, `tar.gz`) (`x64`, `arm64`, `armhf`)
+
+Supported App/Package Managers
+------------------------------
+
+- [AUR](https://aur.archlinux.org/packages/?K=mrcode)
 
 FAQ
 ---
