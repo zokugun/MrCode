@@ -22,8 +22,8 @@ What's the difference?
 
 MrCode is adding 2 new settings and extending 1 setting:
 - [editor.foldingStrategy](./docs/settings/editor.foldingStrategy.md)
-- [editor.showFoldingLastLine](./docs/settings/editor.showFoldingLastLine)
-- [workbench.editor.openPositioning](./docs/settings/workbench.editor.openPositioning)
+- [editor.showFoldingLastLine](./docs/settings/editor.showFoldingLastLine.md)
+- [workbench.editor.openPositioning](./docs/settings/workbench.editor.openPositioning.md)
 
 Supported OS
 ------------
