@@ -9,6 +9,6 @@ MrCode stores your settings at:
 
 Use the following scripts to migrate:
 
-- [Windows](./docs/migrate/windows.md)
-- [macOS](./docs/migrate/macos.md)
-- [Linux](./docs/migrate/linux.md)
+- [Windows](./windows.md)
+- [macOS](./macos.md)
+- [Linux](./linux.md)
