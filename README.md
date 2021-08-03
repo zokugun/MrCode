@@ -24,6 +24,7 @@ What's the difference?
 
 - [editor.foldingStrategy](./docs/settings/editor.foldingStrategy.md)
 - [editor.showFoldingLastLine](./docs/settings/editor.showFoldingLastLine.md)
+- [keyboard.platform](./docs/settings/keyboard.platform.md)
 - [workbench.editor.openPositioning](./docs/settings/workbench.editor.openPositioning.md)
 
 ### Patched Commands
