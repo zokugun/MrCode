@@ -61,9 +61,9 @@ jobs:
       - name: Move/rename build artifacts
         working-directory: ./vscodium
         run: |
-          mv vscode\\.build\\win32-${VSCODE_ARCH}\\system-setup\\VSCodeSetup.exe VSCodiumSetup-${VSCODE_ARCH}-${LATEST_MS_TAG}.exe
-          mv vscode\\.build\\win32-${VSCODE_ARCH}\\user-setup\\VSCodeSetup.exe VSCodiumUserSetup-${VSCODE_ARCH}-${LATEST_MS_TAG}.exe
-          mv vscode\\.build\\win32-${VSCODE_ARCH}\\archive\\VSCode-win32-${VSCODE_ARCH}.zip VSCodium-win32-${VSCODE_ARCH}-${LATEST_MS_TAG}.zip
+          mv vscode\\.build\\win32-${VSCODE_ARCH}\\system-setup\\VSCodeSetup.exe MrCodeSetup-${VSCODE_ARCH}-${LATEST_MS_TAG}.exe
+          mv vscode\\.build\\win32-${VSCODE_ARCH}\\user-setup\\VSCodeSetup.exe MrCodeUserSetup-${VSCODE_ARCH}-${LATEST_MS_TAG}.exe
+          mv vscode\\.build\\win32-${VSCODE_ARCH}\\archive\\VSCode-win32-${VSCODE_ARCH}.zip MrCode-win32-${VSCODE_ARCH}-${LATEST_MS_TAG}.zip
         shell: bash
         if: env.SHOULD_BUILD == 'yes'
 
