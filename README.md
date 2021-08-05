@@ -20,10 +20,17 @@ Download
 What's the difference?
 ----------------------
 
-MrCode is adding 2 new settings and extending 1 setting:
+### Patched Settings
+
 - [editor.foldingStrategy](./docs/settings/editor.foldingStrategy.md)
 - [editor.showFoldingLastLine](./docs/settings/editor.showFoldingLastLine.md)
+- [keyboard.platform](./docs/settings/keyboard.platform.md)
 - [workbench.editor.openPositioning](./docs/settings/workbench.editor.openPositioning.md)
+
+### Patched Commands
+
+- [workbench.extensions.disableExtension](./docs/commands/workbench.extensions.disableExtension.md)
+- [workbench.extensions.enableExtension](./docs/commands/workbench.extensions.enableExtension.md)
 
 Supported OS
 ------------
