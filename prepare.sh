@@ -46,19 +46,24 @@ gsed -i -E 's/vscodium/mrcode/g' prepare_vscode.sh
 gsed -i -E 's/codium/mrcode/g' prepare_vscode.sh
 gsed -i -E 's/vscode-server-oss/mrcode-server/g' prepare_vscode.sh
 
+gsed -i -E 's|win32x64UserAppId=.*|win32x64UserAppId='\''setpath(["win32x64UserAppId"]; "{{7678C6A4-C40E-4B93-AA07-D50A6DF862F1}}")'\''|g' prepare_vscode.sh
 gsed -i -E '/extensionAllowedProposedApi=.*/a\
 dataFolderName='\''setpath(["dataFolderName"]; ".mrcode")'\''\
 darwinBundleIdentifier='\''setpath(["darwinBundleIdentifier"]; "org.zokugun.mrcode")'\''\
 licenseUrl='\''setpath(["licenseUrl"]; "https://github.com/zokugun/MrCode/blob/master/LICENSE")'\''\
 reportIssueUrl='\''setpath(["reportIssueUrl"]; "https://github.com/zokugun/MrCode/issues/new")'\''\
-enableTelemetry='\''setpath(["enableTelemetry"]; false)'\''
+enableTelemetry='\''setpath(["enableTelemetry"]; false)'\''\
+win32AppId='\''setpath(["win32AppId"]; "{{0BD0DE9B-0738-49CE-97C6-75CED083CE4E}}")'\''\
+win32x64AppId='\''setpath(["win32x64AppId"]; "{{09FF1437-F543-4CF3-9204-C4BB886DF9BE}}")'\''\
+win32arm64AppId='\''setpath(["win32arm64AppId"]; "{{035AE7E2-AD42-4139-A9A3-FD9DFC56BDE5}}")'\''\
+win32UserAppId='\''setpath(["win32UserAppId"]; "{{7D1F645C-DF50-42D7-8054-9BFAF60CEDF3}}")'\''\
+win32arm64UserAppId='\''setpath(["win32arm64UserAppId"]; "{{E25CEB79-4621-482A-ACAE-8FCB57FD29BD}}")'\''
 ' prepare_vscode.sh
 gsed -i -E 's|extensionsGallery=.*|extensionsGallery='\''setpath(["extensionsGallery"]; {"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery", "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index", "itemUrl": "https://marketplace.visualstudio.com/items"})'\''|g' prepare_vscode.sh
 gsed -i -z -E 's/linkProtectionTrustedDomains=[^\n]*\n//g' prepare_vscode.sh
 
-
 gsed -i -E 's/\$\{linkProtectionTrustedDomains\} \| //' prepare_vscode.sh
-gsed -i -E 's/\$\{extensionAllowedProposedApi\}/${extensionAllowedProposedApi} | ${dataFolderName} | ${darwinBundleIdentifier} | ${licenseUrl} | ${reportIssueUrl} | ${enableTelemetry}/' prepare_vscode.sh
+gsed -i -E 's/\$\{extensionAllowedProposedApi\}/${extensionAllowedProposedApi} | ${dataFolderName} | ${darwinBundleIdentifier} | ${licenseUrl} | ${reportIssueUrl} | ${enableTelemetry} | ${win32AppId} | ${win32x64AppId} | ${win32arm64AppId} | ${win32UserAppId} | ${win32arm64UserAppId}/' prepare_vscode.sh
 
 gsed -i -E $'s/mv product\.json product\.json\.bak/if [ ! -f "product.json.bak" ]; then\\\n  mv product.json product.json.bak\\\nfi/g' prepare_vscode.sh
 
@@ -113,7 +118,7 @@ gsed -i -E 's/, opts: \{ stats: true \}//g' build/gulpfile.vscode.js
 # build/lib/electron.ts
 backup 'build/lib/electron.ts'
 gsed -i -E 's|'\''Microsoft Corporation'\''|'\''Zokugun'\''|g' build/lib/electron.ts
-gsed -i -E 's|Copyright \(C\) 2019 Microsoft\. All rights reserved|Copyright (C) 2020 Zokugun.|g' build/lib/electron.ts
+gsed -i -E 's|Copyright \(C\) 2019 Microsoft\. All rights reserved|Copyright (C) 2020-present Zokugun.|g' build/lib/electron.ts
 
 # LICENSE.txt
 backup 'LICENSE.txt'

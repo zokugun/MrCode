@@ -8,7 +8,8 @@ choco install -y python2
 choco install -y nvm
 choco install -y sed
 
-nvm install 12
+nvm install 14.16.1
+nvm use 14.16.1
 
 npm i -g yarn
 

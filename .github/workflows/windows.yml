@@ -80,9 +80,9 @@ jobs:
           tag_name: ${{ env.LATEST_MS_TAG }}
           files: |
             ./vscodium/*.sha256
-            ./vscodium/VSCodium*.zip
-            ./vscodium/VSCodiumUserSetup*.exe
-            ./vscodium/VSCodiumSetup*.exe
+            ./vscodium/MrCode*.zip
+            ./vscodium/MrCodeUserSetup*.exe
+            ./vscodium/MrCodeSetup*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
