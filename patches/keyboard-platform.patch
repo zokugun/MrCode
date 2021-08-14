@@ -59,10 +59,10 @@ index 2bf215e..620eba9 100644
 +		if (this._keybindingRuleCache) {
 +			if (!platform) {
 +				this._platform = OS;
-+			} else if (platform === 'macintosh') {
-+				this._platform = OperatingSystem.Macintosh;
 +			} else if (platform === 'linux') {
 +				this._platform = OperatingSystem.Linux;
++			} else if (platform === 'mac') {
++				this._platform = OperatingSystem.Macintosh;
 +			} else if (platform === 'windows') {
 +				this._platform = OperatingSystem.Windows;
 +			} else {
@@ -146,7 +146,7 @@ index eea2f00..aa48ebf 100644
 +		'keyboard.platform': {
 +			scope: ConfigurationScope.APPLICATION,
 +			type: 'string',
-+			enum: ['auto', 'macintosh', 'linux', 'windows'],
++			enum: ['auto', 'linux', 'mac', 'windows'],
 +			default: 'auto',
 +			markdownDescription: nls.localize('platform', "Set the platform for which the keybindings are built.")
  		}

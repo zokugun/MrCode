@@ -32,6 +32,10 @@ What's the difference?
 - [workbench.extensions.disableExtension](./docs/commands/workbench.extensions.disableExtension.md)
 - [workbench.extensions.enableExtension](./docs/commands/workbench.extensions.enableExtension.md)
 
+### Split JSON settings editor
+
+In `1.59`, the split JSON settings editor is added back to the editor.
+
 Supported OS
 ------------
 

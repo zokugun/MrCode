@@ -12,10 +12,10 @@ index 6fd048f..5645190 100644
  	closeEmptyGroups: true,
  	labelFormat: 'default',
 diff --git a/src/vs/workbench/browser/workbench.contribution.ts b/src/vs/workbench/browser/workbench.contribution.ts
-index 3a017b9..8a4e689 100644
+index 40a6e61..bedd8ac 100644
 --- a/src/vs/workbench/browser/workbench.contribution.ts
 +++ b/src/vs/workbench/browser/workbench.contribution.ts
-@@ -167,9 +167,21 @@ const registry = Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Con
+@@ -173,9 +173,21 @@ const registry = Registry.as<IConfigurationRegistry>(ConfigurationExtensions.Con
  			},
  			'workbench.editor.openPositioning': {
  				'type': 'string',
@@ -40,10 +40,10 @@ index 3a017b9..8a4e689 100644
  			'workbench.editor.openSideBySideDirection': {
  				'type': 'string',
 diff --git a/src/vs/workbench/common/editor.ts b/src/vs/workbench/common/editor.ts
-index 8b7f255..70809b9 100644
+index 8bf13af..77f8c7d 100644
 --- a/src/vs/workbench/common/editor.ts
 +++ b/src/vs/workbench/common/editor.ts
-@@ -815,7 +815,9 @@ interface IEditorPartConfiguration {
+@@ -830,7 +830,9 @@ interface IEditorPartConfiguration {
  	enablePreviewFromQuickOpen?: boolean;
  	enablePreviewFromCodeNavigation?: boolean;
  	closeOnFileDelete?: boolean;
@@ -55,15 +55,15 @@ index 8b7f255..70809b9 100644
  	closeEmptyGroups?: boolean;
  	revealIfOpen?: boolean;
 diff --git a/src/vs/workbench/common/editor/editorGroupModel.ts b/src/vs/workbench/common/editor/editorGroupModel.ts
-index 1bf2263..5d58108 100644
+index acd639a..f2ca846 100644
 --- a/src/vs/workbench/common/editor/editorGroupModel.ts
 +++ b/src/vs/workbench/common/editor/editorGroupModel.ts
 @@ -4,7 +4,7 @@
   *--------------------------------------------------------------------------------------------*/
  
  import { Event, Emitter } from 'vs/base/common/event';
--import { IEditorInputFactoryRegistry, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, IEditorInput, EditorsOrder, EditorExtensions, IUntypedEditorInput } from 'vs/workbench/common/editor';
-+import { IEditorInputFactoryRegistry, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, IEditorInput, EditorsOrder, EditorExtensions, IUntypedEditorInput, Verbosity } from 'vs/workbench/common/editor';
+-import { IEditorFactoryRegistry, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, IEditorInput, EditorsOrder, EditorExtensions, IUntypedEditorInput } from 'vs/workbench/common/editor';
++import { IEditorFactoryRegistry, IEditorIdentifier, IEditorCloseEvent, GroupIdentifier, IEditorInput, EditorsOrder, EditorExtensions, IUntypedEditorInput, Verbosity } from 'vs/workbench/common/editor';
  import { EditorInput } from 'vs/workbench/common/editor/editorInput';
  import { SideBySideEditorInput } from 'vs/workbench/common/editor/sideBySideEditorInput';
  import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';

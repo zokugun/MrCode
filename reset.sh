@@ -1,11 +1,13 @@
 #!/bin/bash
 
-cd vscodium || exit
+if [ -d "vscodium" ]; then
+    cd vscodium
 
-git add .
-git reset --hard HEAD
+    git add .
+    git reset --hard HEAD
 
-rm -rf VSCode*
-rm -rf vscode
+    rm -rf VSCode*
+    rm -rf vscode
 
-cd ..
+    cd ..
+fi
