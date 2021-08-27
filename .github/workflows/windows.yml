@@ -33,10 +33,6 @@ jobs:
         with:
           python-version: '2.x'
 
-      - name: Get Release Tag
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-        shell: bash
-
       - name: Clone VSCodium repo
         run: ./get_repo.sh
         shell: bash
