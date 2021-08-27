@@ -46,7 +46,8 @@ gsed -i -E 's/vscodium/mrcode/g' prepare_vscode.sh
 gsed -i -E 's/codium/mrcode/g' prepare_vscode.sh
 gsed -i -E 's/vscode-server-oss/mrcode-server/g' prepare_vscode.sh
 
-gsed -i -E 's|win32x64UserAppId=.*|win32x64UserAppId='\''setpath(["win32x64UserAppId"]; "{{7678C6A4-C40E-4B93-AA07-D50A6DF862F1}}")'\''|g' prepare_vscode.sh
+gsed -i -E 's|updateUrl=.*|updateUrl='\''setpath(["updateUrl"]; "https://mrcode.vercel.app")'\''|' prepare_vscode.sh
+gsed -i -E 's|win32x64UserAppId=.*|win32x64UserAppId='\''setpath(["win32x64UserAppId"]; "{{7678C6A4-C40E-4B93-AA07-D50A6DF862F1}}")'\''|' prepare_vscode.sh
 gsed -i -E '/extensionAllowedProposedApi=.*/a\
 dataFolderName='\''setpath(["dataFolderName"]; ".mrcode")'\''\
 darwinBundleIdentifier='\''setpath(["darwinBundleIdentifier"]; "org.zokugun.mrcode")'\''\

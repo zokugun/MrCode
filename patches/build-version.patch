@@ -1,0 +1,46 @@
+diff --git a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
+index e611894..f7fdec8 100644
+--- a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
++++ b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
+@@ -23,6 +23,7 @@ import { IStorageService, StorageScope, StorageTarget } from 'vs/platform/storag
+ import { getServiceMachineId } from 'vs/platform/serviceMachineId/common/serviceMachineId';
+ import { optional } from 'vs/platform/instantiation/common/instantiation';
+ import { isWeb } from 'vs/base/common/platform';
++import * as semver from 'semver'
+ 
+ interface IRawGalleryExtensionFile {
+ 	readonly assetType: string;
+@@ -842,10 +843,11 @@ export class ExtensionGalleryService implements IExtensionGalleryService {
+ 	}
+ }
+ 
+-export async function resolveMarketplaceHeaders(version: string, environmentService: IEnvironmentService, fileService: IFileService, storageService: {
++export async function resolveMarketplaceHeaders(currentVersion: string, environmentService: IEnvironmentService, fileService: IFileService, storageService: {
+ 	get: (key: string, scope: StorageScope) => string | undefined,
+ 	store: (key: string, value: string, scope: StorageScope, target: StorageTarget) => void
+ } | undefined): Promise<{ [key: string]: string; }> {
++	const version = semver.parse(currentVersion)!.version;
+ 	const headers: IHeaders = {
+ 		'X-Market-Client-Id': `VSCode ${version}`,
+ 		'User-Agent': `VSCode ${version}`
+diff --git a/src/vs/platform/extensions/common/extensionValidator.ts b/src/vs/platform/extensions/common/extensionValidator.ts
+index 89d668c..56b4d0d 100644
+--- a/src/vs/platform/extensions/common/extensionValidator.ts
++++ b/src/vs/platform/extensions/common/extensionValidator.ts
+@@ -4,6 +4,7 @@
+  *--------------------------------------------------------------------------------------------*/
+ 
+ import * as nls from 'vs/nls';
++import * as semver from 'semver';
+ 
+ export interface IParsedVersion {
+ 	hasCaret: boolean;
+@@ -282,7 +283,7 @@ function isVersionValid(currentVersion: string, date: ProductDate, requestedVers
+ 		}
+ 	}
+ 
+-	if (!isValidVersion(currentVersion, date, desiredVersion)) {
++	if (!isValidVersion(semver.parse(currentVersion)!.version, date, desiredVersion)) {
+ 		notices.push(nls.localize('versionMismatch', "Extension is not compatible with Code {0}. Extension requires: {1}.", currentVersion, requestedVersion));
+ 		return false;
+ 	}
