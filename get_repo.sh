@@ -18,14 +18,14 @@ fi
 if [[ -z "${RELEASE_VERSION}" ]]; then
     MS_TAG=$( git tag -l --sort=-version:refname | head -1 )
     date=$( date +%Y%m%d )
-    export RELEASE_VERSION="$MS_TAG+b.${date: -5}"
+    export RELEASE_VERSION="$MS_TAG+${date: -5}"
 
     # for GH actions
     if [[ $GITHUB_ENV ]]; then
         echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_ENV
     fi
 else
-    if [[ "${RELEASE_VERSION}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\+b[0-9]+$ ]];
+    if [[ "${RELEASE_VERSION}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\+[0-9]+$ ]];
     then
         MS_TAG="${BASH_REMATCH[1]}"
     else
