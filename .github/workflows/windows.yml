@@ -9,6 +9,7 @@ on:
 jobs:
   windows:
     runs-on: windows-2016
+    environment: deploy
     env:
       VSCODE_ARCH: ${{ matrix.vscode_arch }}
       OS_NAME: 'windows'
@@ -34,6 +35,8 @@ jobs:
           python-version: '2.x'
 
       - name: Clone VSCodium repo
+        env:
+          VSCODIUM_LATEST: ${{ secrets.VSCODIUM_LATEST }}
         run: ./get_repo.sh
         shell: bash
 

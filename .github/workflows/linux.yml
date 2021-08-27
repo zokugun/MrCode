@@ -9,6 +9,7 @@ on:
 jobs:
   linux:
     runs-on: ubuntu-latest
+    environment: deploy
     container:
       image: ${{ matrix.image }}
       env:
@@ -42,6 +43,8 @@ jobs:
         run: npm install -g yarn
 
       - name: Clone VSCodium repo
+        env:
+          VSCODIUM_LATEST: ${{ secrets.VSCODIUM_LATEST }}
         run: ./get_repo.sh
 
       - name: Prepare VSCodium
