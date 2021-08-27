@@ -17,7 +17,7 @@ fi
 
 if [[ -z "${RELEASE_VERSION}" ]]; then
     MS_TAG=$( git tag -l --sort=-version:refname | head -1 )
-    date=$( date +%Y%m%d )
+    date=$( date +%Y%j )
     export RELEASE_VERSION="$MS_TAG+${date: -5}"
 
     # for GH actions
