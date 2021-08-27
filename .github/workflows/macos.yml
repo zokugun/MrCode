@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: 14
 
+      - name: Get Release Tag
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
       - name: Clone VSCodium repo
         run: |
           . get_repo.sh
@@ -86,7 +89,7 @@ jobs:
         working-directory: ./vscodium
         run: |
           cd "VSCode-darwin-${VSCODE_ARCH}"
-          zip -r -X -y ../MrCode-darwin-${VSCODE_ARCH}-${LATEST_MS_TAG}.zip ./*.app
+          zip -r -X -y ../MrCode-darwin-${VSCODE_ARCH}-${RELEASE_VERSION}.zip ./*.app
 
       - name: DMG the release
         if: env.SHOULD_BUILD == 'yes'
@@ -94,7 +97,7 @@ jobs:
         run: |
           pushd "VSCode-darwin-${VSCODE_ARCH}"
           npx create-dmg MrCode.app ..
-          mv "../MrCode ${LATEST_MS_TAG}.dmg" "../MrCode.${VSCODE_ARCH}.${LATEST_MS_TAG}.dmg"
+          mv "../MrCode ${RELEASE_VERSION}.dmg" "../MrCode.${VSCODE_ARCH}.${RELEASE_VERSION}.dmg"
           popd
 
       - name: Generate shasums
@@ -108,7 +111,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ env.LATEST_MS_TAG }}
+          tag_name: ${{ env.RELEASE_VERSION }}
           files: |
             ./vscodium/*.zip
             ./vscodium/*.dmg

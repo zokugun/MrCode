@@ -33,7 +33,7 @@ fi
 
 gsed -i -z -E 's/\s+yarn gulp vscode-reh-darwin-min-ci\n\s+yarn gulp vscode-reh-web-darwin-min-ci//g' build.sh
 
-# update
+# update-cache-path.patch
 backup 'patches/update-cache-path.patch'
 gsed -i -E 's/vscodium/mrcode/g' patches/update-cache-path.patch
 
@@ -85,7 +85,8 @@ gsed -i -E '/    fi.*/a\
 backup 'check_tags.sh'
 gsed -i -E 's|VSCodium/vscodium|zokugun/MrCode|g' check_tags.sh
 gsed -i -E 's/VSCodium/MrCode/g' check_tags.sh
-gsed -i -E 's/darwin-\$LATEST_MS_TAG/darwin-$VSCODE_ARCH-$LATEST_MS_TAG/g' check_tags.sh
+gsed -i -E 's/darwin-\$MS_TAG/darwin-$VSCODE_ARCH-$RELEASE_VERSION/g' check_tags.sh
+gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' check_tags.sh
 
 # update_version.sh
 backup 'update_version.sh'
@@ -94,8 +95,9 @@ gsed -i -E 's/vscodium/mrcode/g' update_version.sh
 gsed -i -E 's/VSCodium/MrCode/g' update_version.sh
 gsed -i -E 's|VERSIONS_REPO=.*|VERSIONS_REPO='\''zokugun/MrCode-versions'\''|' update_version.sh
 gsed -i -E 's/cd versions/cd MrCode-versions/g' update_version.sh
-gsed -i -E 's/ASSET_NAME=MrCode-darwin-\$\{LATEST_MS_TAG\}\.zip/ASSET_NAME=MrCode-darwin-${VSCODE_ARCH}-${LATEST_MS_TAG}.zip/g' update_version.sh
+gsed -i -E 's/ASSET_NAME=MrCode-darwin-\$\{MS_TAG\}\.zip/ASSET_NAME=MrCode-darwin-${VSCODE_ARCH}-${RELEASE_VERSION}.zip/g' update_version.sh
 gsed -i -E 's|VERSION_PATH="darwin"|VERSION_PATH="darwin/${VSCODE_ARCH}"|g' update_version.sh
+gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' update_version.sh
 
 # VSCodium-AppImage-Recipe.yml
 backup 'VSCodium-AppImage-Recipe.yml'
@@ -110,6 +112,10 @@ gsed -i -E 's/VSCodium\|vscodium/zokugun|MrCode/' create_appimage.sh
 . get_repo.sh
 
 cd vscode || exit
+
+# package.json
+backup 'package.json'
+gsed -i -E "s/\"version\": \".*\"/\"version\": \"${RELEASE_VERSION}\"/" package.json
 
 # build/gulpfile.vscode.js
 backup 'build/gulpfile.vscode.js'
