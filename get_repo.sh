@@ -4,6 +4,17 @@ if [[ ! -z "${GITHUB_REF}" ]]; then
     echo "GITHUB_REF: ${GITHUB_REF}"
 fi
 
+if [ -d vscodium ];
+then
+  cd vscodium
+
+  git fetch --all
+else
+  git clone https://github.com/VSCodium/vscodium.git
+
+  cd vscodium
+fi
+
 if [[ -z "${RELEASE_VERSION}" ]]; then
     MS_TAG=$( git tag -l --sort=-version:refname | head -1 )
     date=$( date +%Y%m%d )
@@ -29,17 +40,6 @@ if [[ $GITHUB_ENV ]]; then
 fi
 
 echo "Release version: ${RELEASE_VERSION}"
-
-if [ -d vscodium ];
-then
-  cd vscodium
-
-  git fetch --all
-else
-  git clone https://github.com/VSCodium/vscodium.git
-
-  cd vscodium
-fi
 
 if [[ -z "${VSCODIUM_LATEST}" ]]; then
     echo "Using VSCodium tag: ${MS_TAG}"
