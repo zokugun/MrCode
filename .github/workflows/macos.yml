@@ -115,6 +115,7 @@ jobs:
           files: |
             ./vscodium/*.zip
             ./vscodium/*.dmg
+            ./vscodium/*.sha1
             ./vscodium/*.sha256
 
       - name: Update versions repo

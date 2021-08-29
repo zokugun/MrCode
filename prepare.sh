@@ -101,6 +101,7 @@ gsed -i -E 's/cd versions/cd MrCode-versions/g' update_version.sh
 gsed -i -E 's/ASSET_NAME=MrCode-darwin-\$\{MS_TAG\}\.zip/ASSET_NAME=MrCode-darwin-${VSCODE_ARCH}-${RELEASE_VERSION}.zip/g' update_version.sh
 gsed -i -E 's|VERSION_PATH="darwin"|VERSION_PATH="darwin/${VSCODE_ARCH}"|g' update_version.sh
 gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' update_version.sh
+gsed -i -E 's/\$\{version\}/${sha1hash}/' update_version.sh
 
 # VSCodium-AppImage-Recipe.yml
 backup 'VSCodium-AppImage-Recipe.yml'
