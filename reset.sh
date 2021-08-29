@@ -8,6 +8,7 @@ if [ -d "vscodium" ]; then
 
     rm -rf VSCode*
     rm -rf vscode
+    rm -rf pkg2appimage*
 
     cd ..
 fi

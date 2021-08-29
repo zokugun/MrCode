@@ -69,6 +69,8 @@ gsed -i -E 's/\$\{extensionAllowedProposedApi\}/${extensionAllowedProposedApi} |
 gsed -i -E $'s/mv product\.json product\.json\.bak/if [ ! -f "product.json.bak" ]; then\\\n  mv product.json product.json.bak\\\nfi/g' prepare_vscode.sh
 
 gsed -i -E 's/patch -u/patch -t -u/g' prepare_vscode.sh
+
+gsed -i -E 's/yarn --frozen-lockfile/yarn/g' prepare_vscode.sh
 # }}}
 
 # sum.sh
