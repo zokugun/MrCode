@@ -1,9 +1,5 @@
 #!/bin/bash
 
-if [[ ! -z "${GITHUB_REF}" ]]; then
-    echo "GITHUB_REF: ${GITHUB_REF}"
-fi
-
 if [ -d vscodium ];
 then
   cd vscodium
@@ -41,16 +37,23 @@ fi
 
 echo "Release version: ${RELEASE_VERSION}"
 
-if [[ -z "${VSCODIUM_LATEST}" ]]; then
-    echo "Using VSCodium tag: ${MS_TAG}"
-
-    git checkout $MS_TAG
-else
+if [[ ! -z "${VSCODIUM_LATEST}" ]]; then
     git pull origin master
 
     VSCODIUM_COMMIT=$( git log --format="%H" -n 1 )
 
-    echo "Using VSCodium latest commit: ${VSCODIUM_COMMIT}"
+    # for GH actions
+    if [[ $GITHUB_ENV ]]; then
+        echo "VSCODIUM_COMMIT=$VSCODIUM_COMMIT" >> $GITHUB_ENV
+    fi
+fi
+
+if [[ -z "${VSCODIUM_COMMIT}" ]]
+    echo "Using VSCodium tag: ${MS_TAG}"
+
+    git checkout $MS_TAG
+else
+    echo "Using VSCodium commit: ${VSCODIUM_COMMIT}"
 
     git checkout $VSCODIUM_COMMIT
 fi
