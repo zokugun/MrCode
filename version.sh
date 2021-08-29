@@ -2,6 +2,8 @@
 
 if [[ -z "${BUILD_SOURCEVERSION}" ]]; then
 
+    npm install -g checksum
+
     mrcode_hash=$( git rev-parse HEAD )
 
     cd vscodium
@@ -12,7 +14,7 @@ if [[ -z "${BUILD_SOURCEVERSION}" ]]; then
 
     cd ../..
 
-    export BUILD_SOURCEVERSION=$( echo "${mrcode_hash}:${vscodium_hash}:${vscode_hash}" | sha1sum | awk '{print $1}' )
+    export BUILD_SOURCEVERSION=$( echo "${mrcode_hash}:${vscodium_hash}:${vscode_hash}" | checksum )
 
     echo "Build version: ${BUILD_SOURCEVERSION}"
 
