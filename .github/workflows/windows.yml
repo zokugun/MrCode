@@ -51,6 +51,11 @@ jobs:
         run: ./check_tags.sh
         shell: bash
 
+      - name: Get Source Version
+        run: ./version.sh
+        shell: bash
+        if: env.SHOULD_BUILD == 'yes'
+
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

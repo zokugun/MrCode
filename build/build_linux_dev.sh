@@ -9,7 +9,7 @@ then
     set +o allexport
 fi
 
-cd vscodium
+. version.sh
 
 gsed -i -E 's/\. prepare\_vscode\.sh/# . prepare_vscode.sh/g' build.sh
 

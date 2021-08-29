@@ -56,6 +56,10 @@ jobs:
         working-directory: ./vscodium
         run: ./check_tags.sh
 
+      - name: Get Source Version
+        run: ./version.sh
+        if: env.SHOULD_BUILD == 'yes'
+
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -15,4 +15,6 @@ fi
 
 CI_BUILD=no . prepare.sh
 
+. version.sh
+
 SHOULD_BUILD=yes CI_BUILD=no OS_NAME=linux VSCODE_ARCH=x64 . build.sh
