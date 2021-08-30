@@ -15,11 +15,6 @@ if [[ -z "${RELEASE_VERSION}" ]]; then
     MS_TAG=$( git tag -l --sort=-version:refname | head -1 )
     date=$( date +%Y%j )
     export RELEASE_VERSION="$MS_TAG+${date: -5}"
-
-    # for GH actions
-    if [[ $GITHUB_ENV ]]; then
-        echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_ENV
-    fi
 else
     if [[ "${RELEASE_VERSION}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\+[0-9]+$ ]];
     then
@@ -33,6 +28,7 @@ fi
 # for GH actions
 if [[ $GITHUB_ENV ]]; then
     echo "MS_TAG=$MS_TAG" >> $GITHUB_ENV
+    echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_ENV
 fi
 
 echo "Release version: ${RELEASE_VERSION}"
