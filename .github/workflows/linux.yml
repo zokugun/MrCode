@@ -132,3 +132,11 @@ jobs:
       - name: Publish mrcode
         working-directory: ./stores/aur
         run: ./update_mrcode.sh
+
+      - name: Publish mrcode-bin
+        working-directory: ./stores/aur
+        run: ./update_mrcode_bin.sh
+
+      - name: Publish mrcode-git
+        working-directory: ./stores/aur
+        run: ./update_mrcode_git.sh
