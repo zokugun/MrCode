@@ -116,6 +116,8 @@ jobs:
         run: pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh jq
 
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Setup
         env:
