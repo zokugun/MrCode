@@ -48,7 +48,7 @@ if [[ ! -z "${VSCODIUM_LATEST}" ]]; then
     fi
 fi
 
-if [[ -z "${VSCODIUM_COMMIT}" ]]
+if [[ -z "${VSCODIUM_COMMIT}" ]]; then
     echo "Using VSCodium tag: ${MS_TAG}"
 
     git checkout $MS_TAG
