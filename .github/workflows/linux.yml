@@ -114,9 +114,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh
-
       - name: Setup
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
