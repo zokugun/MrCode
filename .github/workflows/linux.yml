@@ -112,6 +112,9 @@ jobs:
       image: archlinux/archlinux:base
 
     steps:
+      - name: Install dependencies
+        run: pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh jq
+
       - uses: actions/checkout@v2
 
       - name: Setup

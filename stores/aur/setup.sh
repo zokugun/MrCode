@@ -2,10 +2,6 @@
 
 set -o errexit -o pipefail -o nounset
 
-echo "Install dependencies"
-
-pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh jq
-
 echo "Setting up ssh"
 
 mkdir -p /root/.ssh
