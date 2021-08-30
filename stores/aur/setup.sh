@@ -4,7 +4,7 @@ set -o errexit -o pipefail -o nounset
 
 echo "Install dependencies"
 
-pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh
+pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh jq
 
 echo "Setting up ssh"
 
@@ -21,9 +21,6 @@ chmod -vR 600 /root/.ssh/aur*
 ssh-keygen -vy -f /root/.ssh/aur > /root/.ssh/aur.pub
 
 sha512sum /root/.ssh/aur /root/.ssh/aur.pub
-
-echo "Test ssh"
-ssh -Tv aur@aur.archlinux.org help
 
 echo "Setting up git"
 git config --global user.name "$GIT_USERNAME"

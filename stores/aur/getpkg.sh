@@ -2,7 +2,7 @@
 
 # Constants
 AUR_URL="ssh://aur@aur.archlinux.org"
-HOOKS="*.hook.sh"
+HOOKS="pre-commit"
 
 # Main
 package="$1"
@@ -21,9 +21,8 @@ else
 fi
 
 # Install hooks
-cd "$package/.git/hooks" || exit 255
-echo -e "\033[34mSetting up hooks in \033[1m${PWD}\033[0;34m directory...\033[0m"
-for hook in $HOOKS; do
+echo -e "\033[34mSetting up hooks in \033[1m$package/.git/hooks\033[0;34m directory...\033[0m"
+for file in *.hook.sh
 	basehook=$(basename "$hook")
-	ln -vsf "../../../$basehook" "${basehook/.hook.sh}"
+	ln -vsf "$basehook" "$package/.git/hooks/${basehook/.hook.sh}"
 done
