@@ -2,6 +2,9 @@
 
 set -o errexit -o pipefail -o nounset
 
+pwd
+ls -la
+
 new_version=$( git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' )
 echo "new_version: $new_version"
 
