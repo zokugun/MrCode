@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: macOS-latest
-    environment: deploy
     env:
       OS_NAME: "osx"
       VSCODE_ARCH: "x64"
