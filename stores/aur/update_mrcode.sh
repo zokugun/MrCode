@@ -14,6 +14,8 @@ if [[ "$new_version" != "$old_version" ]]; then
     sed -i "s/pkgver=.*$/pkgver=${new_version}/" PKGBUILD
     sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
 
+    git add PKGBUILD
+
     changes=$( git status > /dev/null 2>&1 && git diff-index --quiet HEAD && echo 'no' || echo 'yes' )
 
     if [[ "$changes" == "yes" ]]; then
