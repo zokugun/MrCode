@@ -17,9 +17,6 @@ if [[ "$NEW_RELEASE" != "$OLD_RELEASE" ]]; then
 
     updpkgsums
 
-    echo "Testing package"
-    makepkg --noconfirm -s -c
-
     echo "Updating SRCINFO"
     makepkg --printsrcinfo > .SRCINFO
 

@@ -15,9 +15,6 @@ if [[ "$NEW_RELEASE" != "$OLD_RELEASE" ]]; then
     sed -i "s/pkgver=.*$/pkgver=${NEW_RELEASE}/" PKGBUILD
     sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
 
-    echo "Testing package"
-    makepkg --noconfirm -s -c
-
     echo "Updating SRCINFO"
     makepkg --printsrcinfo > .SRCINFO
 
