@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o errexit -o pipefail -o nounset
+
 cd mrcode
 
 git_version=$( curl --silent "https://api.github.com/repos/zokugun/MrCode/releases/latest" | jq -r .tag_name )

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -o errexit -o pipefail -o nounset
+
 # Constants
 AUR_URL="ssh://aur@aur.archlinux.org"
 HOOKS="pre-commit"
