@@ -4,6 +4,8 @@ set -o errexit -o pipefail -o nounset
 
 echo "Setting up ssh"
 
+mkdir -p /root/.ssh
+
 ssh-keyscan -v -t ed25519 aur.archlinux.org >> /root/.ssh/known_hosts
 
 cp ssh_config /root/.ssh
