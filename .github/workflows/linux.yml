@@ -117,6 +117,14 @@ jobs:
       - name: Install dependencies
         run: pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh
 
+      - name: Setup
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
+          GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
+          GIT_EMAIL: ${{ secrets.AUR_GIT_EMAIL }}
+        working-directory: ./stores/aur
+        run: ./setup.sh
+
       - name: Retrieve packages
         working-directory: ./stores/aur
         run: |
