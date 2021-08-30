@@ -2,7 +2,7 @@
 
 set -o errexit -o pipefail -o nounset
 
-cd mrcode
+cd stores/aur/mrcode
 
 new_version=$( curl --silent "https://api.github.com/repos/zokugun/MrCode/releases/latest" | jq -r .tag_name )
 echo "new_version: $new_version"

@@ -2,10 +2,10 @@
 
 set -o errexit -o pipefail -o nounset
 
-cd mrcode-git
-
 new_version=$( git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' )
 echo "new_version: $new_version"
+
+cd stores/aur/mrcode-git
 
 old_version=$( cat "PKGBUILD" | sed -n "s/.*pkgver=\([0-9.+]*\).*/\1/p" )
 echo "old_version: $old_version"
