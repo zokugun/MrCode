@@ -115,7 +115,7 @@ jobs:
 
       - name: Retrieve packages
         working-directory: ./stores/aur
-        run:
+        run: |
           echo "RELEASE_VERSION: ${RELEASE_VERSION}"
 
           ./getpkg.sh mrcode
@@ -128,8 +128,4 @@ jobs:
       - name: Publish mrcode
         if: env.MRCODE_PKGVER != env.RELEASE_VERSION
         working-directory: ./stores/aur
-        run:
-          ./update_mrcode.sh
-
-
-
+        run: ./update_mrcode.sh
