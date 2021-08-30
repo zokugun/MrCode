@@ -16,7 +16,7 @@ if [[ "$git_version" == "$aur_version" ]]; then
 
     changes=$( git diff-index --quiet HEAD && echo 'no' || echo 'yes' )
 
-    if (( "$changes" == "yes" )); then
+    if [[ "$changes" == "yes" ]]; then
         git commit -m "Update mrcode to ${RELEASE_VERSION}"
         git push
     else
