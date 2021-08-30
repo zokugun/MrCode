@@ -2,27 +2,32 @@
 
 set -o errexit -o pipefail -o nounset
 
-new_version=$( git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' )
-echo "new_version: $new_version"
+NEW_RELEASE=$( git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' )
+echo "NEW_RELEASE: $NEW_RELEASE"
 
 cd stores/aur/mrcode-git
 
-old_version=$( cat "PKGBUILD" | sed -n "s/.*pkgver=\([a-z0-9.+]*\).*/\1/p" )
-echo "old_version: $old_version"
+OLD_RELEASE=$( cat "PKGBUILD" | sed -n "s/.*pkgver=\([a-z0-9.+]*\).*/\1/p" )
+echo "OLD_RELEASE: $OLD_RELEASE"
 
-if [[ "$new_version" != "$old_version" ]]; then
-    sed -i "s/pkgver=.*$/pkgver=${new_version}/" PKGBUILD
+if [[ "$NEW_RELEASE" != "$OLD_RELEASE" ]]; then
+    echo "Setting version: ${NEW_RELEASE}"
+    sed -i "s/pkgver=.*$/pkgver=${NEW_RELEASE}/" PKGBUILD
     sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
 
-    git add PKGBUILD
+    echo "Testing package"
+    makepkg --noconfirm -s -c
+
+    echo "Updating SRCINFO"
+    makepkg --printsrcinfo > .SRCINFO
+
+    git add -fv PKGBUILD .SRCINFO
 
     changes=$( git status > /dev/null 2>&1 && git diff-index --quiet HEAD && echo 'no' || echo 'yes' )
     echo "changes: $changes"
 
     if [[ "$changes" == "yes" ]]; then
-        echo "Update mrcode to ${new_version}"
-
-        git commit -m "Update mrcode to ${new_version}"
+        git commit -m "Update mrcode to ${NEW_RELEASE}"
         git push
     else
         echo "No changes"
