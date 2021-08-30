@@ -114,19 +114,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh
+
       - name: Retrieve packages
         working-directory: ./stores/aur
         run: |
-          echo "RELEASE_VERSION: ${RELEASE_VERSION}"
-
           ./getpkg.sh mrcode
-          ./getver.sh mrcode MRCODE_PKGVER
-          echo "MRCODE_PKGVER: $MRCODE_PKGVER"
-
           ./getpkg.sh mrcode-bin
           ./getpkg.sh mrcode-git
 
       - name: Publish mrcode
-        if: env.MRCODE_PKGVER != env.RELEASE_VERSION
         working-directory: ./stores/aur
         run: ./update_mrcode.sh
