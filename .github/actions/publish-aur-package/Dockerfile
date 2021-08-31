@@ -29,6 +29,6 @@ RUN \
 COPY entrypoint.sh /entrypoint.sh
 
 USER root
-WORKDIR /home/builder
+WORKDIR /root
 
 ENTRYPOINT ["/entrypoint.sh"]

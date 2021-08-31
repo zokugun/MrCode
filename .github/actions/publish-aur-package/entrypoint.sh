@@ -2,11 +2,9 @@
 
 set -o errexit -o pipefail -o nounset
 
-cd /home/builder
-
 if [[ ! -z "${INPUT_DEPENDS}" ]]; then
     echo "Installing additional dependencies"
-    yay -Syu --noconfirm "${INPUT_DEPENDS}"
+    su builder -c "yay -Syu --noconfirm ${INPUT_DEPENDS}"
 fi
 
 echo "Setting up ssh"
@@ -41,7 +39,7 @@ if [[ -z "${INPUT_PACKAGE_VERSION}" ]]; then
 
         INPUT_PACKAGE_VERSION=$( git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' )
 
-        cd "/home/builder/${INPUT_PACKAGE_NAME}"
+        cd "/root/${INPUT_PACKAGE_NAME}"
     else
         INPUT_PACKAGE_VERSION=$( curl --silent "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" | jq -r .tag_name )
     fi
