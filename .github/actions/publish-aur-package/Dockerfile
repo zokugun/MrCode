@@ -2,7 +2,7 @@ FROM archlinux/archlinux:base
 
 RUN \
 	# install dependencies
-	pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh jq && \
+	pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh jq pyalpm && \
 	\
 	# add user
 	useradd -m builder && \

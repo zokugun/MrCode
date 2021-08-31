@@ -7,7 +7,6 @@ cd /root
 if [[ ! -z "${INPUT_DEPENDS}" ]]; then
     echo "Installing additional dependencies"
     pikaur -Su --noconfirm "${INPUT_DEPENDS}"
-
 fi
 
 echo "Setting up ssh"
