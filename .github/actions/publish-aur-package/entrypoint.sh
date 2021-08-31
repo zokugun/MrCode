@@ -8,12 +8,10 @@ if [[ ! -z "${INPUT_DEPENDS}" ]]; then
     echo "Installing additional dependencies"
     su builder -c "yay -Syu --noconfirm ${INPUT_DEPENDS}"
 
-    # if [[ ! -z "${INPUT_POST_DEPENDS}" ]]; then
-    #     echo "Evaluating post dependencies"
-    #     eval "${INPUT_POST_DEPENDS}"
-    # fi
-    export NVM_DIR="$HOME/.nvm"
-    source /usr/share/nvm/nvm.sh
+    if [[ ! -z "${INPUT_POST_DEPENDS}" ]]; then
+        echo "Evaluating post dependencies"
+        eval "${INPUT_POST_DEPENDS}"
+    fi
 fi
 
 cd /root

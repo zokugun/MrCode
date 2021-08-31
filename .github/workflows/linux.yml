@@ -117,8 +117,7 @@ jobs:
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode
-          depends: nvm
-          post_depends: source /usr/share/nvm/init-nvm.sh
+          depends: nodejs-lts-fermium
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
@@ -128,8 +127,7 @@ jobs:
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode-bin
-          depends: nvm
-          post_depends: source /usr/share/nvm/init-nvm.sh
+          depends: nodejs-lts-fermium
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
@@ -140,8 +138,7 @@ jobs:
         with:
           package_name: mrcode-git
           package_type: rolling
-          depends: nvm
-          post_depends: source /usr/share/nvm/init-nvm.sh
+          depends: nodejs-lts-fermium
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
