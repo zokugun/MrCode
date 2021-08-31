@@ -18,6 +18,9 @@ inputs:
     description: Message to use when commiting
     required: false
     default: Update ${package_name} to ${package_version}
+  depends:
+    description: List of additional dependencies to install
+    required: false
 runs:
   using: docker
   image: Dockerfile
