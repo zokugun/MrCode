@@ -7,7 +7,7 @@ if [[ ! -z "${INPUT_DEPENDS}" ]]; then
     su builder -c "yay -Syu --noconfirm ${INPUT_DEPENDS}"
 
     if [[ ! -z "${INPUT_POST_DEPENDS}" ]]; then
-        eval "$(INPUT_POST_DEPENDS)"
+        eval \${$INPUT_POST_DEPENDS}
     fi
 fi
 
@@ -71,6 +71,7 @@ echo "Detecting changes"
 changes=$( git status > /dev/null 2>&1 && git diff-index --quiet HEAD && echo 'no' || echo 'yes' )
 if [[ "$changes" == "yes" ]]; then
     if [[ "${INPUT_PACKAGE_VERSION}" == "$PKGVER" ]]; then
+        echo "Setting release number: $(($PKGREL + 1))"
         sed -i "s/pkgrel=.*$/pkgrel="$(($PKGREL + 1))"/" PKGBUILD
     fi
 
