@@ -2,7 +2,6 @@
 
 set -o errexit -o pipefail -o nounset
 
-pwd
 cd /root
 
 if [[ ! -z "${INPUT_DEPENDS}" ]]; then
@@ -53,7 +52,7 @@ sed -i "s/pkgver=.*$/pkgver=${INPUT_PACKAGE_VERSION}/" PKGBUILD
 sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
 
 echo "Updating checksums"
-updpkgsums
+su builder -c "updpkgsums"
 
 echo "Updating SRCINFO"
 su builder -c "makepkg --printsrcinfo > .SRCINFO"
