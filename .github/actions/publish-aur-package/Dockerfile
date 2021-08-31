@@ -4,11 +4,6 @@ RUN \
 	# install dependencies
 	pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh jq; \
 	\
-	# instal yay
-	git clone https://aur.archlinux.org/yay-bin.git; \
-	cd yay-bin; \
-	makepkg -si; \
-	\
 	# add user
 	useradd -m builder; \
 	echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; \
@@ -19,8 +14,16 @@ RUN \
 
 COPY ssh_config /home/builder/.ssh/config
 
-RUN chown builder:builder /home/builder -R; \
-	chmod 600 /home/builder/.ssh/* -R;
+RUN \
+	# fixing ACL
+	chown builder:builder /home/builder -R; \
+	chmod 600 /home/builder/.ssh/* -R; \
+	\
+	# install yay
+	git clone https://aur.archlinux.org/yay-bin.git; \
+	cd yay-bin; \
+	su builder -c "makepkg -si";
+
 
 COPY entrypoint.sh /entrypoint.sh
 
