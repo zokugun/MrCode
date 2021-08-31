@@ -7,7 +7,7 @@ if [[ ! -z "${INPUT_DEPENDS}" ]]; then
     su builder -c "yay -Syu --noconfirm ${INPUT_DEPENDS}"
 
     if [[ ! -z "${INPUT_POST_DEPENDS}" ]]; then
-        eval echo \${$INPUT_POST_DEPENDS}
+        eval "${INPUT_POST_DEPENDS}"
     fi
 fi
 
