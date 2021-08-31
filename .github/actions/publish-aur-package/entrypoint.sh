@@ -1,8 +1,7 @@
 #!/bin/bash
 
-set -o errexit -o pipefail -o nounset
+set -o errexit -o pipefail
 
-echo $HOME
 export HOME='/root'
 
 if [[ ! -z "${INPUT_DEPENDS}" ]]; then
