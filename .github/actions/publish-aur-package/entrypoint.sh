@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -o errexit -o pipefail
+set -e
 
 export HOME='/root'
 
