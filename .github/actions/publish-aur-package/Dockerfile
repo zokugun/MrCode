@@ -20,8 +20,7 @@ RUN \
 	\
 	# install yay
 	su - builder -c "cd /home/builder && git clone https://aur.archlinux.org/pikaur.git" && \
-	su - builder -c "cd /home/builder/pikaur && makepkg -s" && \
-	pacman -U /home/builder/pikaur/pikaur-*.tar.zst --noconfirm && \
+	su - builder -c "cd /home/builder/pikaur && makepkg -fsi --noconfirm" && \
 	rm -rf /home/builder/pikaur && \
 	rm -rf /home/builder/.cache
 
