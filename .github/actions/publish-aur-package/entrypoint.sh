@@ -67,10 +67,8 @@ if [[ "${INPUT_PACKAGE_VERSION}" != "$PKGVER" ]]; then
     sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
 fi
 
-if ! su builder -c "makepkg --verifysource" ; then
-    echo "Updating checksums"
-    su builder -c "updpkgsums"
-fi
+echo "Updating checksums"
+su builder -c "updpkgsums"
 
 echo "Detecting changes"
 changes=$( git status > /dev/null 2>&1 && git diff-index --quiet HEAD && echo 'no' || echo 'yes' )
