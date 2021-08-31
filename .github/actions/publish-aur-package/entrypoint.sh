@@ -2,6 +2,9 @@
 
 set -o errexit -o pipefail -o nounset
 
+pwd
+cd /root
+
 if [[ ! -z "${INPUT_DEPENDS}" ]]; then
     echo "Installing additional dependencies"
     su builder -c "yay -Syu --noconfirm ${INPUT_DEPENDS}"
