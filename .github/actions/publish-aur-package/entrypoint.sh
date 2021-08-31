@@ -16,8 +16,8 @@ ssh-keygen -vy -f .ssh/aur > .ssh/aur.pub
 sha512sum .ssh/aur .ssh/aur.pub
 
 echo "Setting up git"
-git config --global user.name "${GIT_USERNAME}"
-git config --global user.email "${GIT_EMAIL}"
+git config user.name "${GIT_USERNAME}"
+git config user.email "${GIT_EMAIL}"
 
 echo "Downloading package"
 git clone "ssh://aur@aur.archlinux.org/${INPUT_PACKAGE_NAME}.git"
