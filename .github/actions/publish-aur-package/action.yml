@@ -21,6 +21,9 @@ inputs:
   depends:
     description: List of additional dependencies to install
     required: false
+  post_depends:
+    description: Script to execute after installation of dependencies
+    required: false
 runs:
   using: docker
   image: Dockerfile

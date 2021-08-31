@@ -5,6 +5,10 @@ set -o errexit -o pipefail -o nounset
 if [[ ! -z "${INPUT_DEPENDS}" ]]; then
     echo "Installing additional dependencies"
     su builder -c "yay -Syu --noconfirm ${INPUT_DEPENDS}"
+
+    if [[ ! -z "${INPUT_POST_DEPENDS}" ]]; then
+        eval "$(INPUT_POST_DEPENDS)"
+    fi
 fi
 
 cd /root
@@ -50,25 +54,32 @@ if [[ -z "${INPUT_PACKAGE_VERSION}" ]]; then
     fi
 fi
 
-echo "Setting version: ${INPUT_PACKAGE_VERSION}"
-sed -i "s/pkgver=.*$/pkgver=${INPUT_PACKAGE_VERSION}/" PKGBUILD
-sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
+PKGVER=$( cat "PKGBUILD" | sed -n "s/.*pkgver=\([0-9.+]*\).*/\1/p" )
+PKGREL=$( cat "PKGBUILD" | sed -n "s/.*pkgrel=\([0-9]*\).*/\1/p" )
+echo "Current pkgver: $PKGVER pkgrel: $PKGREL"
+
+if [[ "${INPUT_PACKAGE_VERSION}" != "$PKGVER" ]]; then
+    echo "Setting version: ${INPUT_PACKAGE_VERSION}"
+    sed -i "s/pkgver=.*$/pkgver=${INPUT_PACKAGE_VERSION}/" PKGBUILD
+    sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
+fi
 
 echo "Updating checksums"
 su builder -c "updpkgsums"
 
-git status
-
-echo "Updating SRCINFO"
-su builder -c "makepkg --printsrcinfo > .SRCINFO"
-
-echo "Tracking files"
-git add -fv PKGBUILD .SRCINFO
-
 echo "Detecting changes"
-git status
 changes=$( git status > /dev/null 2>&1 && git diff-index --quiet HEAD && echo 'no' || echo 'yes' )
 if [[ "$changes" == "yes" ]]; then
+    if [[ "${INPUT_PACKAGE_VERSION}" == "$PKGVER" ]]; then
+        sed -i "s/pkgrel=.*$/pkgrel="$(($PKGREL + 1))"/" PKGBUILD
+    fi
+
+    echo "Updating SRCINFO"
+    su builder -c "makepkg --printsrcinfo > .SRCINFO"
+
+    echo "Tracking files"
+    git add -fv PKGBUILD .SRCINFO
+
     echo "Testing package"
     su builder -c "makepkg --noconfirm -s -c"
 
