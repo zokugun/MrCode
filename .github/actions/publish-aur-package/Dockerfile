@@ -19,7 +19,7 @@ RUN chown builder:builder /home/builder -R; \
 
 COPY entrypoint.sh /entrypoint.sh
 
-USER builder
+USER root
 WORKDIR /home/builder
 
 ENTRYPOINT ["/entrypoint.sh"]

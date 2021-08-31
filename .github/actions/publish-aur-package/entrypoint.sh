@@ -20,14 +20,14 @@ ssh-keygen -vy -f .ssh/aur > .ssh/aur.pub
 
 sha512sum .ssh/aur .ssh/aur.pub
 
+echo "Setting up git"
+git config --global user.name "${GIT_USERNAME}"
+git config --global user.email "${GIT_EMAIL}"
+
 echo "Downloading package"
 git clone "ssh://aur@aur.archlinux.org/${INPUT_PACKAGE_NAME}.git"
 
 cd "${INPUT_PACKAGE_NAME}"
-
-echo "Setting up git"
-git config --global user.name "${GIT_USERNAME}"
-git config --global user.email "${GIT_EMAIL}"
 
 if [[ -z "${INPUT_PACKAGE_VERSION}" ]]; then
     echo "Getting version"
@@ -55,7 +55,7 @@ echo "Updating checksums"
 updpkgsums
 
 echo "Updating SRCINFO"
-makepkg --printsrcinfo > .SRCINFO
+su builder -c "makepkg --printsrcinfo > .SRCINFO"
 
 echo "Tracking files"
 git add -fv PKGBUILD .SRCINFO
@@ -64,7 +64,7 @@ echo "Detecting changes"
 changes=$( git status > /dev/null 2>&1 && git diff-index --quiet HEAD && echo 'no' || echo 'yes' )
 if [[ "$changes" == "yes" ]]; then
     echo "Testing package"
-    makepkg --noconfirm -s -c
+    su builder -c "makepkg --noconfirm -s -c"
 
     echo "Publishing new version"
 
