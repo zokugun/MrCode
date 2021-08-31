@@ -6,7 +6,7 @@ cd /home/builder
 
 if [[ ! -z "${INPUT_DEPENDS}" ]]; then
     echo "Installing additional dependencies"
-    pacman -Syuq --noconfirm --noconfirm "${INPUT_DEPENDS}"
+    yay -Syu --noconfirm "${INPUT_DEPENDS}"
 fi
 
 echo "Setting up ssh"

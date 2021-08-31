@@ -4,6 +4,11 @@ RUN \
 	# install dependencies
 	pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh jq; \
 	\
+	# instal yay
+	git clone https://aur.archlinux.org/yay-bin.git; \
+	cd yay-bin; \
+	makepkg -si; \
+	\
 	# add user
 	useradd -m builder; \
 	echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; \
