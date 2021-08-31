@@ -7,17 +7,16 @@ RUN \
 	# add user
 	useradd -m builder && \
 	echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-	mkdir -p /home/builder/.ssh && \
-	touch /home/builder/.ssh/known_hosts && \
-	touch /home/builder/.config && \
-	touch /home/builder/.gitconfig;
+	\
+	# prepare ssh
+	mkdir -p /root/.ssh && \
+	touch /root/.ssh/known_hosts
 
-COPY ssh_config /home/builder/.ssh/config
+COPY ssh_config /root/.ssh/config
 
 RUN \
 	# fixing ACL
-	chown builder:builder /home/builder -R && \
-	chmod 600 /home/builder/.ssh/* -R && \
+	chmod 600 /root/.ssh/* -R && \
 	\
 	# install yay
 	su - builder -c "cd /home/builder && git clone https://aur.archlinux.org/yay-bin.git" && \
