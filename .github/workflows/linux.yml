@@ -110,6 +110,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Register local actions
+        uses: actions/checkout@master
+
       - name: Get version for mrcode
         run: |
           VERSION=$( curl --silent "https://api.github.com/repos/zokugun/MrCode/releases/latest" | jq -r .tag_name )
