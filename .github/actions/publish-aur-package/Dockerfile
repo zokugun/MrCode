@@ -19,10 +19,10 @@ RUN \
 	chmod 600 /root/.ssh/* -R && \
 	\
 	# install yay
-	su - builder -c "cd /home/builder && git clone https://aur.archlinux.org/yay-bin.git" && \
-	su - builder -c "cd /home/builder/yay-bin && makepkg -s" && \
-	pacman -U /home/builder/yay-bin/yay-*.tar.zst --noconfirm && \
-	rm -rf /home/builder/yay-bin && \
+	su - builder -c "cd /home/builder && git clone https://aur.archlinux.org/pikaur.git" && \
+	su - builder -c "cd /home/builder/pikaur && makepkg -s" && \
+	pacman -U /home/builder/pikaur/pikaur-*.tar.zst --noconfirm && \
+	rm -rf /home/builder/pikaur && \
 	rm -rf /home/builder/.cache
 
 COPY entrypoint.sh /entrypoint.sh

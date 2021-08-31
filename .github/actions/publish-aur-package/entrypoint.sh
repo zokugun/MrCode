@@ -6,10 +6,8 @@ cd /root
 
 if [[ ! -z "${INPUT_DEPENDS}" ]]; then
     echo "Installing additional dependencies"
-    su builder -c "yay -Syu --noconfirm ${INPUT_DEPENDS}"
+    pikaur -Su --noconfirm "${INPUT_DEPENDS}"
 
-    su builder -c "command -v asdf 2>&1"
-    command -v asdf 2>&1
 fi
 
 echo "Setting up ssh"
@@ -59,6 +57,8 @@ sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
 
 echo "Updating checksums"
 su builder -c "updpkgsums"
+
+git status
 
 echo "Updating SRCINFO"
 su builder -c "makepkg --printsrcinfo > .SRCINFO"
