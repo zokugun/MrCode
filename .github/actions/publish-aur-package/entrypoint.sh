@@ -67,8 +67,10 @@ if [[ "${INPUT_PACKAGE_VERSION}" != "$PKGVER" ]]; then
     sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
 fi
 
-echo "Updating checksums"
-su builder -c "updpkgsums"
+if ! su builder -c "makepkg --verifysource" ; then
+    echo "Updating checksums"
+    su builder -c "updpkgsums"
+fi
 
 echo "Detecting changes"
 changes=$( git status > /dev/null 2>&1 && git diff-index --quiet HEAD && echo 'no' || echo 'yes' )
@@ -91,8 +93,8 @@ if [[ "$changes" == "yes" ]]; then
 
     echo "Publishing new version"
 
-    package_name="${INPUT_PACKAGE_NAME}"
-    package_version="${INPUT_PACKAGE_VERSION}"
+    export package_name="${INPUT_PACKAGE_NAME}"
+    export package_version="${INPUT_PACKAGE_VERSION}"
 
     message=$( echo "${INPUT_COMMIT_MESSAGE}" | envsubst )
 
