@@ -4,6 +4,11 @@ set -o errexit -o pipefail -o nounset
 
 cd /home/builder
 
+if [[ ! -z "${INPUT_DEPENDS}" ]]; then
+    echo "Installing additional dependencies"
+    pacman -Syuq --noconfirm --noconfirm "${INPUT_DEPENDS}"
+fi
+
 echo "Setting up ssh"
 ssh-keyscan -v -t ed25519 aur.archlinux.org >> .ssh/known_hosts
 
@@ -21,8 +26,8 @@ git clone "ssh://aur@aur.archlinux.org/${INPUT_PACKAGE_NAME}.git"
 cd "${INPUT_PACKAGE_NAME}"
 
 echo "Setting up git"
-git config user.name "${GIT_USERNAME}"
-git config user.email "${GIT_EMAIL}"
+git config --global user.name "${GIT_USERNAME}"
+git config --global user.email "${GIT_EMAIL}"
 
 if [[ -z "${INPUT_PACKAGE_VERSION}" ]]; then
     echo "Getting version"
