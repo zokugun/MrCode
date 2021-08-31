@@ -84,8 +84,10 @@ if [[ "$changes" == "yes" ]]; then
     echo "Tracking files"
     git add -fv PKGBUILD .SRCINFO
 
-    echo "Testing package"
-    su builder -c "makepkg --noconfirm -s -c"
+    if [[ "${INPUT_SKIP_TEST}" != "yes" ]]; then
+        echo "Testing package"
+        su builder -c "makepkg --noconfirm -s -c"
+    fi
 
     echo "Publishing new version"
 

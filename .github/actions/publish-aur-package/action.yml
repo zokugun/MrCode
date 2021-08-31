@@ -24,6 +24,10 @@ inputs:
   post_depends:
     description: Script to execute after installation of dependencies
     required: false
+  skip_test:
+    description: Flag if testing has to be skipped
+    required: false
+    default: no
 runs:
   using: docker
   image: Dockerfile
