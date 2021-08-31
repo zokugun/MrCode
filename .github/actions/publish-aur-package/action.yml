@@ -9,10 +9,11 @@ inputs:
     required: true
   package_version:
     description: Version of the package to publish
-    required: true
+    required: false
   commit_message:
     description: Message to use when commiting
-    required: true
+    required: false
+    default: Update ${package_name} to ${package_version}
 runs:
   using: docker
   image: Dockerfile

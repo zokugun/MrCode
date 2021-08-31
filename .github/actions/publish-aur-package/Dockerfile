@@ -2,13 +2,15 @@ FROM archlinux/archlinux:base
 
 RUN \
 	# install dependencies
-	pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh; \
+	pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh jq; \
 	\
 	# add user
 	useradd -m builder; \
 	echo "builder ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; \
 	mkdir -p /home/builder/.ssh; \
-	touch /home/builder/.ssh/known_hosts;
+	touch /home/builder/.ssh/known_hosts; \
+	touch /home/builder/.config; \
+	touch /home/builder/.gitconfig;
 
 COPY ssh_config /home/builder/.ssh/config
 

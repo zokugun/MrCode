@@ -23,6 +23,11 @@ echo "Downloading package"
 git clone "ssh://aur@aur.archlinux.org/${INPUT_PACKAGE_NAME}.git"
 cd "${INPUT_PACKAGE_NAME}"
 
+if [[ -z "${INPUT_PACKAGE_VERSION}" ]]; then
+    echo "Getting version"
+    INPUT_PACKAGE_VERSION=$( curl --silent "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" | jq -r .tag_name )
+fi
+
 echo "Setting version: ${INPUT_PACKAGE_VERSION}"
 sed -i "s/pkgver=.*$/pkgver=${INPUT_PACKAGE_VERSION}/" PKGBUILD
 sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
@@ -44,7 +49,9 @@ changes=$( git status > /dev/null 2>&1 && git diff-index --quiet HEAD && echo 'n
 if [[ "$changes" == "yes" ]]; then
     echo "Publishing new version"
 
-    version="${INPUT_PACKAGE_VERSION}"
+    package_name="${INPUT_PACKAGE_NAME}"
+    package_version="${INPUT_PACKAGE_VERSION}"
+
     message=$( echo "${INPUT_COMMIT_MESSAGE}" | envsubst )
 
     echo "message: $message"

@@ -113,16 +113,10 @@ jobs:
       - name: Register local actions
         uses: actions/checkout@master
 
-      - name: Get version for mrcode
-        run: |
-          VERSION=$( curl --silent "https://api.github.com/repos/zokugun/MrCode/releases/latest" | jq -r .tag_name )
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Publish mrcode
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode
-          package_version: ${{ env.VERSION }}
-          commit_message: "Update mrcode to ${version}"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
