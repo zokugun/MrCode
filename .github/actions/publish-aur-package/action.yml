@@ -1,0 +1,18 @@
+name: Publish AUR package
+description: Publish AUR package
+branding:
+  color: green
+  icon: upload
+inputs:
+  package_name:
+    description: Name of the package to publish
+    required: true
+  package_version:
+    description: Version of the package to publish
+    required: true
+  commit_message:
+    description: Message to use when commiting
+    required: true
+runs:
+  using: docker
+  image: Dockerfile

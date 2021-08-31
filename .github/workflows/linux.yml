@@ -108,36 +108,19 @@ jobs:
   aur:
     needs: release
     runs-on: ubuntu-latest
-    container:
-      image: archlinux/archlinux:base
 
     steps:
-      - name: Install dependencies
-        run: pacman --needed --noconfirm -Syu base base-devel pacman-contrib git openssh jq
-
-      - uses: actions/checkout@v2
-      - run: git fetch --prune --unshallow
-
-      - name: Setup
+      - name: Get version for mrcode
+        run: |
+          VERSION=$( curl --silent "https://api.github.com/repos/zokugun/MrCode/releases/latest" | jq -r .tag_name )
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+      - name: Publish mrcode
+        uses: ./.github/actions/publish-aur-package
+        with:
+          package_name: mrcode
+          package_version: ${{ env.VERSION }}
+          commit_message: "Update mrcode to ${version}"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
           GIT_EMAIL: ${{ secrets.AUR_GIT_EMAIL }}
-        working-directory: ./stores/aur
-        run: ./setup.sh
-
-      - name: Retrieve packages
-        working-directory: ./stores/aur
-        run: |
-          ./getpkg.sh mrcode
-          ./getpkg.sh mrcode-bin
-          ./getpkg.sh mrcode-git
-
-      - name: Publish mrcode
-        run: ./stores/aur/update_mrcode.sh
-
-      - name: Publish mrcode-bin
-        run: ./stores/aur/update_mrcode_bin.sh
-
-      - name: Publish mrcode-git
-        run: ./stores/aur/update_mrcode_git.sh
