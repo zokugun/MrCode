@@ -28,6 +28,6 @@ RUN \
 COPY entrypoint.sh /entrypoint.sh
 
 USER root
-WORKDIR /root
+WORKDIR /home/builder
 
 ENTRYPOINT ["/entrypoint.sh"]

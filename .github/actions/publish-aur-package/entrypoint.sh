@@ -24,8 +24,11 @@ echo "Setting up git"
 git config --global user.name "${GIT_USERNAME}"
 git config --global user.email "${GIT_EMAIL}"
 
+cd /home/builder
+
 echo "Downloading package"
 git clone "ssh://aur@aur.archlinux.org/${INPUT_PACKAGE_NAME}.git"
+chown builder:builder "${INPUT_PACKAGE_NAME}" -R
 
 cd "${INPUT_PACKAGE_NAME}"
 
@@ -41,7 +44,7 @@ if [[ -z "${INPUT_PACKAGE_VERSION}" ]]; then
 
         INPUT_PACKAGE_VERSION=$( git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' )
 
-        cd "/root/${INPUT_PACKAGE_NAME}"
+        cd "/home/builder/${INPUT_PACKAGE_NAME}"
     else
         INPUT_PACKAGE_VERSION=$( curl --silent "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" | jq -r .tag_name )
     fi
