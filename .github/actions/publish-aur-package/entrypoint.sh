@@ -2,12 +2,12 @@
 
 set -o errexit -o pipefail -o nounset
 
-cd /root
-
 if [[ ! -z "${INPUT_DEPENDS}" ]]; then
     echo "Installing additional dependencies"
     su builder -c "yay -Syu --noconfirm ${INPUT_DEPENDS}"
 fi
+
+cd /root
 
 echo "Setting up ssh"
 ssh-keyscan -v -t ed25519 aur.archlinux.org >> .ssh/known_hosts
