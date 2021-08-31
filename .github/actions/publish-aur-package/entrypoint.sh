@@ -26,7 +26,20 @@ git config user.email "${GIT_EMAIL}"
 
 if [[ -z "${INPUT_PACKAGE_VERSION}" ]]; then
     echo "Getting version"
-    INPUT_PACKAGE_VERSION=$( curl --silent "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" | jq -r .tag_name )
+
+    if [[ "${INPUT_PACKAGE_TYPE}" == "rolling" ]]; then
+        cd /tmp
+
+        git clone "https://github.com/${GITHUB_REPOSITORY}.git"
+
+        cd "${GITHUB_REPOSITORY#*/}"
+
+        INPUT_PACKAGE_VERSION=$( git describe --long --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' )
+
+        cd "/home/builder/${INPUT_PACKAGE_NAME}"
+    else
+        INPUT_PACKAGE_VERSION=$( curl --silent "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/latest" | jq -r .tag_name )
+    fi
 fi
 
 echo "Setting version: ${INPUT_PACKAGE_VERSION}"
@@ -35,9 +48,6 @@ sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
 
 echo "Updating checksums"
 updpkgsums
-
-echo "Testing package"
-makepkg --noconfirm -s -c
 
 echo "Updating SRCINFO"
 makepkg --printsrcinfo > .SRCINFO
@@ -48,6 +58,9 @@ git add -fv PKGBUILD .SRCINFO
 echo "Detecting changes"
 changes=$( git status > /dev/null 2>&1 && git diff-index --quiet HEAD && echo 'no' || echo 'yes' )
 if [[ "$changes" == "yes" ]]; then
+    echo "Testing package"
+    makepkg --noconfirm -s -c
+
     echo "Publishing new version"
 
     package_name="${INPUT_PACKAGE_NAME}"

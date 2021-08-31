@@ -10,6 +10,10 @@ inputs:
   package_version:
     description: Version of the package to publish
     required: false
+  package_type:
+    description: Type of the package to publish
+    required: false
+    default: stable
   commit_message:
     description: Message to use when commiting
     required: false
