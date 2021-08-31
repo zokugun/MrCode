@@ -7,6 +7,9 @@ cd /root
 if [[ ! -z "${INPUT_DEPENDS}" ]]; then
     echo "Installing additional dependencies"
     su builder -c "yay -Syu --noconfirm ${INPUT_DEPENDS}"
+
+    su builder -c "command -v asdf 2>&1"
+    command -v asdf 2>&1
 fi
 
 echo "Setting up ssh"
@@ -64,6 +67,7 @@ echo "Tracking files"
 git add -fv PKGBUILD .SRCINFO
 
 echo "Detecting changes"
+git status
 changes=$( git status > /dev/null 2>&1 && git diff-index --quiet HEAD && echo 'no' || echo 'yes' )
 if [[ "$changes" == "yes" ]]; then
     echo "Testing package"
