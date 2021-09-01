@@ -18,12 +18,6 @@ inputs:
     description: Message to use when commiting
     required: false
     default: Update ${package_name} to ${package_version}
-  depends:
-    description: List of additional dependencies to install
-    required: false
-  post_depends:
-    description: Script to execute after installation of dependencies
-    required: false
   skip_test:
     description: Flag if testing has to be skipped
     required: false

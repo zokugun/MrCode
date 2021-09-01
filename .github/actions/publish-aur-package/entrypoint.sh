@@ -4,16 +4,6 @@ set -e
 
 export HOME='/root'
 
-if [[ ! -z "${INPUT_DEPENDS}" ]]; then
-    echo "Installing additional dependencies"
-    su builder -c "yay -Syu --noconfirm ${INPUT_DEPENDS}"
-
-    if [[ ! -z "${INPUT_POST_DEPENDS}" ]]; then
-        echo "Evaluating post dependencies"
-        su builder -c "${INPUT_POST_DEPENDS}"
-    fi
-fi
-
 cd /root
 
 echo "Setting up ssh"
@@ -88,8 +78,7 @@ if [[ "$changes" == "yes" ]]; then
 
     if [[ "${INPUT_SKIP_TEST}" != "yes" ]]; then
         echo "Testing package"
-        # su builder -c "GITHUB_ENV='' makepkg --noconfirm -s -c"
-        su builder -c "yay -Syu --noconfirm nodejs-lts-fermium npm && mkdir ~/.npm-global && npm config set prefix '~/.npm-global' && PATH=~/.npm-global/bin:\$PATH GITHUB_ENV='' makepkg --noconfirm -s -c"
+        su builder -c "GITHUB_ENV='' makepkg --noconfirm -s -c"
     else
         echo "Skipping testing"
     fi

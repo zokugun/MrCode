@@ -117,7 +117,6 @@ jobs:
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode
-          # depends: nodejs-lts-fermium npm yarn
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
@@ -127,7 +126,6 @@ jobs:
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode-bin
-          # depends: nodejs-lts-fermium npm yarn
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
@@ -138,11 +136,6 @@ jobs:
         with:
           package_name: mrcode-git
           package_type: rolling
-          # depends: nodejs-lts-fermium npm
-          # post_depends: |
-          #   mkdir ~/.npm-global
-          #   npm config set prefix '~/.npm-global'
-          #   export PATH=~/.npm-global/bin:$PATH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
