@@ -89,7 +89,7 @@ if [[ "$changes" == "yes" ]]; then
     if [[ "${INPUT_SKIP_TEST}" != "yes" ]]; then
         echo "Testing package"
         # su builder -c "GITHUB_ENV='' makepkg --noconfirm -s -c"
-        su builder -c "GITHUB_ENV='' ./stores/aur/make.sh"
+        su builder -c "yay -Syu --noconfirm nodejs-lts-fermium npm && mkdir ~/.npm-global && npm config set prefix '~/.npm-global' && PATH=~/.npm-global/bin:\$PATH GITHUB_ENV='' makepkg --noconfirm -s -c"
     else
         echo "Skipping testing"
     fi
