@@ -65,6 +65,8 @@ if [[ "${INPUT_PACKAGE_VERSION}" != "$PKGVER" ]]; then
     echo "Setting version: ${INPUT_PACKAGE_VERSION}"
     sed -i "s/pkgver=.*$/pkgver=${INPUT_PACKAGE_VERSION}/" PKGBUILD
     sed -i "s/pkgrel=.*$/pkgrel=1/" PKGBUILD
+else
+    echo "Same version"
 fi
 
 echo "Updating checksums"
@@ -87,6 +89,8 @@ if [[ "$changes" == "yes" ]]; then
     if [[ "${INPUT_SKIP_TEST}" != "yes" ]]; then
         echo "Testing package"
         su builder -c "makepkg --noconfirm -s -c"
+    else
+        echo "Skipping testing"
     fi
 
     echo "Publishing new version"
