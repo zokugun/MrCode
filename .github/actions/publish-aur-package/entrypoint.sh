@@ -88,7 +88,8 @@ if [[ "$changes" == "yes" ]]; then
 
     if [[ "${INPUT_SKIP_TEST}" != "yes" ]]; then
         echo "Testing package"
-        su builder -c "GITHUB_ENV='' makepkg --noconfirm -s -c"
+        # su builder -c "GITHUB_ENV='' makepkg --noconfirm -s -c"
+        su builder -c "GITHUB_ENV='' ./stores/aur/make.sh"
     else
         echo "Skipping testing"
     fi
