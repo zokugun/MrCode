@@ -10,7 +10,7 @@ if [[ ! -z "${INPUT_DEPENDS}" ]]; then
 
     if [[ ! -z "${INPUT_POST_DEPENDS}" ]]; then
         echo "Evaluating post dependencies"
-        eval "${INPUT_POST_DEPENDS}"
+        su builder -c "${INPUT_POST_DEPENDS}"
     fi
 fi
 
