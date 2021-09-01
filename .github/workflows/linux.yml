@@ -117,7 +117,7 @@ jobs:
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode
-          depends: nodejs-lts-fermium npm yarn
+          # depends: nodejs-lts-fermium npm yarn
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
@@ -127,7 +127,7 @@ jobs:
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode-bin
-          depends: nodejs-lts-fermium npm yarn
+          # depends: nodejs-lts-fermium npm yarn
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
