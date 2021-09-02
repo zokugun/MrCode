@@ -1,0 +1,90 @@
+name: mrcode
+adopt-info: mrcode
+summary: MrCode. Code editing.
+description: |
+  MrCode is an editor based on Visual Studio Code.
+
+base: core18
+grade: stable
+confinement: classic
+
+parts:
+  gnome:
+    plugin: nil
+    build-packages:
+      - software-properties-common
+    override-pull: |
+      add-apt-repository -y ppa:ubuntu-desktop/gnome-3-26
+      apt -y update
+
+  mrcode:
+    after:
+      - gnome
+    plugin: nil
+    override-build: |
+      set -eu
+      ARCHITECTURE=$(dpkg --print-architecture)
+      echo "ARCHITECTURE: ${ARCHITECTURE}"
+      echo "Get GitHub releases..."
+      wget --quiet https://api.github.com/repos/zokugun/MrCode/releases -O releases.json
+      VERSION=$(jq . releases.json | grep tag_name | cut -d'"' -f4 | sed s'/v//' | head -n 1)
+      echo "VERSION: ${VERSION}"
+      DEB_URL=$(grep browser_download releases.json | grep "download/${VERSION}" | grep deb | grep $ARCHITECTURE | grep -v sha256 | cut -d'"' -f4 | tail -n 1)
+      DEB=$(basename "${DEB_URL}")
+      echo "Downloading ${DEB_URL}..."
+      wget "${DEB_URL}" -O "${SNAPCRAFT_PART_INSTALL}/${DEB}"
+      echo "Unpacking ${DEB}..."
+      dpkg -x "${SNAPCRAFT_PART_INSTALL}/${DEB}" ${SNAPCRAFT_PART_INSTALL}
+      rm -f releases.json
+      rm -f "${SNAPCRAFT_PART_INSTALL}/${DEB}"
+      # Correct path to icon.
+      sed -i 's|Icon=mrcode|Icon=${SNAP}/usr/share/pixmaps/mrcode.png|g' ${SNAPCRAFT_PART_INSTALL}/usr/share/applications/mrcode.desktop
+      sed -i 's|Exec=/usr/share/mrcode/mrcode|Exec=mrcode|g' ${SNAPCRAFT_PART_INSTALL}/usr/share/applications/mrcode.desktop
+      sed -i 's|Icon=mrcode|Icon=/usr/share/pixmaps/mrcode.png|g' ${SNAPCRAFT_PART_INSTALL}/usr/share/applications/mrcode-url-handler.desktop
+      # Set version
+      echo $VERSION > $SNAPCRAFT_STAGE/version
+      snapcraftctl set-version "$VERSION"
+    build-packages:
+      - dpkg
+      - jq
+      - sed
+      - wget
+    stage-packages:
+      - ibus-gtk3
+      - fcitx-frontend-gtk3
+      - gvfs-libs
+      - libasound2
+      - libgconf-2-4
+      - libglib2.0-bin
+      - libgnome-keyring0
+      - libgbm1
+      - libgtk-3-0
+      - libnotify4
+      - libnspr4
+      - libnss3
+      - libpcre3
+      - libpulse0
+      - libsecret-1-0
+      - libxss1
+      - libxtst6
+      - zlib1g
+    prime:
+      - -usr/share/doc
+      - -usr/share/fonts
+      - -usr/share/icons
+      - -usr/share/lintian
+      - -usr/share/man
+
+apps:
+  mrcode:
+    command: electron-launch $SNAP/usr/sharemrcode/bin/mrcode --no-sandbox
+    common-id: mrcode.desktop
+    environment:
+      DISABLE_WAYLAND: 1
+      GSETTINGS_SCHEMA_DIR: $SNAP/usr/share/glib-2.0/schemas
+
+  url-handler:
+    command: electron-launch $SNAP/usr/share/mrcode/bin/mrcode --open-url --no-sandbox
+    environment:
+      DISABLE_WAYLAND: 1
+      GSETTINGS_SCHEMA_DIR: $SNAP/usr/share/glib-2.0/schemas

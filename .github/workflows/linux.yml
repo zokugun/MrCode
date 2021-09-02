@@ -140,3 +140,19 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
           GIT_EMAIL: ${{ secrets.AUR_GIT_EMAIL }}
+
+  snap:
+    needs: release
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: snapcore/action-build@v1
+        id: build
+        with:
+          path: stores/snapcraft
+      - uses: snapcore/action-publish@v1
+        with:
+          store_login: ${{ secrets.SNAP_STORE_LOGIN }}
+          snap: ${{ steps.build.outputs.snap }}
+          release: edge
