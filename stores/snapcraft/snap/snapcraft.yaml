@@ -14,7 +14,7 @@ parts:
     build-packages:
       - software-properties-common
     override-pull: |
-      add-apt-repository -y ppa:ubuntu-desktop/gnome-3-26
+      add-apt-repository -y ppa:ubuntu-desktop/gnome-3-28
       apt -y update
 
   mrcode:
