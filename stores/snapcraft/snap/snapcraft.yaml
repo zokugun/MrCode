@@ -47,12 +47,14 @@ parts:
       - libgnome-keyring0
       - libgbm1
       - libgtk-3-0
+      - libxkbfile1
       - libnotify4
       - libnspr4
       - libnss3
       - libpcre3
       - libpulse0
       - libsecret-1-0
+      - libxshmfence1
       - libxss1
       - libxtst6
       - zlib1g

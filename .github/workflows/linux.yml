@@ -114,7 +114,7 @@ jobs:
         env:
           PUBLISH_AUR: ${{ secrets.PUBLISH_AUR }}
         uses: actions/checkout@master
-        if: env.PUBLISH_AUR != 'yes'
+        if: env.PUBLISH_AUR != 'no'
 
       - name: Publish mrcode
         uses: ./.github/actions/publish-aur-package
@@ -125,7 +125,7 @@ jobs:
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
           GIT_EMAIL: ${{ secrets.AUR_GIT_EMAIL }}
           PUBLISH_AUR: ${{ secrets.PUBLISH_AUR }}
-        if: env.PUBLISH_AUR != 'yes'
+        if: env.PUBLISH_AUR != 'no'
 
       - name: Publish mrcode-bin
         uses: ./.github/actions/publish-aur-package
@@ -136,7 +136,7 @@ jobs:
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
           GIT_EMAIL: ${{ secrets.AUR_GIT_EMAIL }}
           PUBLISH_AUR: ${{ secrets.PUBLISH_AUR }}
-        if: env.PUBLISH_AUR != 'yes'
+        if: env.PUBLISH_AUR != 'no'
 
       - name: Publish mrcode-git
         uses: ./.github/actions/publish-aur-package
@@ -148,7 +148,7 @@ jobs:
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
           GIT_EMAIL: ${{ secrets.AUR_GIT_EMAIL }}
           PUBLISH_AUR: ${{ secrets.PUBLISH_AUR }}
-        if: env.PUBLISH_AUR != 'yes'
+        if: env.PUBLISH_AUR != 'no'
 
   snap:
     needs: release
