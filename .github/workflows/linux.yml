@@ -111,11 +111,12 @@ jobs:
 
     steps:
       - name: Register local actions
-        if: ${{ secrets.PUBLISH_AUR != 'yes' }}
+        env:
+          PUBLISH_AUR: ${{ secrets.PUBLISH_AUR }}
         uses: actions/checkout@master
+        if: env.PUBLISH_AUR != 'yes'
 
       - name: Publish mrcode
-        if: ${{ secrets.PUBLISH_AUR != 'yes' }}
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode
@@ -123,9 +124,10 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
           GIT_EMAIL: ${{ secrets.AUR_GIT_EMAIL }}
+          PUBLISH_AUR: ${{ secrets.PUBLISH_AUR }}
+        if: env.PUBLISH_AUR != 'yes'
 
       - name: Publish mrcode-bin
-        if: ${{ secrets.PUBLISH_AUR != 'yes' }}
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode-bin
@@ -133,9 +135,10 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
           GIT_EMAIL: ${{ secrets.AUR_GIT_EMAIL }}
+          PUBLISH_AUR: ${{ secrets.PUBLISH_AUR }}
+        if: env.PUBLISH_AUR != 'yes'
 
       - name: Publish mrcode-git
-        if: ${{ secrets.PUBLISH_AUR != 'yes' }}
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode-git
@@ -144,6 +147,8 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
           GIT_EMAIL: ${{ secrets.AUR_GIT_EMAIL }}
+          PUBLISH_AUR: ${{ secrets.PUBLISH_AUR }}
+        if: env.PUBLISH_AUR != 'yes'
 
   snap:
     needs: release
