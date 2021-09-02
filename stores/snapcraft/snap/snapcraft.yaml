@@ -67,7 +67,7 @@ parts:
 
 apps:
   mrcode:
-    command: electron-launch $SNAP/usr/sharemrcode/bin/mrcode --no-sandbox
+    command: electron-launch $SNAP/usr/share/mrcode/bin/mrcode --no-sandbox
     common-id: mrcode.desktop
     environment:
       DISABLE_WAYLAND: 1

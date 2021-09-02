@@ -111,9 +111,9 @@ jobs:
 
     steps:
       - name: Register local actions
+        uses: actions/checkout@master
         env:
           PUBLISH_AUR: ${{ secrets.PUBLISH_AUR }}
-        uses: actions/checkout@master
         if: env.PUBLISH_AUR != 'no'
 
       - name: Publish mrcode
@@ -156,12 +156,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: snapcore/action-build@v1
+        env:
+          PUBLISH_SNAP: ${{ secrets.PUBLISH_SNAP }}
+        if: env.PUBLISH_SNAP != 'no'
+
+      - name: Build snap
         id: build
+        uses: snapcore/action-build@v1
         with:
           path: stores/snapcraft
-      - uses: snapcore/action-publish@v1
+        env:
+          PUBLISH_SNAP: ${{ secrets.PUBLISH_SNAP }}
+        if: env.PUBLISH_SNAP != 'no'
+
+      - name: Publish Snap
+        uses: snapcore/action-publish@v1
         with:
           store_login: ${{ secrets.SNAP_STORE_LOGIN }}
           snap: ${{ steps.build.outputs.snap }}
           release: edge
+        env:
+          PUBLISH_SNAP: ${{ secrets.PUBLISH_SNAP }}
+        if: env.PUBLISH_SNAP != 'no'
