@@ -14,16 +14,14 @@ parts:
     override-build: |
       set -eu
       ARCHITECTURE=$(dpkg --print-architecture)
-      echo "ARCHITECTURE: ${ARCHITECTURE}"
-      echo "Get GitHub releases..."
-      wget --quiet https://api.github.com/repos/zokugun/MrCode/releases -O releases.json
-      VERSION=$(jq . releases.json | grep tag_name | cut -d'"' -f4 | sed s'/v//' | head -n 1)
-      echo "VERSION: ${VERSION}"
-      DEB_URL=$(grep browser_download releases.json | grep "download/${VERSION}" | grep deb | grep $ARCHITECTURE | grep -v sha256 | cut -d'"' -f4 | tail -n 1)
+      # Get GitHub releases
+      wget --quiet https://api.github.com/repos/zokugun/MrCode/releases/latest -O latest.json
+      VERSION=$(jq -r .tag_name latest.json)
+      DEB_URL=$(grep browser_download latest.json | grep deb\" | grep $ARCHITECTURE | grep -v sha256 | cut -d'"' -f4 | tail -n 1)
       DEB=$(basename "${DEB_URL}")
-      echo "Downloading ${DEB_URL}..."
+      # Downloading .deb"
       wget "${DEB_URL}" -O "${SNAPCRAFT_PART_INSTALL}/${DEB}"
-      echo "Unpacking ${DEB}..."
+      # Unpacking .deb"
       dpkg -x "${SNAPCRAFT_PART_INSTALL}/${DEB}" ${SNAPCRAFT_PART_INSTALL}
       rm -f releases.json
       rm -f "${SNAPCRAFT_PART_INSTALL}/${DEB}"

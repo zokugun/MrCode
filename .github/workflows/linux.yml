@@ -111,9 +111,11 @@ jobs:
 
     steps:
       - name: Register local actions
+        if: secrets.PUBLISH_AUR != 'yes'
         uses: actions/checkout@master
 
       - name: Publish mrcode
+        if: secrets.PUBLISH_AUR != 'yes'
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode
@@ -123,6 +125,7 @@ jobs:
           GIT_EMAIL: ${{ secrets.AUR_GIT_EMAIL }}
 
       - name: Publish mrcode-bin
+        if: secrets.PUBLISH_AUR != 'yes'
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode-bin
@@ -132,6 +135,7 @@ jobs:
           GIT_EMAIL: ${{ secrets.AUR_GIT_EMAIL }}
 
       - name: Publish mrcode-git
+        if: secrets.PUBLISH_AUR != 'yes'
         uses: ./.github/actions/publish-aur-package
         with:
           package_name: mrcode-git
