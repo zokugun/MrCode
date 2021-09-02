@@ -64,7 +64,8 @@ parts:
       - -usr/share/icons
       - -usr/share/lintian
       - -usr/share/man
-  copy-files:
+
+  electron-launch:
     after:
       - mrcode
     plugin: dump
