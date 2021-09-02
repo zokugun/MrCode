@@ -23,7 +23,7 @@ parts:
       wget "${DEB_URL}" -O "${SNAPCRAFT_PART_INSTALL}/${DEB}"
       # Unpacking .deb"
       dpkg -x "${SNAPCRAFT_PART_INSTALL}/${DEB}" ${SNAPCRAFT_PART_INSTALL}
-      rm -f releases.json
+      rm -f latest.json
       rm -f "${SNAPCRAFT_PART_INSTALL}/${DEB}"
       # Correct path to icon.
       sed -i 's|Icon=mrcode|Icon=${SNAP}/usr/share/pixmaps/mrcode.png|g' ${SNAPCRAFT_PART_INSTALL}/usr/share/applications/mrcode.desktop
@@ -64,6 +64,11 @@ parts:
       - -usr/share/icons
       - -usr/share/lintian
       - -usr/share/man
+  copy-files:
+    after:
+      - mrcode
+    plugin: dump
+    source: snap/local
 
 apps:
   mrcode:
