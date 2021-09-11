@@ -103,15 +103,42 @@ gsed -i -E 's|VERSION_PATH="darwin"|VERSION_PATH="darwin/${VSCODE_ARCH}"|g' upda
 gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' update_version.sh
 gsed -i -E 's/MS_COMMIT/BUILD_SOURCEVERSION/g' update_version.sh
 
-# VSCodium-AppImage-Recipe.yml
-backup 'VSCodium-AppImage-Recipe.yml'
-gsed -i -E 's/VSCodium/MrCode/g' VSCodium-AppImage-Recipe.yml
-gsed -i -E 's/vscodium/mrcode/g' VSCodium-AppImage-Recipe.yml
-gsed -i -E 's/codium/mrcode/g' VSCodium-AppImage-Recipe.yml
+# build/linux/appimage/recipe.yml
+backup 'build/linux/appimage/recipe.yml'
+gsed -i -E 's/VSCodium/MrCode/g' build/linux/appimage/recipe.yml
+gsed -i -E 's/vscodium/mrcode/g' build/linux/appimage/recipe.yml
+gsed -i -E 's/codium/mrcode/g' build/linux/appimage/recipe.yml
 
-# create_appimage.sh
-backup 'create_appimage.sh'
-gsed -i -E 's/VSCodium\|vscodium/zokugun|MrCode/' create_appimage.sh
+# build/linux/appimage/build.sh
+backup 'build/linux/appimage/build.sh'
+gsed -i -E 's/VSCodium\|vscodium/zokugun|MrCode/' build/linux/appimage/build.sh
+
+# build/windows/msi/build.sh
+backup 'build/windows/msi/build.sh'
+gsed -i -E 's/PRODUCT_NAME="VSCodium"/PRODUCT_NAME="MrCode"/' build/windows/msi/build.sh
+gsed -i -E 's/PRODUCT_SKU="vscodium"/PRODUCT_SKU="mrcode"/' build/windows/msi/build.sh
+
+# build/windows/msi/vscodium.wxs
+backup 'build/windows/msi/vscodium.wxs'
+gsed -i -E 's/VSCodium/MrCode/g' build/windows/msi/vscodium.wxs
+gsed -i -E 's/VSCODIUM/MRCODE/g' build/windows/msi/vscodium.wxs
+
+# build/windows/msi/vscodium.xsl
+backup 'build/windows/msi/vscodium.xsl'
+gsed -i -E 's/VSCodium/MrCode/g' build/windows/msi/vscodium.xsl
+gsed -i -E 's/VSCODIUM/MRCODE/g' build/windows/msi/vscodium.xsl
+
+# build/windows/msi/includes/vscodium-variables.wxi
+backup 'build/windows/msi/includes/vscodium-variables.wxi'
+gsed -i -E 's/965370CD-253C-4720-82FC-2E6B02A53808/DB7C32FE-9AB3-422E-9A98-47B2361E24A6/' build/windows/msi/includes/vscodium-variables.wxi
+
+for file in build/windows/msi/i18n/*.wxl; do
+    if [ -f "$file" ]; then
+        backup "$file"
+        gsed -i -E 's|https://github.com/VSCodium/vscodium|https://github.com/zokugun/MrCode|g' "$file"
+        gsed -i -E 's/VSCodium/MrCode/g' "$file"
+    fi
+done
 
 . get_repo.sh
 
@@ -172,7 +199,6 @@ gsed -i -E 's|summary: .*|summary: MrCode. Code editing.|g' resources/linux/snap
 gsed -i -E '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based on Visual Studio Code.\n|g;}' resources/linux/snap/snapcraft.yaml
 
 for file in ../../patches/*.patch; do
-
     if [ -f "$file" ]; then
         echo "applying $(basename -- $file)"
 

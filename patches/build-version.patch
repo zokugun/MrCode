@@ -1,16 +1,29 @@
+diff --git a/build/gulpfile.vscode.win32.js b/build/gulpfile.vscode.win32.js
+index 0113607..511a162 100644
+--- a/build/gulpfile.vscode.win32.js
++++ b/build/gulpfile.vscode.win32.js
+@@ -88,7 +88,7 @@ function buildWin32Setup(arch, target) {
+ 			NameShort: product.nameShort,
+ 			DirName: product.win32DirName,
+ 			Version: pkg.version,
+-			RawVersion: pkg.version.replace(/-\w+$/, ''),
++			RawVersion: pkg.version.replace(/-\w+$/, '').replace('+', '.'),
+ 			NameVersion: product.win32NameVersion + (target === 'user' ? ' (User)' : ''),
+ 			ExeBasename: product.nameShort,
+ 			RegValueName: product.win32RegValueName,
 diff --git a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
-index e611894..f7fdec8 100644
+index 4466945..e188eae 100644
 --- a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
 +++ b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
-@@ -23,6 +23,7 @@ import { IStorageService, StorageScope, StorageTarget } from 'vs/platform/storag
+@@ -24,6 +24,7 @@ import { asJson, asText, IRequestService, isSuccess } from 'vs/platform/request/
  import { getServiceMachineId } from 'vs/platform/serviceMachineId/common/serviceMachineId';
- import { optional } from 'vs/platform/instantiation/common/instantiation';
- import { isWeb } from 'vs/base/common/platform';
-+import * as semver from 'semver'
+ import { IStorageService, StorageScope, StorageTarget } from 'vs/platform/storage/common/storage';
+ import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
++import * as semver from 'semver';
  
  interface IRawGalleryExtensionFile {
  	readonly assetType: string;
-@@ -842,10 +843,11 @@ export class ExtensionGalleryService implements IExtensionGalleryService {
+@@ -927,10 +928,11 @@ export class ExtensionGalleryService implements IExtensionGalleryService {
  	}
  }
  
@@ -44,16 +57,3 @@ index 89d668c..56b4d0d 100644
  		notices.push(nls.localize('versionMismatch', "Extension is not compatible with Code {0}. Extension requires: {1}.", currentVersion, requestedVersion));
  		return false;
  	}
-diff --git a/build/gulpfile.vscode.win32.js b/build/gulpfile.vscode.win32.js
-index 2027dc3..465788d 100644
---- a/build/gulpfile.vscode.win32.js
-+++ b/build/gulpfile.vscode.win32.js
-@@ -88,7 +88,7 @@ function buildWin32Setup(arch, target) {
- 			NameShort: product.nameShort,
- 			DirName: product.win32DirName,
- 			Version: pkg.version,
--			RawVersion: pkg.version.replace(/-\w+$/, ''),
-+			RawVersion: pkg.version.replace(/-\w+$/, '').replace('+', '.'),
- 			NameVersion: product.win32NameVersion + (target === 'user' ? ' (User)' : ''),
- 			ExeBasename: product.nameShort,
- 			RegValueName: product.win32RegValueName,

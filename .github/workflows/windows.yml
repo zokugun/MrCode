@@ -18,7 +18,13 @@ jobs:
         vscode_arch: [x64, ia32, arm64]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout github repo (+ download lfs dependencies)
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+
+      - name: Checkout LFS objects
+        run: git lfs checkout
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v1
@@ -71,6 +77,11 @@ jobs:
           mv vscode\\.build\\win32-${VSCODE_ARCH}\\system-setup\\VSCodeSetup.exe MrCodeSetup-${VSCODE_ARCH}-${RELEASE_VERSION}.exe
           mv vscode\\.build\\win32-${VSCODE_ARCH}\\user-setup\\VSCodeSetup.exe MrCodeUserSetup-${VSCODE_ARCH}-${RELEASE_VERSION}.exe
           mv vscode\\.build\\win32-${VSCODE_ARCH}\\archive\\VSCode-win32-${VSCODE_ARCH}.zip MrCode-win32-${VSCODE_ARCH}-${RELEASE_VERSION}.zip
+
+          if [[ "${VSCODE_ARCH}" == "ia32" || "${VSCODE_ARCH}" == "x64" ]]; then
+            mv build\\windows\\msi\\releasedir\\MrCode-${VSCODE_ARCH}-${MS_TAG}.msi .
+            mv build\\windows\\msi\\releasedir\\MrCode-${VSCODE_ARCH}-updates-disabled-${MS_TAG}.msi .
+          fi
         shell: bash
         if: env.SHOULD_BUILD == 'yes'
 
@@ -91,6 +102,7 @@ jobs:
             ./vscodium/MrCode*.zip
             ./vscodium/MrCodeUserSetup*.exe
             ./vscodium/MrCodeSetup*.exe
+            ./vscodium/MrCode*.msi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

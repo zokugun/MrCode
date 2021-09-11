@@ -75,6 +75,16 @@ jobs:
           tar czf ../MrCode-linux-${VSCODE_ARCH}-${RELEASE_VERSION}.tar.gz .
         if: env.SHOULD_BUILD == 'yes'
 
+      - name: Move/rename build artifacts
+        run: |
+          cp vscode/.build/linux/deb/*/deb/*.deb .
+          cp vscode/.build/linux/rpm/*/*.rpm .
+
+          if [[ "${VSCODE_ARCH}" == "x64" ]]; then
+            cp build/linux/appimage/out/*.AppImage* .
+          fi
+        if: env.SHOULD_BUILD == 'yes'
+
       - name: Generate shasums
         working-directory: ./vscodium
         run: ./sum.sh

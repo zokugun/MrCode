@@ -34,8 +34,11 @@ What's the difference?
 
 ### Patched Features
 
-- use split JSON settings editor
 - render and copy tab characters in the terminal
+
+### split JSON settings editor
+
+I will try to add back the split JSON settings editor via an extension.
 
 Supported OS
 ------------
