@@ -116,7 +116,6 @@ gsed -i -E 's/VSCodium\|vscodium/zokugun|MrCode/' build/linux/appimage/build.sh
 # build/windows/msi/build.sh
 backup 'build/windows/msi/build.sh'
 gsed -i -E 's/PRODUCT_NAME="VSCodium"/PRODUCT_NAME="MrCode"/' build/windows/msi/build.sh
-gsed -i -E 's/PRODUCT_SKU="vscodium"/PRODUCT_SKU="mrcode"/' build/windows/msi/build.sh
 
 # build/windows/msi/vscodium.wxs
 backup 'build/windows/msi/vscodium.wxs'

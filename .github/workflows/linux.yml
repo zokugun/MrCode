@@ -76,6 +76,7 @@ jobs:
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Move/rename build artifacts
+        working-directory: ./vscodium
         run: |
           cp vscode/.build/linux/deb/*/deb/*.deb .
           cp vscode/.build/linux/rpm/*/*.rpm .

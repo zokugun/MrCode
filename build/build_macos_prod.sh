@@ -8,6 +8,8 @@ set -o allexport; source .env; set +o allexport
 
 CI_BUILD=no . prepare.sh
 
+. version.sh
+
 SHOULD_BUILD=yes CI_BUILD=no OS_NAME=osx VSCODE_ARCH=x64 . build.sh
 
 cd VSCode-darwin-x64
