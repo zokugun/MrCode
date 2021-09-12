@@ -41,6 +41,7 @@ jobs:
 
       - name: Clone VSCodium repo
         env:
+          RELEASE_VERSION: ${{ secrets.RELEASE_VERSION }}
           VSCODIUM_LATEST: ${{ secrets.VSCODIUM_LATEST }}
         run: ./get_repo.sh
         shell: bash
