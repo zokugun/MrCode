@@ -76,6 +76,7 @@ gsed -i -E 's/yarn --frozen-lockfile/yarn/g' prepare_vscode.sh
 # prepare_artifacts.sh
 backup 'prepare_artifacts.sh'
 gsed -i -E 's/VSCodium/MrCode/g' prepare_artifacts.sh
+gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' prepare_artifacts.sh
 
 # check_tags.sh
 backup 'check_tags.sh'
