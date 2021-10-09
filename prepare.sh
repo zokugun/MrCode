@@ -73,16 +73,9 @@ gsed -i -E 's/patch -u/patch -t -u/g' prepare_vscode.sh
 gsed -i -E 's/yarn --frozen-lockfile/yarn/g' prepare_vscode.sh
 # }}}
 
-# sum.sh
-backup 'sum.sh'
-gsed -i -E 's/VSCodium/MrCode/g' sum.sh
-gsed -i -E 's/checksum -a (sha1|sha256).*/checksum -a \1 "$1" > "$1.\1"/' sum.sh
-gsed -i -E '/if \[\[ -f .*/a\
-	echo "sum: $1"
-' sum.sh
-gsed -i -E '/    fi.*/a\
-	cat "$1.sha256"
-' sum.sh
+# prepare_artifacts.sh
+backup 'prepare_artifacts.sh'
+gsed -i -E 's/VSCodium/MrCode/g' prepare_artifacts.sh
 
 # check_tags.sh
 backup 'check_tags.sh'
@@ -102,6 +95,11 @@ gsed -i -E 's/ASSET_NAME=MrCode-darwin-\$\{MS_TAG\}\.zip/ASSET_NAME=MrCode-darwi
 gsed -i -E 's|VERSION_PATH="darwin"|VERSION_PATH="darwin/${VSCODE_ARCH}"|g' update_version.sh
 gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' update_version.sh
 gsed -i -E 's/MS_COMMIT/BUILD_SOURCEVERSION/g' update_version.sh
+
+# release.sh
+backup 'release.sh'
+gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' release.sh
+gsed -i -E 's|gh release|gh release --repo zokugun/MrCode|g' release.sh
 
 # build/linux/appimage/recipe.yml
 backup 'build/linux/appimage/recipe.yml'

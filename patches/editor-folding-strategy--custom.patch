@@ -1,5 +1,5 @@
 diff --git a/src/vs/editor/common/config/editorOptions.ts b/src/vs/editor/common/config/editorOptions.ts
-index 24a26ce..41e5ace 100644
+index 7d8189c..0bfbfff 100644
 --- a/src/vs/editor/common/config/editorOptions.ts
 +++ b/src/vs/editor/common/config/editorOptions.ts
 @@ -542,7 +542,7 @@ export interface IEditorOptions {
@@ -23,7 +23,7 @@ index 24a26ce..41e5ace 100644
  	/**
  	 * Controls whether clicking on the empty content after a folded line will unfold the line.
  	 * Defaults to false.
-@@ -4056,6 +4061,7 @@ export const enum EditorOption {
+@@ -4105,6 +4110,7 @@ export const enum EditorOption {
  	selectionHighlight,
  	selectOnLineNumbers,
  	showFoldingControls,
@@ -31,7 +31,7 @@ index 24a26ce..41e5ace 100644
  	showUnused,
  	snippetSuggestions,
  	smartSelect,
-@@ -4325,16 +4331,10 @@ export const EditorOptions = {
+@@ -4375,16 +4381,10 @@ export const EditorOptions = {
  		EditorOption.folding, 'folding', true,
  		{ description: nls.localize('folding', "Controls whether the editor has code folding enabled.") }
  	)),
@@ -51,7 +51,7 @@ index 24a26ce..41e5ace 100644
  		}
  	)),
  	foldingHighlight: register(new EditorBooleanOption(
-@@ -4601,6 +4601,10 @@ export const EditorOptions = {
+@@ -4643,6 +4643,10 @@ export const EditorOptions = {
  			description: nls.localize('showFoldingControls', "Controls when the folding controls on the gutter are shown.")
  		}
  	)),
@@ -63,10 +63,10 @@ index 24a26ce..41e5ace 100644
  		EditorOption.showUnused, 'showUnused', true,
  		{ description: nls.localize('showUnused', "Controls fading out of unused code.") }
 diff --git a/src/vs/editor/common/modes.ts b/src/vs/editor/common/modes.ts
-index e2abc3d..8a00517 100644
+index 501ca10..105db04 100644
 --- a/src/vs/editor/common/modes.ts
 +++ b/src/vs/editor/common/modes.ts
-@@ -1432,6 +1432,16 @@ export interface FoldingContext {
+@@ -1420,6 +1420,16 @@ export interface FoldingContext {
   */
  export interface FoldingRangeProvider {
  
@@ -84,82 +84,82 @@ index e2abc3d..8a00517 100644
  	 * An optional event to signal that the folding ranges from this provider have changed.
  	 */
 diff --git a/src/vs/editor/common/standalone/standaloneEnums.ts b/src/vs/editor/common/standalone/standaloneEnums.ts
-index d57f175..8e727dc 100644
+index 63d4ddc..fd8fe3d 100644
 --- a/src/vs/editor/common/standalone/standaloneEnums.ts
 +++ b/src/vs/editor/common/standalone/standaloneEnums.ts
-@@ -267,38 +267,39 @@ export enum EditorOption {
- 	selectionHighlight = 97,
- 	selectOnLineNumbers = 98,
- 	showFoldingControls = 99,
--	showUnused = 100,
--	snippetSuggestions = 101,
--	smartSelect = 102,
--	smoothScrolling = 103,
--	stickyTabStops = 104,
--	stopRenderingLineAfter = 105,
--	suggest = 106,
--	suggestFontSize = 107,
--	suggestLineHeight = 108,
--	suggestOnTriggerCharacters = 109,
--	suggestSelection = 110,
--	tabCompletion = 111,
--	tabIndex = 112,
--	unusualLineTerminators = 113,
--	useShadowDOM = 114,
--	useTabStops = 115,
--	wordSeparators = 116,
--	wordWrap = 117,
--	wordWrapBreakAfterCharacters = 118,
--	wordWrapBreakBeforeCharacters = 119,
--	wordWrapColumn = 120,
--	wordWrapOverride1 = 121,
--	wordWrapOverride2 = 122,
--	wrappingIndent = 123,
--	wrappingStrategy = 124,
--	showDeprecated = 125,
--	inlayHints = 126,
--	editorClassName = 127,
--	pixelRatio = 128,
--	tabFocusMode = 129,
--	layoutInfo = 130,
--	wrappingInfo = 131
-+	showFoldingLastLine = 100,
-+	showUnused = 101,
-+	snippetSuggestions = 102,
-+	smartSelect = 103,
-+	smoothScrolling = 104,
-+	stickyTabStops = 105,
-+	stopRenderingLineAfter = 106,
-+	suggest = 107,
-+	suggestFontSize = 108,
-+	suggestLineHeight = 109,
-+	suggestOnTriggerCharacters = 110,
-+	suggestSelection = 111,
-+	tabCompletion = 112,
-+	tabIndex = 113,
-+	unusualLineTerminators = 114,
-+	useShadowDOM = 115,
-+	useTabStops = 116,
-+	wordSeparators = 117,
-+	wordWrap = 118,
-+	wordWrapBreakAfterCharacters = 119,
-+	wordWrapBreakBeforeCharacters = 120,
-+	wordWrapColumn = 121,
-+	wordWrapOverride1 = 122,
-+	wordWrapOverride2 = 123,
-+	wrappingIndent = 124,
-+	wrappingStrategy = 125,
-+	showDeprecated = 126,
-+	inlayHints = 127,
-+	editorClassName = 128,
-+	pixelRatio = 129,
-+	tabFocusMode = 130,
-+	layoutInfo = 131,
-+	wrappingInfo = 132
+@@ -266,38 +266,39 @@ export enum EditorOption {
+ 	selectionHighlight = 96,
+ 	selectOnLineNumbers = 97,
+ 	showFoldingControls = 98,
+-	showUnused = 99,
+-	snippetSuggestions = 100,
+-	smartSelect = 101,
+-	smoothScrolling = 102,
+-	stickyTabStops = 103,
+-	stopRenderingLineAfter = 104,
+-	suggest = 105,
+-	suggestFontSize = 106,
+-	suggestLineHeight = 107,
+-	suggestOnTriggerCharacters = 108,
+-	suggestSelection = 109,
+-	tabCompletion = 110,
+-	tabIndex = 111,
+-	unusualLineTerminators = 112,
+-	useShadowDOM = 113,
+-	useTabStops = 114,
+-	wordSeparators = 115,
+-	wordWrap = 116,
+-	wordWrapBreakAfterCharacters = 117,
+-	wordWrapBreakBeforeCharacters = 118,
+-	wordWrapColumn = 119,
+-	wordWrapOverride1 = 120,
+-	wordWrapOverride2 = 121,
+-	wrappingIndent = 122,
+-	wrappingStrategy = 123,
+-	showDeprecated = 124,
+-	inlayHints = 125,
+-	editorClassName = 126,
+-	pixelRatio = 127,
+-	tabFocusMode = 128,
+-	layoutInfo = 129,
+-	wrappingInfo = 130
++	showFoldingLastLine = 99,
++	showUnused = 100,
++	snippetSuggestions = 101,
++	smartSelect = 102,
++	smoothScrolling = 103,
++	stickyTabStops = 104,
++	stopRenderingLineAfter = 105,
++	suggest = 106,
++	suggestFontSize = 107,
++	suggestLineHeight = 108,
++	suggestOnTriggerCharacters = 109,
++	suggestSelection = 110,
++	tabCompletion = 111,
++	tabIndex = 112,
++	unusualLineTerminators = 113,
++	useShadowDOM = 114,
++	useTabStops = 115,
++	wordSeparators = 116,
++	wordWrap = 117,
++	wordWrapBreakAfterCharacters = 118,
++	wordWrapBreakBeforeCharacters = 119,
++	wordWrapColumn = 120,
++	wordWrapOverride1 = 121,
++	wordWrapOverride2 = 122,
++	wrappingIndent = 123,
++	wrappingStrategy = 124,
++	showDeprecated = 125,
++	inlayHints = 126,
++	editorClassName = 127,
++	pixelRatio = 128,
++	tabFocusMode = 129,
++	layoutInfo = 130,
++	wrappingInfo = 131
  }
  
  /**
-@@ -843,4 +844,4 @@ export enum WrappingIndent {
+@@ -842,4 +843,4 @@ export enum WrappingIndent {
  	 * DeepIndent => wrapped lines get +2 indentation toward the parent.
  	 */
  	DeepIndent = 3
@@ -167,24 +167,24 @@ index d57f175..8e727dc 100644
 \ No newline at end of file
 +}
 diff --git a/src/vs/editor/contrib/folding/folding.ts b/src/vs/editor/contrib/folding/folding.ts
-index 942a3d0..20a37e0 100644
+index b70cb97..84f917c 100644
 --- a/src/vs/editor/contrib/folding/folding.ts
 +++ b/src/vs/editor/contrib/folding/folding.ts
-@@ -25,7 +25,7 @@ import { IRange } from 'vs/editor/common/core/range';
+@@ -21,7 +21,7 @@ import { IRange } from 'vs/editor/common/core/range';
+ import { IEditorContribution, ScrollType } from 'vs/editor/common/editorCommon';
+ import { EditorContextKeys } from 'vs/editor/common/editorContextKeys';
+ import { ITextModel } from 'vs/editor/common/model';
+-import { FoldingRangeKind, FoldingRangeProviderRegistry } from 'vs/editor/common/modes';
++import { FoldingRangeKind, FoldingRangeProvider, FoldingRangeProviderRegistry } from 'vs/editor/common/modes';
  import { LanguageConfigurationRegistry } from 'vs/editor/common/modes/languageConfigurationRegistry';
- import { IndentRangeProvider } from 'vs/editor/contrib/folding/indentRangeProvider';
- import { IPosition } from 'vs/editor/common/core/position';
--import { FoldingRangeProviderRegistry, FoldingRangeKind } from 'vs/editor/common/modes';
-+import { FoldingRangeProvider, FoldingRangeProviderRegistry, FoldingRangeKind } from 'vs/editor/common/modes';
- import { SyntaxRangeProvider, ID_SYNTAX_PROVIDER } from './syntaxRangeProvider';
- import { CancellationToken } from 'vs/base/common/cancellation';
- import { InitializingRangeProvider, ID_INIT_PROVIDER } from 'vs/editor/contrib/folding/intializingRangeProvider';
-@@ -35,6 +35,8 @@ import { RawContextKey, IContextKey, IContextKeyService } from 'vs/platform/cont
- import { registerThemingParticipant, ThemeIcon } from 'vs/platform/theme/common/themeService';
- import { registerColor, editorSelectionBackground, transparent, iconForeground } from 'vs/platform/theme/common/colorRegistry';
- import { StableEditorScrollState } from 'vs/editor/browser/core/editorState';
-+import { NoopRangeProvider } from 'vs/editor/contrib/folding/noopRangeProvider';
-+import { IndentFoldingProvider } from 'vs/editor/contrib/folding/indentFoldingProvider';
+ import { CollapseMemento, FoldingModel, getNextFoldLine, getParentFoldLine as getParentFoldLine, getPreviousFoldLine, setCollapseStateAtLevel, setCollapseStateForMatchingLines, setCollapseStateForRest, setCollapseStateForType, setCollapseStateLevelsDown, setCollapseStateLevelsUp, setCollapseStateUp, toggleCollapseState } from 'vs/editor/contrib/folding/foldingModel';
+ import { HiddenRangeModel } from 'vs/editor/contrib/folding/hiddenRangeModel';
+@@ -35,6 +35,8 @@ import { registerThemingParticipant, ThemeIcon } from 'vs/platform/theme/common/
+ import { foldingCollapsedIcon, FoldingDecorationProvider, foldingExpandedIcon } from './foldingDecorations';
+ import { FoldingRegion, FoldingRegions } from './foldingRanges';
+ import { ID_SYNTAX_PROVIDER, SyntaxRangeProvider } from './syntaxRangeProvider';
++import { NoopRangeProvider } from './noopRangeProvider';
++import { IndentFoldingProvider } from './indentFoldingProvider';
  
  const CONTEXT_FOLDING_ENABLED = new RawContextKey<boolean>('foldingEnabled', false);
  
@@ -417,13 +417,13 @@ index 0000000..0a324e0
 +	}
 +}
 diff --git a/src/vs/editor/contrib/folding/indentRangeProvider.ts b/src/vs/editor/contrib/folding/indentRangeProvider.ts
-index da1c2bc..e452e54 100644
+index f480577..aaf501f 100644
 --- a/src/vs/editor/contrib/folding/indentRangeProvider.ts
 +++ b/src/vs/editor/contrib/folding/indentRangeProvider.ts
-@@ -10,6 +10,7 @@ import { TextModel } from 'vs/editor/common/model/textModel';
- import { RangeProvider } from './folding';
+@@ -10,6 +10,7 @@ import { FoldingMarkers } from 'vs/editor/common/modes/languageConfiguration';
  import { LanguageConfigurationRegistry } from 'vs/editor/common/modes/languageConfigurationRegistry';
- import { CancellationToken } from 'vs/base/common/cancellation';
+ import { FoldingRegions, MAX_LINE_NUMBER } from 'vs/editor/contrib/folding/foldingRanges';
+ import { RangeProvider } from './folding';
 +import { FoldingRange, FoldingRangeKind } from 'vs/editor/common/modes';
  
  const MAX_FOLDING_REGIONS_FOR_INDENT_LIMIT = 5000;
@@ -524,7 +524,7 @@ index 0000000..6a99b20
 +	}
 +}
 diff --git a/src/vs/editor/contrib/folding/syntaxRangeProvider.ts b/src/vs/editor/contrib/folding/syntaxRangeProvider.ts
-index 898694b..f58855e 100644
+index 5c0f381..bdd642c 100644
 --- a/src/vs/editor/contrib/folding/syntaxRangeProvider.ts
 +++ b/src/vs/editor/contrib/folding/syntaxRangeProvider.ts
 @@ -28,7 +28,7 @@ export class SyntaxRangeProvider implements RangeProvider {
@@ -582,7 +582,7 @@ index 898694b..f58855e 100644
  				}
  			}
 diff --git a/src/vs/editor/contrib/folding/test/foldingModel.test.ts b/src/vs/editor/contrib/folding/test/foldingModel.test.ts
-index ef6a8d1..40e645e 100644
+index 169d8d5..88d4a95 100644
 --- a/src/vs/editor/contrib/folding/test/foldingModel.test.ts
 +++ b/src/vs/editor/contrib/folding/test/foldingModel.test.ts
 @@ -145,7 +145,7 @@ suite('Folding Model', () => {
@@ -747,7 +747,7 @@ index ef6a8d1..40e645e 100644
  			foldingModel.update(ranges);
  
  			let r1 = r(1, 12, false);
-@@ -902,7 +902,7 @@ suite('Folding Model', () => {
+@@ -909,7 +909,7 @@ suite('Folding Model', () => {
  		try {
  			let foldingModel = new FoldingModel(textModel, new TestDecorationProvider(textModel));
  
@@ -757,7 +757,7 @@ index ef6a8d1..40e645e 100644
  
  			let r1 = r(2, 3, false);
 diff --git a/src/vs/editor/contrib/folding/test/foldingRanges.test.ts b/src/vs/editor/contrib/folding/test/foldingRanges.test.ts
-index d656202..b3a1c4b 100644
+index 27313ff..b700143 100644
 --- a/src/vs/editor/contrib/folding/test/foldingRanges.test.ts
 +++ b/src/vs/editor/contrib/folding/test/foldingRanges.test.ts
 @@ -27,7 +27,7 @@ suite('FoldingRanges', () => {
@@ -788,7 +788,7 @@ index d656202..b3a1c4b 100644
  		for (let i = 0; i < nRegions; i++) {
  			actual.setCollapsed(i, i % 3 === 0);
 diff --git a/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts b/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts
-index 7a3f524..db4ecc8 100644
+index afad618..d35d14c 100644
 --- a/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts
 +++ b/src/vs/editor/contrib/folding/test/hiddenRangeModel.test.ts
 @@ -44,7 +44,7 @@ suite('Hidden Range Model', () => {
@@ -814,7 +814,7 @@ index 76f3399..5605106 100644
  			let actual: IndentRange[] = [];
  			for (let i = 0; i < indentRanges.length; i++) {
 diff --git a/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts b/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts
-index 58fa7ab..1b25ad7 100644
+index dd0a610..caefcd9 100644
 --- a/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts
 +++ b/src/vs/editor/contrib/folding/test/indentRangeProvider.test.ts
 @@ -16,7 +16,7 @@ interface ExpectedIndentRange {
@@ -827,7 +827,7 @@ index 58fa7ab..1b25ad7 100644
  	let actualRanges: ExpectedIndentRange[] = [];
  	for (let i = 0; i < actual.length; i++) {
 diff --git a/src/vs/editor/contrib/folding/test/syntaxFold.test.ts b/src/vs/editor/contrib/folding/test/syntaxFold.test.ts
-index c416210..12d19dd 100644
+index 1ae995b..a96965b 100644
 --- a/src/vs/editor/contrib/folding/test/syntaxFold.test.ts
 +++ b/src/vs/editor/contrib/folding/test/syntaxFold.test.ts
 @@ -74,7 +74,7 @@ suite('Syntax folding', () => {
@@ -840,10 +840,10 @@ index c416210..12d19dd 100644
  			if (indentRanges) {
  				for (let i = 0; i < indentRanges.length; i++) {
 diff --git a/src/vs/monaco.d.ts b/src/vs/monaco.d.ts
-index 59bde9f..83b5f07 100644
+index 12ca899..0a6979a 100644
 --- a/src/vs/monaco.d.ts
 +++ b/src/vs/monaco.d.ts
-@@ -3175,7 +3175,7 @@ declare namespace monaco.editor {
+@@ -3181,7 +3181,7 @@ declare namespace monaco.editor {
  		 * Selects the folding strategy. 'auto' uses the strategies contributed for the current document, 'indentation' uses the indentation based folding strategy.
  		 * Defaults to 'auto'.
  		 */
@@ -852,7 +852,7 @@ index 59bde9f..83b5f07 100644
  		/**
  		 * Enable highlight for folded regions.
  		 * Defaults to true.
-@@ -3191,6 +3191,11 @@ declare namespace monaco.editor {
+@@ -3197,6 +3197,11 @@ declare namespace monaco.editor {
  		 * Defaults to 'mouseover'.
  		 */
  		showFoldingControls?: 'always' | 'mouseover';
@@ -864,80 +864,80 @@ index 59bde9f..83b5f07 100644
  		/**
  		 * Controls whether clicking on the empty content after a folded line will unfold the line.
  		 * Defaults to false.
-@@ -4189,38 +4194,39 @@ declare namespace monaco.editor {
- 		selectionHighlight = 97,
- 		selectOnLineNumbers = 98,
- 		showFoldingControls = 99,
--		showUnused = 100,
--		snippetSuggestions = 101,
--		smartSelect = 102,
--		smoothScrolling = 103,
--		stickyTabStops = 104,
--		stopRenderingLineAfter = 105,
--		suggest = 106,
--		suggestFontSize = 107,
--		suggestLineHeight = 108,
--		suggestOnTriggerCharacters = 109,
--		suggestSelection = 110,
--		tabCompletion = 111,
--		tabIndex = 112,
--		unusualLineTerminators = 113,
--		useShadowDOM = 114,
--		useTabStops = 115,
--		wordSeparators = 116,
--		wordWrap = 117,
--		wordWrapBreakAfterCharacters = 118,
--		wordWrapBreakBeforeCharacters = 119,
--		wordWrapColumn = 120,
--		wordWrapOverride1 = 121,
--		wordWrapOverride2 = 122,
--		wrappingIndent = 123,
--		wrappingStrategy = 124,
--		showDeprecated = 125,
--		inlayHints = 126,
--		editorClassName = 127,
--		pixelRatio = 128,
--		tabFocusMode = 129,
--		layoutInfo = 130,
--		wrappingInfo = 131
-+		showFoldingLastLine = 100,
-+		showUnused = 101,
-+		snippetSuggestions = 102,
-+		smartSelect = 103,
-+		smoothScrolling = 104,
-+		stickyTabStops = 105,
-+		stopRenderingLineAfter = 106,
-+		suggest = 107,
-+		suggestFontSize = 108,
-+		suggestLineHeight = 109,
-+		suggestOnTriggerCharacters = 110,
-+		suggestSelection = 111,
-+		tabCompletion = 112,
-+		tabIndex = 113,
-+		unusualLineTerminators = 114,
-+		useShadowDOM = 115,
-+		useTabStops = 116,
-+		wordSeparators = 117,
-+		wordWrap = 118,
-+		wordWrapBreakAfterCharacters = 119,
-+		wordWrapBreakBeforeCharacters = 120,
-+		wordWrapColumn = 121,
-+		wordWrapOverride1 = 122,
-+		wordWrapOverride2 = 123,
-+		wrappingIndent = 124,
-+		wrappingStrategy = 125,
-+		showDeprecated = 126,
-+		inlayHints = 127,
-+		editorClassName = 128,
-+		pixelRatio = 129,
-+		tabFocusMode = 130,
-+		layoutInfo = 131,
-+		wrappingInfo = 132
+@@ -4202,38 +4207,39 @@ declare namespace monaco.editor {
+ 		selectionHighlight = 96,
+ 		selectOnLineNumbers = 97,
+ 		showFoldingControls = 98,
+-		showUnused = 99,
+-		snippetSuggestions = 100,
+-		smartSelect = 101,
+-		smoothScrolling = 102,
+-		stickyTabStops = 103,
+-		stopRenderingLineAfter = 104,
+-		suggest = 105,
+-		suggestFontSize = 106,
+-		suggestLineHeight = 107,
+-		suggestOnTriggerCharacters = 108,
+-		suggestSelection = 109,
+-		tabCompletion = 110,
+-		tabIndex = 111,
+-		unusualLineTerminators = 112,
+-		useShadowDOM = 113,
+-		useTabStops = 114,
+-		wordSeparators = 115,
+-		wordWrap = 116,
+-		wordWrapBreakAfterCharacters = 117,
+-		wordWrapBreakBeforeCharacters = 118,
+-		wordWrapColumn = 119,
+-		wordWrapOverride1 = 120,
+-		wordWrapOverride2 = 121,
+-		wrappingIndent = 122,
+-		wrappingStrategy = 123,
+-		showDeprecated = 124,
+-		inlayHints = 125,
+-		editorClassName = 126,
+-		pixelRatio = 127,
+-		tabFocusMode = 128,
+-		layoutInfo = 129,
+-		wrappingInfo = 130
++		showFoldingLastLine = 99,
++		showUnused = 100,
++		snippetSuggestions = 101,
++		smartSelect = 102,
++		smoothScrolling = 103,
++		stickyTabStops = 104,
++		stopRenderingLineAfter = 105,
++		suggest = 106,
++		suggestFontSize = 107,
++		suggestLineHeight = 108,
++		suggestOnTriggerCharacters = 109,
++		suggestSelection = 110,
++		tabCompletion = 111,
++		tabIndex = 112,
++		unusualLineTerminators = 113,
++		useShadowDOM = 114,
++		useTabStops = 115,
++		wordSeparators = 116,
++		wordWrap = 117,
++		wordWrapBreakAfterCharacters = 118,
++		wordWrapBreakBeforeCharacters = 119,
++		wordWrapColumn = 120,
++		wordWrapOverride1 = 121,
++		wordWrapOverride2 = 122,
++		wrappingIndent = 123,
++		wrappingStrategy = 124,
++		showDeprecated = 125,
++		inlayHints = 126,
++		editorClassName = 127,
++		pixelRatio = 128,
++		tabFocusMode = 129,
++		layoutInfo = 130,
++		wrappingInfo = 131
  	}
  	export const EditorOptions: {
  		acceptSuggestionOnCommitCharacter: IEditorOption<EditorOption.acceptSuggestionOnCommitCharacter, boolean>;
-@@ -4261,7 +4267,7 @@ declare namespace monaco.editor {
- 		find: IEditorOption<EditorOption.find, EditorFindOptions>;
+@@ -4275,7 +4281,7 @@ declare namespace monaco.editor {
+ 		find: IEditorOption<EditorOption.find, Readonly<Required<IEditorFindOptions>>>;
  		fixedOverflowWidgets: IEditorOption<EditorOption.fixedOverflowWidgets, boolean>;
  		folding: IEditorOption<EditorOption.folding, boolean>;
 -		foldingStrategy: IEditorOption<EditorOption.foldingStrategy, 'auto' | 'indentation'>;
@@ -945,15 +945,15 @@ index 59bde9f..83b5f07 100644
  		foldingHighlight: IEditorOption<EditorOption.foldingHighlight, boolean>;
  		foldingImportsByDefault: IEditorOption<EditorOption.foldingImportsByDefault, boolean>;
  		unfoldOnClickAfterEndOfLine: IEditorOption<EditorOption.unfoldOnClickAfterEndOfLine, boolean>;
-@@ -4323,6 +4329,7 @@ declare namespace monaco.editor {
+@@ -4335,6 +4341,7 @@ declare namespace monaco.editor {
  		selectionHighlight: IEditorOption<EditorOption.selectionHighlight, boolean>;
  		selectOnLineNumbers: IEditorOption<EditorOption.selectOnLineNumbers, boolean>;
  		showFoldingControls: IEditorOption<EditorOption.showFoldingControls, 'always' | 'mouseover'>;
 +		showFoldingLastLine: IEditorOption<EditorOption.showFoldingLastLine, boolean>;
  		showUnused: IEditorOption<EditorOption.showUnused, boolean>;
  		showDeprecated: IEditorOption<EditorOption.showDeprecated, boolean>;
- 		inlayHints: IEditorOption<EditorOption.inlayHints, any>;
-@@ -6517,6 +6524,14 @@ declare namespace monaco.languages {
+ 		inlayHints: IEditorOption<EditorOption.inlayHints, Readonly<Required<IEditorInlayHintsOptions>>>;
+@@ -6546,6 +6553,14 @@ declare namespace monaco.languages {
  	 * A provider of folding ranges for editor models.
  	 */
  	export interface FoldingRangeProvider {
@@ -969,7 +969,7 @@ index 59bde9f..83b5f07 100644
  		 * An optional event to signal that the folding ranges from this provider have changed.
  		 */
 diff --git a/src/vs/vscode.d.ts b/src/vs/vscode.d.ts
-index cf2f62e..b590d76 100644
+index 4b5e9ff..3847cb0 100644
 --- a/src/vs/vscode.d.ts
 +++ b/src/vs/vscode.d.ts
 @@ -4567,6 +4567,16 @@ declare module 'vscode' {
@@ -1006,10 +1006,10 @@ index 45ee8e7..01cccf5 100644
  				return this._proxy.$provideFoldingRanges(handle, model.uri, context, token);
  			}
 diff --git a/src/vs/workbench/api/common/extHost.protocol.ts b/src/vs/workbench/api/common/extHost.protocol.ts
-index d8a28c2..f9c8758 100644
+index 0670eff..3b63840 100644
 --- a/src/vs/workbench/api/common/extHost.protocol.ts
 +++ b/src/vs/workbench/api/common/extHost.protocol.ts
-@@ -414,7 +414,7 @@ export interface MainThreadLanguageFeaturesShape extends IDisposable {
+@@ -415,7 +415,7 @@ export interface MainThreadLanguageFeaturesShape extends IDisposable {
  	$emitInlayHintsEvent(eventHandle: number, event?: any): void;
  	$registerDocumentLinkProvider(handle: number, selector: IDocumentFilterDto[], supportsResolve: boolean): void;
  	$registerDocumentColorProvider(handle: number, selector: IDocumentFilterDto[]): void;
@@ -1019,10 +1019,10 @@ index d8a28c2..f9c8758 100644
  	$registerSelectionRangeProvider(handle: number, selector: IDocumentFilterDto[]): void;
  	$registerCallHierarchyProvider(handle: number, selector: IDocumentFilterDto[]): void;
 diff --git a/src/vs/workbench/api/common/extHostLanguageFeatures.ts b/src/vs/workbench/api/common/extHostLanguageFeatures.ts
-index a3575be..63f81fa 100644
+index 65e4a91..544377e 100644
 --- a/src/vs/workbench/api/common/extHostLanguageFeatures.ts
 +++ b/src/vs/workbench/api/common/extHostLanguageFeatures.ts
-@@ -2065,7 +2065,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
+@@ -2037,7 +2037,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
  		const eventHandle = typeof provider.onDidChangeFoldingRanges === 'function' ? this._nextHandle() : undefined;
  
  		this._adapter.set(handle, new AdapterData(new FoldingProviderAdapter(this._documents, provider), extension));

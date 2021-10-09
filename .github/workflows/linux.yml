@@ -25,13 +25,16 @@ jobs:
           image: vscodium/vscodium-linux-build-agent:bionic-x64
         - vscode_arch: arm64
           npm_arch: arm64
-          image: vscodium/vscodium-linux-build-agent:buster-arm64
+          image: vscodium/vscodium-linux-build-agent:stretch-arm64
         - vscode_arch: armhf
           npm_arch: armv7l
-          image: vscodium/vscodium-linux-build-agent:buster-armhf
+          image: vscodium/vscodium-linux-build-agent:stretch-armhf
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Install GH
+        run: ./install_gh.sh
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v1
@@ -68,44 +71,16 @@ jobs:
         run: ./build.sh
         if: env.SHOULD_BUILD == 'yes'
 
-      - name: Archive release
+      - name: Prepare artifacts
         working-directory: ./vscodium
-        run: |
-          cd VSCode-linux-${VSCODE_ARCH}
-          tar czf ../MrCode-linux-${VSCODE_ARCH}-${RELEASE_VERSION}.tar.gz .
-        if: env.SHOULD_BUILD == 'yes'
-
-      - name: Move/rename build artifacts
-        working-directory: ./vscodium
-        run: |
-          cp vscode/.build/linux/deb/*/deb/*.deb .
-          cp vscode/.build/linux/rpm/*/*.rpm .
-
-          if [[ "${VSCODE_ARCH}" == "x64" ]]; then
-            cp build/linux/appimage/out/*.AppImage* .
-          fi
-        if: env.SHOULD_BUILD == 'yes'
-
-      - name: Generate shasums
-        working-directory: ./vscodium
-        run: ./sum.sh
+        run: ./prepare_artifacts.sh
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ env.RELEASE_VERSION }}
-          files: |
-            ./vscodium/*.sha1
-            ./vscodium/*.sha256
-            ./vscodium/*.zip
-            ./vscodium/*.tar.gz
-            ./vscodium/*.deb
-            ./vscodium/*.rpm
-            ./vscodium/MrCode-*.AppImage
-            ./vscodium/MrCode-*.AppImage.zsync
+          GH_CLI_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ./vscodium
+        run: ./release.sh
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Update versions repo

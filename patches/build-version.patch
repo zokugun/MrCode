@@ -12,23 +12,23 @@ index 0113607..511a162 100644
  			ExeBasename: product.nameShort,
  			RegValueName: product.win32RegValueName,
 diff --git a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
-index 4466945..e188eae 100644
+index 3d39153..dedaa27 100644
 --- a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
 +++ b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
-@@ -24,6 +24,7 @@ import { asJson, asText, IRequestService, isSuccess } from 'vs/platform/request/
- import { getServiceMachineId } from 'vs/platform/serviceMachineId/common/serviceMachineId';
+@@ -26,6 +26,7 @@ import { getServiceMachineId } from 'vs/platform/serviceMachineId/common/service
  import { IStorageService, StorageScope, StorageTarget } from 'vs/platform/storage/common/storage';
- import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
+ import { ITelemetryService, TelemetryLevel } from 'vs/platform/telemetry/common/telemetry';
+ import { getTelemetryLevel, supportsTelemetry } from 'vs/platform/telemetry/common/telemetryUtils';
 +import * as semver from 'semver';
  
- interface IRawGalleryExtensionFile {
- 	readonly assetType: string;
-@@ -927,10 +928,11 @@ export class ExtensionGalleryService implements IExtensionGalleryService {
+ const CURRENT_TARGET_PLATFORM = isWeb ? TargetPlatform.WEB : getTargetPlatform(platform, arch);
+ 
+@@ -950,10 +951,11 @@ export class ExtensionGalleryServiceWithNoStorageService extends AbstractExtensi
  	}
  }
  
--export async function resolveMarketplaceHeaders(version: string, environmentService: IEnvironmentService, fileService: IFileService, storageService: {
-+export async function resolveMarketplaceHeaders(currentVersion: string, environmentService: IEnvironmentService, fileService: IFileService, storageService: {
+-export async function resolveMarketplaceHeaders(version: string, productService: IProductService, environmentService: IEnvironmentService, configurationService: IConfigurationService, fileService: IFileService, storageService: {
++export async function resolveMarketplaceHeaders(currentVersion: string, productService: IProductService, environmentService: IEnvironmentService, configurationService: IConfigurationService, fileService: IFileService, storageService: {
  	get: (key: string, scope: StorageScope) => string | undefined,
  	store: (key: string, value: string, scope: StorageScope, target: StorageTarget) => void
  } | undefined): Promise<{ [key: string]: string; }> {

@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-latest
+    runs-on: macOS-10.15
     env:
       OS_NAME: "osx"
       VSCODE_ARCH: "x64"
@@ -88,39 +88,17 @@ jobs:
             codesign --deep --force --verbose --sign "$IDENTITY" MrCode.app
           fi
 
-      - name: Zip release
+      - name: Prepare artifacts
         if: env.SHOULD_BUILD == 'yes'
         working-directory: ./vscodium
-        run: |
-          cd "VSCode-darwin-${VSCODE_ARCH}"
-          zip -r -X -y ../MrCode-darwin-${VSCODE_ARCH}-${RELEASE_VERSION}.zip ./*.app
-
-      - name: DMG the release
-        if: env.SHOULD_BUILD == 'yes'
-        working-directory: ./vscodium
-        run: |
-          pushd "VSCode-darwin-${VSCODE_ARCH}"
-          npx create-dmg MrCode.app ..
-          mv "../MrCode ${RELEASE_VERSION}.dmg" "../MrCode.${VSCODE_ARCH}.${RELEASE_VERSION}.dmg"
-          popd
-
-      - name: Generate shasums
-        if: env.SHOULD_BUILD == 'yes'
-        working-directory: ./vscodium
-        run: ./sum.sh
+        run: ./prepare_artifacts.sh
 
       - name: Release
         if: env.SHOULD_BUILD == 'yes'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ env.RELEASE_VERSION }}
-          files: |
-            ./vscodium/*.zip
-            ./vscodium/*.dmg
-            ./vscodium/*.sha1
-            ./vscodium/*.sha256
+          GH_CLI_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ./vscodium
+        run: ./release.sh
 
       - name: Update versions repo
         if: env.SHOULD_BUILD == 'yes'
