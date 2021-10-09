@@ -96,6 +96,7 @@ gsed -i -E 's/ASSET_NAME=MrCode-darwin-\$\{MS_TAG\}\.zip/ASSET_NAME=MrCode-darwi
 gsed -i -E 's|VERSION_PATH="darwin"|VERSION_PATH="darwin/${VSCODE_ARCH}"|g' update_version.sh
 gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' update_version.sh
 gsed -i -E 's/MS_COMMIT/BUILD_SOURCEVERSION/g' update_version.sh
+gsed -i -E 's/set -e/set -ex/' update_version.sh
 
 # release.sh
 backup 'release.sh'
