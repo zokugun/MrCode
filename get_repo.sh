@@ -2,13 +2,13 @@
 
 if [ -d vscodium ];
 then
-  cd vscodium
+    cd vscodium
 
-  git fetch --all
+    git fetch --all
 else
-  git clone https://github.com/VSCodium/vscodium.git
+    git clone https://github.com/VSCodium/vscodium.git
 
-  cd vscodium
+    cd vscodium
 fi
 
 if [[ -z "${RELEASE_VERSION}" ]]; then
