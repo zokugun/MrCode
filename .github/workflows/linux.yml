@@ -34,7 +34,6 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install GH
-        working-directory: ./vscodium
         run: ./install_gh.sh
 
       - name: Setup Node.js environment
