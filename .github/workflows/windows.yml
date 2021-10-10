@@ -9,6 +9,9 @@ on:
 jobs:
   windows:
     runs-on: windows-2016
+    defaults:
+      run:
+        shell: bash
     env:
       VSCODE_ARCH: ${{ matrix.vscode_arch }}
       OS_NAME: 'windows'
@@ -44,22 +47,18 @@ jobs:
           RELEASE_VERSION: ${{ secrets.RELEASE_VERSION }}
           VSCODIUM_LATEST: ${{ secrets.VSCODIUM_LATEST }}
         run: ./get_repo.sh
-        shell: bash
 
       - name: Prepare VSCodium
         run: ./prepare.sh
-        shell: bash
 
       - name: Check existing VSCodium tags/releases
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./vscodium
         run: ./check_tags.sh
-        shell: bash
 
       - name: Get Source Version
         run: ./version.sh
-        shell: bash
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Build
@@ -69,7 +68,6 @@ jobs:
           npm_config_target_arch: ${{ matrix.vscode_arch }}
         working-directory: ./vscodium
         run: ./build.sh
-        shell: bash
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Prepare artifacts
@@ -88,7 +86,6 @@ jobs:
         working-directory: ./vscodium
         if: env.SHOULD_BUILD == 'yes'
         run: ./update_version.sh
-        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
