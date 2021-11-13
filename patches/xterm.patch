@@ -1,8 +1,8 @@
 diff --git a/.eslintrc.json b/.eslintrc.json
-index a3287e0..ea96b20 100644
+index ffc218d..d2aea33 100644
 --- a/.eslintrc.json
 +++ b/.eslintrc.json
-@@ -646,8 +646,8 @@
+@@ -647,8 +647,8 @@
  				"target": "**/vs/workbench/contrib/terminal/browser/**",
  				"restrictions": [
  					// xterm and its addons are strictly browser-only components
@@ -13,7 +13,7 @@ index a3287e0..ea96b20 100644
  					"vs/nls",
  					"vs/css!./**/*",
  					"**/vs/base/**/{common,browser}/**",
-@@ -968,7 +968,7 @@
+@@ -969,7 +969,7 @@
  					"sinon",
  					"sinon-test",
  					"crypto",
@@ -22,7 +22,7 @@ index a3287e0..ea96b20 100644
  				]
  			},
  			{
-@@ -979,7 +979,7 @@
+@@ -980,7 +980,7 @@
  					"sinon",
  					"sinon-test",
  					"crypto",
@@ -32,10 +32,10 @@ index a3287e0..ea96b20 100644
  			}
  		],
 diff --git a/build/.moduleignore b/build/.moduleignore
-index 2994170..c2649c3 100644
+index 5bbca46..333ea49 100644
 --- a/build/.moduleignore
 +++ b/build/.moduleignore
-@@ -136,13 +136,13 @@ zone.js/dist/**
+@@ -142,13 +142,13 @@ zone.js/dist/**
  !zone.js/dist/zone-node.js
  
  # https://github.com/xtermjs/xterm.js/issues/3137
@@ -86,104 +86,104 @@ index fc1d206..f0a66f6 100644
  # This makes sure the model is included in the package
  !@vscode/vscode-languagedetection/model/**
 diff --git a/package.json b/package.json
-index f5b1302..8195dec 100644
+index 18821d0..79123f6 100644
 --- a/package.json
 +++ b/package.json
-@@ -84,12 +84,12 @@
+@@ -85,12 +85,12 @@
      "vscode-regexpp": "^3.1.0",
      "vscode-ripgrep": "^1.12.1",
-     "vscode-textmate": "5.4.0",
--    "xterm": "4.15.0-beta.3",
+     "vscode-textmate": "5.4.1",
+-    "xterm": "4.15.0-beta.10",
 -    "xterm-addon-search": "0.9.0-beta.5",
--    "xterm-addon-serialize": "0.7.0-beta.1",
+-    "xterm-addon-serialize": "0.7.0-beta.2",
 -    "xterm-addon-unicode11": "0.3.0",
--    "xterm-addon-webgl": "0.12.0-beta.13",
--    "xterm-headless": "4.15.0-beta.3",
-+    "@daiyam/xterm-tab": "4.15.0-d.1",
-+    "@daiyam/xterm-tab-addon-search": "0.9.0-d.3",
-+    "@daiyam/xterm-tab-addon-serialize": "0.7.0-d.1",
-+    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.3",
-+    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.3",
-+    "@daiyam/xterm-tab-headless": "4.15.0-d.2",
+-    "xterm-addon-webgl": "0.12.0-beta.15",
+-    "xterm-headless": "4.15.0-beta.10",
++    "@daiyam/xterm-tab": "4.15.0-d.3",
++    "@daiyam/xterm-tab-addon-search": "0.9.0-d.4",
++    "@daiyam/xterm-tab-addon-serialize": "0.7.0-d.2",
++    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.4",
++    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.4",
++    "@daiyam/xterm-tab-headless": "4.15.0-d.3",
      "yauzl": "^2.9.2",
      "yazl": "^2.4.3"
    },
 diff --git a/remote/package.json b/remote/package.json
-index b0bff62..541d62e 100644
+index 0cf9004..b1588fd 100644
 --- a/remote/package.json
 +++ b/remote/package.json
-@@ -24,12 +24,12 @@
+@@ -25,12 +25,12 @@
      "vscode-regexpp": "^3.1.0",
      "vscode-ripgrep": "^1.12.1",
-     "vscode-textmate": "5.4.0",
--    "xterm": "4.15.0-beta.3",
+     "vscode-textmate": "5.4.1",
+-    "xterm": "4.15.0-beta.10",
 -    "xterm-addon-search": "0.9.0-beta.5",
--    "xterm-addon-serialize": "0.7.0-beta.1",
+-    "xterm-addon-serialize": "0.7.0-beta.2",
 -    "xterm-addon-unicode11": "0.3.0",
--    "xterm-addon-webgl": "0.12.0-beta.13",
--    "xterm-headless": "4.15.0-beta.3",
-+    "@daiyam/xterm-tab": "4.15.0-d.1",
-+    "@daiyam/xterm-tab-addon-search": "0.9.0-d.3",
-+    "@daiyam/xterm-tab-addon-serialize": "0.7.0-d.1",
-+    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.3",
-+    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.3",
-+    "@daiyam/xterm-tab-headless": "4.15.0-d.2",
+-    "xterm-addon-webgl": "0.12.0-beta.15",
+-    "xterm-headless": "4.15.0-beta.10",
++    "@daiyam/xterm-tab": "4.15.0-d.3",
++    "@daiyam/xterm-tab-addon-search": "0.9.0-d.4",
++    "@daiyam/xterm-tab-addon-serialize": "0.7.0-d.2",
++    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.4",
++    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.4",
++    "@daiyam/xterm-tab-headless": "4.15.0-d.3",
      "yauzl": "^2.9.2",
      "yazl": "^2.4.3"
    },
 diff --git a/remote/web/package.json b/remote/web/package.json
-index 69de7b9..2de2657 100644
+index 307a919..da762fa 100644
 --- a/remote/web/package.json
 +++ b/remote/web/package.json
 @@ -10,9 +10,9 @@
  		"tas-client-umd": "0.1.4",
  		"vscode-oniguruma": "1.5.1",
- 		"vscode-textmate": "5.4.0",
--		"xterm": "4.15.0-beta.3",
+ 		"vscode-textmate": "5.4.1",
+-		"xterm": "4.15.0-beta.10",
 -		"xterm-addon-search": "0.9.0-beta.5",
 -		"xterm-addon-unicode11": "0.3.0",
--		"xterm-addon-webgl": "0.12.0-beta.13"
-+    "@daiyam/xterm-tab": "4.15.0-d.1",
-+    "@daiyam/xterm-tab-addon-search": "0.9.0-d.3",
-+    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.3",
-+    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.3"
+-		"xterm-addon-webgl": "0.12.0-beta.15"
++		"@daiyam/xterm-tab": "4.15.0-d.3",
++    "@daiyam/xterm-tab-addon-search": "0.9.0-d.4",
++    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.4",
++    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.4"
  	}
  }
 diff --git a/remote/web/yarn.lock b/remote/web/yarn.lock
-index 4ac1255..18f8b89 100644
+index 384abe2..e79fc39 100644
 --- a/remote/web/yarn.lock
 +++ b/remote/web/yarn.lock
 @@ -2,6 +2,26 @@
  # yarn lockfile v1
  
  
-+"@daiyam/xterm-tab-addon-search@0.9.0-d.3":
-+  version "0.9.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.3.tgz#9146b3763521ddcc9994e322e303f386fcd68d26"
-+  integrity sha512-6KhT8in3TZqh/bYSqhXsYBjX8D6LcBa9kXqyl8NKpp9VGjinbw31+4TFdg+v2n8Az2N63KbKS1ZHed4GyAXDEg==
++"@daiyam/xterm-tab-addon-search@0.9.0-d.4":
++  version "0.9.0-d.4"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.4.tgz#a77d2f4453d6de24a851e24d73e724b21d6f04c7"
++  integrity sha512-1yE8/i7lTugE/B8XK1kw6hSft7fzvb7ou5X8VegUz4dnfDucPHHvVidUG7AVI5PGwt3wRFmVq7SO4kaFz62+fg==
 +
-+"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.3":
-+  version "0.3.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.3.tgz#09525b6e6ba099d368599028503ca24aea13d36a"
-+  integrity sha512-/QS7uaLkreDRuZFtpO013iRl5njvBadVmXku1IqQ6Inq4GIyElWyinAfVpebKl5kZIkweZqVMoQZykIL0HK+qg==
++"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.4":
++  version "0.3.0-d.4"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.4.tgz#ac8cf75c81277da2a550b5354279860f3a72d0f6"
++  integrity sha512-K2BD/Hz4qwvIh5x9riMQqoIPrwsIWI8ubYl1G//dH04kQT5MFzD3yM89iBtjJIl+sBjVehcYXehxkyu/4JOTDA==
 +
-+"@daiyam/xterm-tab-addon-webgl@0.12.0-d.3":
-+  version "0.12.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.3.tgz#df5c087fd4e67d65f645948dce53a62485a60466"
-+  integrity sha512-+ZTfnn9fpWIBvx+F9FipLCIh3VMoJoXW3JxOnuIo0aTNwAK715YZwC4fjrwxS3Tyo2o26ou7c1A3zCLsYxIwSg==
++"@daiyam/xterm-tab-addon-webgl@0.12.0-d.4":
++  version "0.12.0-d.4"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.4.tgz#fe881d0e46713e559098433913878540ad321878"
++  integrity sha512-p4S0sbxPb6p/227Lz8mVdj5NdvOg4gHLx2IHV1QAHN2d1/4EEHv8zyZJJZSyir/6BZrgsCErvrKHNpGU8dCIzQ==
 +
-+"@daiyam/xterm-tab@4.15.0-d.1":
-+  version "4.15.0-d.1"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.15.0-d.1.tgz#631f3f1325071a3c664094ff3d47d119c2156ef3"
-+  integrity sha512-M5JgMcF3Lp+3s/OWI1AZ5lo8NvkJkmj4QGR9AJdxiXIqlL1FmLWIlncRXf/zGZYRuvpbHfxvphzIlDsB2bm4pA==
++"@daiyam/xterm-tab@4.15.0-d.3":
++  version "4.15.0-d.3"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.15.0-d.3.tgz#d7f47b6eb0045a5be072418249a3dd5eeba36ab1"
++  integrity sha512-QkVlrzouUl91oLW+DhlGa/bDbbc0I60Ok04GqP2XgNuWOH5oim6XdLC+9a9FqgYwL21/voEeZ8mGqRsZpbW1Cw==
 +
  "@microsoft/applicationinsights-analytics-js@2.6.4":
    version "2.6.4"
    resolved "https://registry.yarnpkg.com/@microsoft/applicationinsights-analytics-js/-/applicationinsights-analytics-js-2.6.4.tgz#22ad17276ed922f2f0e66b7efe304f31c50ede64"
-@@ -112,23 +132,3 @@ vscode-textmate@5.4.0:
-   version "5.4.0"
-   resolved "https://registry.yarnpkg.com/vscode-textmate/-/vscode-textmate-5.4.0.tgz#4b25ffc1f14ac3a90faf9a388c67a01d24257cd7"
-   integrity sha512-c0Q4zYZkcLizeYJ3hNyaVUM2AA8KDhNCA3JvXY8CeZSJuBdAy3bAvSbv46RClC4P3dSO9BdwhnKEx2zOo6vP/w==
+@@ -112,23 +132,3 @@ vscode-textmate@5.4.1:
+   version "5.4.1"
+   resolved "https://registry.yarnpkg.com/vscode-textmate/-/vscode-textmate-5.4.1.tgz#09d566724fc76b60b3ad9791eebf1f0b50f29e5a"
+   integrity sha512-4CvPHmfuZQaXrcCpathdh6jo7myuR+MU8BvscgQADuponpbqfmu2rwTOtCXhGwwEgStvJF8V4s9FwMKRVLNmKQ==
 -
 -xterm-addon-search@0.9.0-beta.5:
 -  version "0.9.0-beta.5"
@@ -195,57 +195,57 @@ index 4ac1255..18f8b89 100644
 -  resolved "https://registry.yarnpkg.com/xterm-addon-unicode11/-/xterm-addon-unicode11-0.3.0.tgz#e4435c3c91a5294a7eb8b79c380acbb28a659463"
 -  integrity sha512-x5fHDZT2j9tlTlHnzPHt++9uKZ2kJ/lYQOj3L6xJA22xoJsS8UQRw/5YIFg2FUHqEAbV77Z1fZij/9NycMSH/A==
 -
--xterm-addon-webgl@0.12.0-beta.13:
--  version "0.12.0-beta.13"
--  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.13.tgz#95ecf99531adcce1349f2ddfc834a40af681780e"
--  integrity sha512-oPQHkFcuCB+x60wilGXFS+viZbOGNFijmuHEWehCUcLFQP5Mph0/6qXLZjgn47728QvCxU7HnXPqcD7JSxe0Tg==
+-xterm-addon-webgl@0.12.0-beta.15:
+-  version "0.12.0-beta.15"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.15.tgz#9ae82127f2a39b3cb7f5ae45a6af223810c933d4"
+-  integrity sha512-LWZ3iLspQOCc26OoT8qa+SuyuIcn2cAMRbBkinOuQCk4aW5kjovIrGovj9yVAcXNvOBnPm3sUqmnwGlN579kDA==
 -
--xterm@4.15.0-beta.3:
--  version "4.15.0-beta.3"
--  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.15.0-beta.3.tgz#123ec4303be390e61cd24ae29872b9fa4e73ad30"
--  integrity sha512-CXzu0xDHsrOxzC+Tm9ju+eqq0VFiYZPuzPAtfoKOp2PW+wt4fRkM4kysrdLdfE2kz6qyRckRxl+3l7VzlJHVCA==
+-xterm@4.15.0-beta.10:
+-  version "4.15.0-beta.10"
+-  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.15.0-beta.10.tgz#8cda3d7885e8345f2fc6cf9275a43f3833d29acf"
+-  integrity sha512-valoh5ZcY/y7Pe+ffgcSAEFeuZfjzVeUUXcthdxTTsrGEiU1s4QR2EOg4U5jn5wye/Nc6mSfLW3s79R6Ac186w==
 diff --git a/remote/yarn.lock b/remote/yarn.lock
-index 3ce157e..235c38d 100644
+index 293ab74..073da8b 100644
 --- a/remote/yarn.lock
 +++ b/remote/yarn.lock
 @@ -2,6 +2,36 @@
  # yarn lockfile v1
  
  
-+"@daiyam/xterm-tab-addon-search@0.9.0-d.3":
-+  version "0.9.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.3.tgz#9146b3763521ddcc9994e322e303f386fcd68d26"
-+  integrity sha512-6KhT8in3TZqh/bYSqhXsYBjX8D6LcBa9kXqyl8NKpp9VGjinbw31+4TFdg+v2n8Az2N63KbKS1ZHed4GyAXDEg==
++"@daiyam/xterm-tab-addon-search@0.9.0-d.4":
++  version "0.9.0-d.4"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.4.tgz#a77d2f4453d6de24a851e24d73e724b21d6f04c7"
++  integrity sha512-1yE8/i7lTugE/B8XK1kw6hSft7fzvb7ou5X8VegUz4dnfDucPHHvVidUG7AVI5PGwt3wRFmVq7SO4kaFz62+fg==
 +
-+"@daiyam/xterm-tab-addon-serialize@0.7.0-d.1":
-+  version "0.7.0-d.1"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.7.0-d.1.tgz#10073e7da54f91bb401082ec592a69fc74a95060"
-+  integrity sha512-TRO53yUWcGBJqlTOvYi0hKmT6kQiWlcSvesUv/PojyUAdbSjUu2nrqojkCW0oW9dkHA0VGlm3MU8lo6JW8NZ4Q==
++"@daiyam/xterm-tab-addon-serialize@0.7.0-d.2":
++  version "0.7.0-d.2"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.7.0-d.2.tgz#8e1f55cc0419d1c8d0528de2ebf58d181a4bcb03"
++  integrity sha512-orMfSSm3hFoNHtle/dnmKhpVT7Fb26FeF3tah1dupuiY3W/kusLrJR4viyxMywBHFXUHM+DSB5wIVaV5Ail5XQ==
 +
-+"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.3":
-+  version "0.3.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.3.tgz#09525b6e6ba099d368599028503ca24aea13d36a"
-+  integrity sha512-/QS7uaLkreDRuZFtpO013iRl5njvBadVmXku1IqQ6Inq4GIyElWyinAfVpebKl5kZIkweZqVMoQZykIL0HK+qg==
++"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.4":
++  version "0.3.0-d.4"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.4.tgz#ac8cf75c81277da2a550b5354279860f3a72d0f6"
++  integrity sha512-K2BD/Hz4qwvIh5x9riMQqoIPrwsIWI8ubYl1G//dH04kQT5MFzD3yM89iBtjJIl+sBjVehcYXehxkyu/4JOTDA==
 +
-+"@daiyam/xterm-tab-addon-webgl@0.12.0-d.3":
-+  version "0.12.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.3.tgz#df5c087fd4e67d65f645948dce53a62485a60466"
-+  integrity sha512-+ZTfnn9fpWIBvx+F9FipLCIh3VMoJoXW3JxOnuIo0aTNwAK715YZwC4fjrwxS3Tyo2o26ou7c1A3zCLsYxIwSg==
++"@daiyam/xterm-tab-addon-webgl@0.12.0-d.4":
++  version "0.12.0-d.4"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.4.tgz#fe881d0e46713e559098433913878540ad321878"
++  integrity sha512-p4S0sbxPb6p/227Lz8mVdj5NdvOg4gHLx2IHV1QAHN2d1/4EEHv8zyZJJZSyir/6BZrgsCErvrKHNpGU8dCIzQ==
 +
-+"@daiyam/xterm-tab-headless@4.15.0-d.2":
-+  version "4.15.0-d.2"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-headless/-/xterm-tab-headless-4.15.0-d.2.tgz#0fda56a876dec1ff722903276e4e58f6ce141b39"
-+  integrity sha512-j40OKws6uJ2k5S+7p91i8BRV78CFuO9J28DajElIgiXiUPmOBnJs0+y0byZCMpih5aV0SkmH8jTxR2Y2/nd77w==
++"@daiyam/xterm-tab-headless@4.15.0-d.3":
++  version "4.15.0-d.3"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-headless/-/xterm-tab-headless-4.15.0-d.3.tgz#99e8b52a3b09285917ee1460d4a1022108b76f23"
++  integrity sha512-4ugts5aBQ0cykoPL+LeE52d56c6L9g3E/duzodg7mipdNyjeONB89JNt7FykAMcOCxw7WdCzvhZN/ADvhk6RwA==
 +
-+"@daiyam/xterm-tab@4.15.0-d.1":
-+  version "4.15.0-d.1"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.15.0-d.1.tgz#631f3f1325071a3c664094ff3d47d119c2156ef3"
-+  integrity sha512-M5JgMcF3Lp+3s/OWI1AZ5lo8NvkJkmj4QGR9AJdxiXIqlL1FmLWIlncRXf/zGZYRuvpbHfxvphzIlDsB2bm4pA==
++"@daiyam/xterm-tab@4.15.0-d.3":
++  version "4.15.0-d.3"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.15.0-d.3.tgz#d7f47b6eb0045a5be072418249a3dd5eeba36ab1"
++  integrity sha512-QkVlrzouUl91oLW+DhlGa/bDbbc0I60Ok04GqP2XgNuWOH5oim6XdLC+9a9FqgYwL21/voEeZ8mGqRsZpbW1Cw==
 +
  "@microsoft/applicationinsights-analytics-js@2.6.4":
    version "2.6.4"
    resolved "https://registry.yarnpkg.com/@microsoft/applicationinsights-analytics-js/-/applicationinsights-analytics-js-2.6.4.tgz#22ad17276ed922f2f0e66b7efe304f31c50ede64"
-@@ -625,36 +655,6 @@ xregexp@2.0.0:
+@@ -643,36 +673,6 @@ xregexp@2.0.0:
    resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-2.0.0.tgz#52a63e56ca0b84a7f3a5f3d61872f126ad7a5943"
    integrity sha1-UqY+VsoLhKfzpfPWGHLxJq16WUM=
  
@@ -254,30 +254,30 @@ index 3ce157e..235c38d 100644
 -  resolved "https://registry.yarnpkg.com/xterm-addon-search/-/xterm-addon-search-0.9.0-beta.5.tgz#e0e60a203d1c9d6c8af933648a46865dba299302"
 -  integrity sha512-ylfqim0ISBvuuX83LQwgu/06p5GC545QsAo9SssXw03TPpIrcd0zwaVMEnhOftSIzM9EKRRsyx3GbBjgUdiF5w==
 -
--xterm-addon-serialize@0.7.0-beta.1:
--  version "0.7.0-beta.1"
--  resolved "https://registry.yarnpkg.com/xterm-addon-serialize/-/xterm-addon-serialize-0.7.0-beta.1.tgz#0168ae7b07a4ce3c2445fce10efe91848717ca2e"
--  integrity sha512-Qt//GUsTix1FFMWJSFYreppn6nfFqFQaLL9Z9sper62/M3Ip4O+dN/bhrtd5pydBl5iqlHixJls3fu/bj3RHjA==
+-xterm-addon-serialize@0.7.0-beta.2:
+-  version "0.7.0-beta.2"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-serialize/-/xterm-addon-serialize-0.7.0-beta.2.tgz#ced9f664c74ab88448e7b63850721bc272aa6806"
+-  integrity sha512-KuSwdx2AAliUv7SvjKYUKHrB7vscbHLv8QsmwSDI3pgL1BpjyLJ8LR99iFFfuNpPW9CG4TX6adKPIJXtqiN3Vg==
 -
 -xterm-addon-unicode11@0.3.0:
 -  version "0.3.0"
 -  resolved "https://registry.yarnpkg.com/xterm-addon-unicode11/-/xterm-addon-unicode11-0.3.0.tgz#e4435c3c91a5294a7eb8b79c380acbb28a659463"
 -  integrity sha512-x5fHDZT2j9tlTlHnzPHt++9uKZ2kJ/lYQOj3L6xJA22xoJsS8UQRw/5YIFg2FUHqEAbV77Z1fZij/9NycMSH/A==
 -
--xterm-addon-webgl@0.12.0-beta.13:
--  version "0.12.0-beta.13"
--  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.13.tgz#95ecf99531adcce1349f2ddfc834a40af681780e"
--  integrity sha512-oPQHkFcuCB+x60wilGXFS+viZbOGNFijmuHEWehCUcLFQP5Mph0/6qXLZjgn47728QvCxU7HnXPqcD7JSxe0Tg==
+-xterm-addon-webgl@0.12.0-beta.15:
+-  version "0.12.0-beta.15"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.15.tgz#9ae82127f2a39b3cb7f5ae45a6af223810c933d4"
+-  integrity sha512-LWZ3iLspQOCc26OoT8qa+SuyuIcn2cAMRbBkinOuQCk4aW5kjovIrGovj9yVAcXNvOBnPm3sUqmnwGlN579kDA==
 -
--xterm-headless@4.15.0-beta.3:
--  version "4.15.0-beta.3"
--  resolved "https://registry.yarnpkg.com/xterm-headless/-/xterm-headless-4.15.0-beta.3.tgz#b1ba884e2e2feef17d92eaf3ff59b0b20c059dd8"
--  integrity sha512-MmC75/XUz9z1fHBdJV0Mx9Fje+8hegocT1NfWUNLri3+XFvy5/UbLRhrGUw/lxWKgthseV6eqI44QTNh7fVTQg==
+-xterm-headless@4.15.0-beta.10:
+-  version "4.15.0-beta.10"
+-  resolved "https://registry.yarnpkg.com/xterm-headless/-/xterm-headless-4.15.0-beta.10.tgz#2dbcb40dfda7ecfdacc7b63889c80da965480ce7"
+-  integrity sha512-kDAzmaeFX8hAJvbPUJc4dW4SoVBSg4onCVOPyi8QTmxZz1o7I9mX4U7DX1v3PceyfrU27A9k6zXjuTuPjxCCSQ==
 -
--xterm@4.15.0-beta.3:
--  version "4.15.0-beta.3"
--  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.15.0-beta.3.tgz#123ec4303be390e61cd24ae29872b9fa4e73ad30"
--  integrity sha512-CXzu0xDHsrOxzC+Tm9ju+eqq0VFiYZPuzPAtfoKOp2PW+wt4fRkM4kysrdLdfE2kz6qyRckRxl+3l7VzlJHVCA==
+-xterm@4.15.0-beta.10:
+-  version "4.15.0-beta.10"
+-  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.15.0-beta.10.tgz#8cda3d7885e8345f2fc6cf9275a43f3833d29acf"
+-  integrity sha512-valoh5ZcY/y7Pe+ffgcSAEFeuZfjzVeUUXcthdxTTsrGEiU1s4QR2EOg4U5jn5wye/Nc6mSfLW3s79R6Ac186w==
 -
  yauzl@^2.9.2:
    version "2.10.0"
@@ -302,7 +302,7 @@ index 009ea7a..be8c3ed 100644
  			'jschardet': `${baseNodeModulesPath}/jschardet/dist/jschardet.min.js`,
  			'@vscode/vscode-languagedetection': `${baseNodeModulesPath}/@vscode/vscode-languagedetection/dist/lib/index.js`,
 diff --git a/src/vs/platform/terminal/node/ptyService.ts b/src/vs/platform/terminal/node/ptyService.ts
-index f86b62e..6bd0228 100644
+index 5d2ae38..f2c9cc7 100644
 --- a/src/vs/platform/terminal/node/ptyService.ts
 +++ b/src/vs/platform/terminal/node/ptyService.ts
 @@ -15,9 +15,9 @@ import { RequestStore } from 'vs/platform/terminal/common/requestStore';
@@ -318,7 +318,7 @@ index f86b62e..6bd0228 100644
  import { IGetTerminalLayoutInfoArgs, IProcessDetails, IPtyHostProcessReplayEvent, ISetTerminalLayoutInfoArgs, ITerminalTabLayoutInfoDto } from 'vs/platform/terminal/common/terminalProcess';
  import { getWindowsBuildNumber } from 'vs/platform/terminal/node/terminalEnvironment';
  import { TerminalProcess } from 'vs/platform/terminal/node/terminalProcess';
-@@ -745,14 +745,14 @@ class XtermSerializer implements ITerminalSerializer {
+@@ -752,14 +752,14 @@ class XtermSerializer implements ITerminalSerializer {
  
  	async _getUnicode11Constructor(): Promise<typeof Unicode11Addon> {
  		if (!Unicode11Addon) {
@@ -348,6 +348,19 @@ index aa08c65..039a6b2 100644
  import { ICommandTracker } from 'vs/workbench/contrib/terminal/common/terminal';
  
  /**
+diff --git a/src/vs/workbench/contrib/terminal/browser/addons/lineDataEventAddon.ts b/src/vs/workbench/contrib/terminal/browser/addons/lineDataEventAddon.ts
+index c0bceda..cd8008e 100644
+--- a/src/vs/workbench/contrib/terminal/browser/addons/lineDataEventAddon.ts
++++ b/src/vs/workbench/contrib/terminal/browser/addons/lineDataEventAddon.ts
+@@ -6,7 +6,7 @@
+ import { Emitter } from 'vs/base/common/event';
+ import { Disposable, toDisposable } from 'vs/base/common/lifecycle';
+ import { OperatingSystem } from 'vs/base/common/platform';
+-import type { Terminal as XTermTerminal, IBuffer, ITerminalAddon } from 'xterm';
++import type { Terminal as XTermTerminal, IBuffer, ITerminalAddon } from '@daiyam/xterm-tab';
+ 
+ /**
+  * Provides extensions to the xterm object in a modular, testable way.
 diff --git a/src/vs/workbench/contrib/terminal/browser/addons/navigationModeAddon.ts b/src/vs/workbench/contrib/terminal/browser/addons/navigationModeAddon.ts
 index 8487459..dfb51f5 100644
 --- a/src/vs/workbench/contrib/terminal/browser/addons/navigationModeAddon.ts
@@ -414,7 +427,7 @@ index a0f2a0d..78f1eba 100644
  
  /**
 diff --git a/src/vs/workbench/contrib/terminal/browser/links/terminalLinkManager.ts b/src/vs/workbench/contrib/terminal/browser/links/terminalLinkManager.ts
-index bda886d..15931be 100644
+index fda5316..c2251c1 100644
 --- a/src/vs/workbench/contrib/terminal/browser/links/terminalLinkManager.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/links/terminalLinkManager.ts
 @@ -13,7 +13,7 @@ import { ITerminalProcessManager, ITerminalConfiguration, TERMINAL_CONFIG_SECTIO
@@ -440,7 +453,7 @@ index f54cd67..63ed1e7 100644
  import { getXtermLineContent, convertLinkRangeToBuffer } from 'vs/workbench/contrib/terminal/browser/links/terminalLinkHelpers';
  import { TerminalLink, OPEN_FILE_LABEL, FOLDER_IN_WORKSPACE_LABEL, FOLDER_NOT_IN_WORKSPACE_LABEL } from 'vs/workbench/contrib/terminal/browser/links/terminalLink';
 diff --git a/src/vs/workbench/contrib/terminal/browser/links/terminalValidatedLocalLinkProvider.ts b/src/vs/workbench/contrib/terminal/browser/links/terminalValidatedLocalLinkProvider.ts
-index 250e4d9..8c8221e 100644
+index aaa34fa..ac315a1 100644
 --- a/src/vs/workbench/contrib/terminal/browser/links/terminalValidatedLocalLinkProvider.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/links/terminalValidatedLocalLinkProvider.ts
 @@ -3,7 +3,7 @@
@@ -466,12 +479,12 @@ index 46b346d..81bdb37 100644
  import { ITerminalConfiguration, TERMINAL_CONFIG_SECTION } from 'vs/workbench/contrib/terminal/common/terminal';
  import { TerminalLink } from 'vs/workbench/contrib/terminal/browser/links/terminalLink';
 diff --git a/src/vs/workbench/contrib/terminal/browser/terminal.ts b/src/vs/workbench/contrib/terminal/browser/terminal.ts
-index 58ca059..af09014 100644
+index f161aed..a1f741c 100644
 --- a/src/vs/workbench/contrib/terminal/browser/terminal.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/terminal.ts
 @@ -10,10 +10,10 @@ import { FindReplaceState } from 'vs/editor/contrib/find/findState';
  import { createDecorator } from 'vs/platform/instantiation/common/instantiation';
- import { IShellLaunchConfig, ITerminalChildProcess, ITerminalDimensions, ITerminalLaunchError, ITerminalProfile, ITerminalTabLayoutInfoById, TerminalIcon, TitleEventSource, TerminalShellType, IExtensionTerminalProfile, ITerminalProfileType, TerminalLocation, ICreateContributedTerminalProfileOptions, ProcessPropertyType, ProcessCapability } from 'vs/platform/terminal/common/terminal';
+ import { IShellLaunchConfig, ITerminalChildProcess, ITerminalDimensions, ITerminalLaunchError, ITerminalProfile, ITerminalTabLayoutInfoById, TerminalIcon, TitleEventSource, TerminalShellType, IExtensionTerminalProfile, TerminalLocation, ICreateContributedTerminalProfileOptions, ProcessPropertyType, ProcessCapability } from 'vs/platform/terminal/common/terminal';
  import { ICommandTracker, INavigationMode, IOffProcessTerminalService, IRemoteTerminalAttachTarget, IStartExtensionTerminalRequest, ITerminalConfigHelper, ITerminalProcessExtHostProxy } from 'vs/workbench/contrib/terminal/common/terminal';
 -import type { Terminal as XTermTerminal } from 'xterm';
 -import type { SearchAddon as XTermSearchAddon } from 'xterm-addon-search';
@@ -485,7 +498,7 @@ index 58ca059..af09014 100644
  import { ICompleteTerminalConfiguration } from 'vs/workbench/contrib/terminal/common/remoteTerminalChannel';
  import { Orientation } from 'vs/base/browser/ui/splitview/splitview';
 diff --git a/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts b/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts
-index 2c505d9..e0f561e 100644
+index cd45b4a..ca91e52 100644
 --- a/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts
 @@ -31,10 +31,10 @@ import { TerminalLinkManager } from 'vs/workbench/contrib/terminal/browser/links
@@ -582,18 +595,31 @@ index 36606fc..af7ea06 100644
  import { registerThemingParticipant } from 'vs/platform/theme/common/themeService';
  import { editorHoverHighlight } from 'vs/platform/theme/common/colorRegistry';
 diff --git a/src/vs/workbench/contrib/terminal/browser/xterm-private.d.ts b/src/vs/workbench/contrib/terminal/browser/xterm-private.d.ts
-index f8155f0..25dced9 100644
+index 35d8ed4..c847446 100644
 --- a/src/vs/workbench/contrib/terminal/browser/xterm-private.d.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/xterm-private.d.ts
-@@ -3,7 +3,7 @@
-  *  Licensed under the MIT License. See License.txt in the project root for license information.
-  *--------------------------------------------------------------------------------------------*/
+@@ -5,7 +5,7 @@
+ 
+ /* eslint-disable @typescript-eslint/naming-convention */
  
 -import { IBufferCell } from 'xterm';
 +import { IBufferCell } from '@daiyam/xterm-tab';
  
  export type XTermAttributes = Omit<IBufferCell, 'getWidth' | 'getChars' | 'getCode'> & { clone?(): XTermAttributes };
  
+diff --git a/src/vs/workbench/contrib/terminal/test/browser/addons/lineDataEventAddon.test.ts b/src/vs/workbench/contrib/terminal/test/browser/addons/lineDataEventAddon.test.ts
+index 2ace440..968aa59 100644
+--- a/src/vs/workbench/contrib/terminal/test/browser/addons/lineDataEventAddon.test.ts
++++ b/src/vs/workbench/contrib/terminal/test/browser/addons/lineDataEventAddon.test.ts
+@@ -3,7 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
+-import { Terminal } from 'xterm';
++import { Terminal } from '@daiyam/xterm-tab';
+ import { LineDataEventAddon } from 'vs/workbench/contrib/terminal/browser/addons/lineDataEventAddon';
+ import { OperatingSystem } from 'vs/base/common/platform';
+ import { deepStrictEqual } from 'assert';
 diff --git a/src/vs/workbench/contrib/terminal/test/browser/links/terminalLinkHelpers.test.ts b/src/vs/workbench/contrib/terminal/test/browser/links/terminalLinkHelpers.test.ts
 index 56c271e..a07acf5 100644
 --- a/src/vs/workbench/contrib/terminal/test/browser/links/terminalLinkHelpers.test.ts
@@ -621,7 +647,7 @@ index 2f80b63..78eab4d 100644
  import { TestConfigurationService } from 'vs/platform/configuration/test/common/testConfigurationService';
  import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
 diff --git a/src/vs/workbench/contrib/terminal/test/browser/links/terminalValidatedLocalLinkProvider.test.ts b/src/vs/workbench/contrib/terminal/test/browser/links/terminalValidatedLocalLinkProvider.test.ts
-index f8547df..af47d63 100644
+index ea781cc..ad798f5 100644
 --- a/src/vs/workbench/contrib/terminal/test/browser/links/terminalValidatedLocalLinkProvider.test.ts
 +++ b/src/vs/workbench/contrib/terminal/test/browser/links/terminalValidatedLocalLinkProvider.test.ts
 @@ -5,7 +5,7 @@
@@ -686,47 +712,47 @@ index 90d121b..e20797b 100644
  				jschardet: new URL('../../../node_modules/jschardet/dist/jschardet.min.js', baseUrl).href
  			}
 diff --git a/yarn.lock b/yarn.lock
-index 053ba8a..24ab9d6 100644
+index 2b4d4ce..dbd86f4 100644
 --- a/yarn.lock
 +++ b/yarn.lock
 @@ -145,6 +145,36 @@
      lodash "^4.17.13"
      to-fast-properties "^2.0.0"
  
-+"@daiyam/xterm-tab-addon-search@0.9.0-d.3":
-+  version "0.9.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.3.tgz#9146b3763521ddcc9994e322e303f386fcd68d26"
-+  integrity sha512-6KhT8in3TZqh/bYSqhXsYBjX8D6LcBa9kXqyl8NKpp9VGjinbw31+4TFdg+v2n8Az2N63KbKS1ZHed4GyAXDEg==
++"@daiyam/xterm-tab-addon-search@0.9.0-d.4":
++  version "0.9.0-d.4"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.4.tgz#a77d2f4453d6de24a851e24d73e724b21d6f04c7"
++  integrity sha512-1yE8/i7lTugE/B8XK1kw6hSft7fzvb7ou5X8VegUz4dnfDucPHHvVidUG7AVI5PGwt3wRFmVq7SO4kaFz62+fg==
 +
-+"@daiyam/xterm-tab-addon-serialize@0.7.0-d.1":
-+  version "0.7.0-d.1"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.7.0-d.1.tgz#10073e7da54f91bb401082ec592a69fc74a95060"
-+  integrity sha512-TRO53yUWcGBJqlTOvYi0hKmT6kQiWlcSvesUv/PojyUAdbSjUu2nrqojkCW0oW9dkHA0VGlm3MU8lo6JW8NZ4Q==
++"@daiyam/xterm-tab-addon-serialize@0.7.0-d.2":
++  version "0.7.0-d.2"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.7.0-d.2.tgz#8e1f55cc0419d1c8d0528de2ebf58d181a4bcb03"
++  integrity sha512-orMfSSm3hFoNHtle/dnmKhpVT7Fb26FeF3tah1dupuiY3W/kusLrJR4viyxMywBHFXUHM+DSB5wIVaV5Ail5XQ==
 +
-+"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.3":
-+  version "0.3.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.3.tgz#09525b6e6ba099d368599028503ca24aea13d36a"
-+  integrity sha512-/QS7uaLkreDRuZFtpO013iRl5njvBadVmXku1IqQ6Inq4GIyElWyinAfVpebKl5kZIkweZqVMoQZykIL0HK+qg==
++"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.4":
++  version "0.3.0-d.4"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.4.tgz#ac8cf75c81277da2a550b5354279860f3a72d0f6"
++  integrity sha512-K2BD/Hz4qwvIh5x9riMQqoIPrwsIWI8ubYl1G//dH04kQT5MFzD3yM89iBtjJIl+sBjVehcYXehxkyu/4JOTDA==
 +
-+"@daiyam/xterm-tab-addon-webgl@0.12.0-d.3":
-+  version "0.12.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.3.tgz#df5c087fd4e67d65f645948dce53a62485a60466"
-+  integrity sha512-+ZTfnn9fpWIBvx+F9FipLCIh3VMoJoXW3JxOnuIo0aTNwAK715YZwC4fjrwxS3Tyo2o26ou7c1A3zCLsYxIwSg==
++"@daiyam/xterm-tab-addon-webgl@0.12.0-d.4":
++  version "0.12.0-d.4"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.4.tgz#fe881d0e46713e559098433913878540ad321878"
++  integrity sha512-p4S0sbxPb6p/227Lz8mVdj5NdvOg4gHLx2IHV1QAHN2d1/4EEHv8zyZJJZSyir/6BZrgsCErvrKHNpGU8dCIzQ==
 +
-+"@daiyam/xterm-tab-headless@4.15.0-d.2":
-+  version "4.15.0-d.2"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-headless/-/xterm-tab-headless-4.15.0-d.2.tgz#0fda56a876dec1ff722903276e4e58f6ce141b39"
-+  integrity sha512-j40OKws6uJ2k5S+7p91i8BRV78CFuO9J28DajElIgiXiUPmOBnJs0+y0byZCMpih5aV0SkmH8jTxR2Y2/nd77w==
++"@daiyam/xterm-tab-headless@4.15.0-d.3":
++  version "4.15.0-d.3"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-headless/-/xterm-tab-headless-4.15.0-d.3.tgz#99e8b52a3b09285917ee1460d4a1022108b76f23"
++  integrity sha512-4ugts5aBQ0cykoPL+LeE52d56c6L9g3E/duzodg7mipdNyjeONB89JNt7FykAMcOCxw7WdCzvhZN/ADvhk6RwA==
 +
-+"@daiyam/xterm-tab@4.15.0-d.1":
-+  version "4.15.0-d.1"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.15.0-d.1.tgz#631f3f1325071a3c664094ff3d47d119c2156ef3"
-+  integrity sha512-M5JgMcF3Lp+3s/OWI1AZ5lo8NvkJkmj4QGR9AJdxiXIqlL1FmLWIlncRXf/zGZYRuvpbHfxvphzIlDsB2bm4pA==
++"@daiyam/xterm-tab@4.15.0-d.3":
++  version "4.15.0-d.3"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.15.0-d.3.tgz#d7f47b6eb0045a5be072418249a3dd5eeba36ab1"
++  integrity sha512-QkVlrzouUl91oLW+DhlGa/bDbbc0I60Ok04GqP2XgNuWOH5oim6XdLC+9a9FqgYwL21/voEeZ8mGqRsZpbW1Cw==
 +
  "@discoveryjs/json-ext@^0.5.0":
    version "0.5.3"
    resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.3.tgz#90420f9f9c6d3987f176a19a7d8e764271a2f55d"
-@@ -10863,36 +10893,6 @@ xtend@~2.1.1:
+@@ -10881,36 +10911,6 @@ xtend@~2.1.1:
    dependencies:
      object-keys "~0.4.0"
  
@@ -735,30 +761,30 @@ index 053ba8a..24ab9d6 100644
 -  resolved "https://registry.yarnpkg.com/xterm-addon-search/-/xterm-addon-search-0.9.0-beta.5.tgz#e0e60a203d1c9d6c8af933648a46865dba299302"
 -  integrity sha512-ylfqim0ISBvuuX83LQwgu/06p5GC545QsAo9SssXw03TPpIrcd0zwaVMEnhOftSIzM9EKRRsyx3GbBjgUdiF5w==
 -
--xterm-addon-serialize@0.7.0-beta.1:
--  version "0.7.0-beta.1"
--  resolved "https://registry.yarnpkg.com/xterm-addon-serialize/-/xterm-addon-serialize-0.7.0-beta.1.tgz#0168ae7b07a4ce3c2445fce10efe91848717ca2e"
--  integrity sha512-Qt//GUsTix1FFMWJSFYreppn6nfFqFQaLL9Z9sper62/M3Ip4O+dN/bhrtd5pydBl5iqlHixJls3fu/bj3RHjA==
+-xterm-addon-serialize@0.7.0-beta.2:
+-  version "0.7.0-beta.2"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-serialize/-/xterm-addon-serialize-0.7.0-beta.2.tgz#ced9f664c74ab88448e7b63850721bc272aa6806"
+-  integrity sha512-KuSwdx2AAliUv7SvjKYUKHrB7vscbHLv8QsmwSDI3pgL1BpjyLJ8LR99iFFfuNpPW9CG4TX6adKPIJXtqiN3Vg==
 -
 -xterm-addon-unicode11@0.3.0:
 -  version "0.3.0"
 -  resolved "https://registry.yarnpkg.com/xterm-addon-unicode11/-/xterm-addon-unicode11-0.3.0.tgz#e4435c3c91a5294a7eb8b79c380acbb28a659463"
 -  integrity sha512-x5fHDZT2j9tlTlHnzPHt++9uKZ2kJ/lYQOj3L6xJA22xoJsS8UQRw/5YIFg2FUHqEAbV77Z1fZij/9NycMSH/A==
 -
--xterm-addon-webgl@0.12.0-beta.13:
--  version "0.12.0-beta.13"
--  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.13.tgz#95ecf99531adcce1349f2ddfc834a40af681780e"
--  integrity sha512-oPQHkFcuCB+x60wilGXFS+viZbOGNFijmuHEWehCUcLFQP5Mph0/6qXLZjgn47728QvCxU7HnXPqcD7JSxe0Tg==
+-xterm-addon-webgl@0.12.0-beta.15:
+-  version "0.12.0-beta.15"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.15.tgz#9ae82127f2a39b3cb7f5ae45a6af223810c933d4"
+-  integrity sha512-LWZ3iLspQOCc26OoT8qa+SuyuIcn2cAMRbBkinOuQCk4aW5kjovIrGovj9yVAcXNvOBnPm3sUqmnwGlN579kDA==
 -
--xterm-headless@4.15.0-beta.3:
--  version "4.15.0-beta.3"
--  resolved "https://registry.yarnpkg.com/xterm-headless/-/xterm-headless-4.15.0-beta.3.tgz#b1ba884e2e2feef17d92eaf3ff59b0b20c059dd8"
--  integrity sha512-MmC75/XUz9z1fHBdJV0Mx9Fje+8hegocT1NfWUNLri3+XFvy5/UbLRhrGUw/lxWKgthseV6eqI44QTNh7fVTQg==
+-xterm-headless@4.15.0-beta.10:
+-  version "4.15.0-beta.10"
+-  resolved "https://registry.yarnpkg.com/xterm-headless/-/xterm-headless-4.15.0-beta.10.tgz#2dbcb40dfda7ecfdacc7b63889c80da965480ce7"
+-  integrity sha512-kDAzmaeFX8hAJvbPUJc4dW4SoVBSg4onCVOPyi8QTmxZz1o7I9mX4U7DX1v3PceyfrU27A9k6zXjuTuPjxCCSQ==
 -
--xterm@4.15.0-beta.3:
--  version "4.15.0-beta.3"
--  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.15.0-beta.3.tgz#123ec4303be390e61cd24ae29872b9fa4e73ad30"
--  integrity sha512-CXzu0xDHsrOxzC+Tm9ju+eqq0VFiYZPuzPAtfoKOp2PW+wt4fRkM4kysrdLdfE2kz6qyRckRxl+3l7VzlJHVCA==
+-xterm@4.15.0-beta.10:
+-  version "4.15.0-beta.10"
+-  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.15.0-beta.10.tgz#8cda3d7885e8345f2fc6cf9275a43f3833d29acf"
+-  integrity sha512-valoh5ZcY/y7Pe+ffgcSAEFeuZfjzVeUUXcthdxTTsrGEiU1s4QR2EOg4U5jn5wye/Nc6mSfLW3s79R6Ac186w==
 -
  y18n@^3.2.1:
    version "3.2.2"

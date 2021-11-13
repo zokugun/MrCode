@@ -103,6 +103,7 @@ gsed -i -E 's/MS_COMMIT/BUILD_SOURCEVERSION/g' update_version.sh
 backup 'release.sh'
 gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' release.sh
 gsed -i -E 's|gh release|gh release --repo zokugun/MrCode|g' release.sh
+gsed -i -E 's/--owner VSCodium --repo vscodium/--owner zokugun --repo MrCode/g' release.sh
 
 # build/linux/appimage/recipe.yml
 backup 'build/linux/appimage/recipe.yml'

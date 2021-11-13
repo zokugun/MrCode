@@ -77,7 +77,7 @@ jobs:
 
       - name: Release
         env:
-          GH_CLI_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./vscodium
         run: ./release.sh
         if: env.SHOULD_BUILD == 'yes'

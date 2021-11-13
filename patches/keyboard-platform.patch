@@ -1,16 +1,16 @@
 diff --git a/src/vs/platform/keybinding/common/keybindingsRegistry.ts b/src/vs/platform/keybinding/common/keybindingsRegistry.ts
-index 2bf215e..620eba9 100644
+index e8f7a8d..78117a5 100644
 --- a/src/vs/platform/keybinding/common/keybindingsRegistry.ts
 +++ b/src/vs/platform/keybinding/common/keybindingsRegistry.ts
-@@ -75,6 +75,7 @@ export interface IKeybindingsRegistry {
- 	setExtensionKeybindings(rules: IKeybindingRule2[]): void;
+@@ -73,6 +73,7 @@ export interface IKeybindingsRegistry {
+ 	setExtensionKeybindings(rules: IExtensionKeybindingRule[]): void;
  	registerCommandAndKeybindingRule(desc: ICommandAndKeybindingRule): void;
  	getDefaultKeybindings(): IKeybindingItem[];
 +	setPlatform(platform?: string): void;
  }
  
  class KeybindingsRegistryImpl implements IKeybindingsRegistry {
-@@ -82,6 +83,8 @@ class KeybindingsRegistryImpl implements IKeybindingsRegistry {
+@@ -80,6 +81,8 @@ class KeybindingsRegistryImpl implements IKeybindingsRegistry {
  	private _coreKeybindings: IKeybindingItem[];
  	private _extensionKeybindings: IKeybindingItem[];
  	private _cachedMergedKeybindings: IKeybindingItem[] | null;
@@ -19,7 +19,7 @@ index 2bf215e..620eba9 100644
  
  	constructor() {
  		this._coreKeybindings = [];
-@@ -92,12 +95,12 @@ class KeybindingsRegistryImpl implements IKeybindingsRegistry {
+@@ -90,12 +93,12 @@ class KeybindingsRegistryImpl implements IKeybindingsRegistry {
  	/**
  	 * Take current platform into account and reduce to primary & secondary.
  	 */
@@ -35,23 +35,7 @@ index 2bf215e..620eba9 100644
  			if (kb && kb.mac) {
  				return kb.mac;
  			}
-@@ -113,12 +116,12 @@ class KeybindingsRegistryImpl implements IKeybindingsRegistry {
- 	/**
- 	 * Take current platform into account and reduce to primary & secondary.
- 	 */
--	private static bindToCurrentPlatform2(kb: IKeybindingRule2): { primary?: Keybinding | null; } {
--		if (OS === OperatingSystem.Windows) {
-+	private bindToCurrentPlatform2(kb: IKeybindingRule2): { primary?: Keybinding | null; } {
-+		if (this._platform === OperatingSystem.Windows) {
- 			if (kb && kb.win) {
- 				return kb.win;
- 			}
--		} else if (OS === OperatingSystem.Macintosh) {
-+		} else if (this._platform === OperatingSystem.Macintosh) {
- 			if (kb && kb.mac) {
- 				return kb.mac;
- 			}
-@@ -131,11 +134,41 @@ class KeybindingsRegistryImpl implements IKeybindingsRegistry {
+@@ -108,11 +111,41 @@ class KeybindingsRegistryImpl implements IKeybindingsRegistry {
  		return kb;
  	}
  
@@ -95,7 +79,7 @@ index 2bf215e..620eba9 100644
  			if (kk) {
  				this._registerDefaultKeybinding(kk, rule.id, rule.args, rule.weight, 0, rule.when);
  			}
-@@ -144,7 +177,7 @@ class KeybindingsRegistryImpl implements IKeybindingsRegistry {
+@@ -121,7 +154,7 @@ class KeybindingsRegistryImpl implements IKeybindingsRegistry {
  		if (actualKb && Array.isArray(actualKb.secondary)) {
  			for (let i = 0, len = actualKb.secondary.length; i < len; i++) {
  				const k = actualKb.secondary[i];
@@ -104,17 +88,8 @@ index 2bf215e..620eba9 100644
  				if (kk) {
  					this._registerDefaultKeybinding(kk, rule.id, rule.args, rule.weight, -i - 1, rule.when);
  				}
-@@ -156,7 +189,7 @@ class KeybindingsRegistryImpl implements IKeybindingsRegistry {
- 		let result: IKeybindingItem[] = [], keybindingsLen = 0;
- 		for (let i = 0, len = rules.length; i < len; i++) {
- 			const rule = rules[i];
--			let actualKb = KeybindingsRegistryImpl.bindToCurrentPlatform2(rule);
-+			let actualKb = this.bindToCurrentPlatform2(rule);
- 
- 			if (actualKb && actualKb.primary) {
- 				result[keybindingsLen++] = {
 diff --git a/src/vs/workbench/services/configuration/browser/configurationService.ts b/src/vs/workbench/services/configuration/browser/configurationService.ts
-index 5a83f1a..18f355c 100644
+index 8ef000f..aa1f391 100644
 --- a/src/vs/workbench/services/configuration/browser/configurationService.ts
 +++ b/src/vs/workbench/services/configuration/browser/configurationService.ts
 @@ -35,6 +35,7 @@ import { IUriIdentityService } from 'vs/workbench/services/uriIdentity/common/ur
@@ -135,10 +110,10 @@ index 5a83f1a..18f355c 100644
  		if (hasWorkspaceBefore) {
  			const newState = this.getWorkbenchState();
 diff --git a/src/vs/workbench/services/keybinding/browser/keybindingService.ts b/src/vs/workbench/services/keybinding/browser/keybindingService.ts
-index eea2f00..aa48ebf 100644
+index 7bae6f5..efcd960 100644
 --- a/src/vs/workbench/services/keybinding/browser/keybindingService.ts
 +++ b/src/vs/workbench/services/keybinding/browser/keybindingService.ts
-@@ -849,6 +849,13 @@ const keyboardConfiguration: IConfigurationNode = {
+@@ -853,6 +853,13 @@ const keyboardConfiguration: IConfigurationNode = {
  			default: 'code',
  			markdownDescription: nls.localize('dispatch', "Controls the dispatching logic for key presses to use either `code` (recommended) or `keyCode`."),
  			included: OS === OperatingSystem.Macintosh || OS === OperatingSystem.Linux
