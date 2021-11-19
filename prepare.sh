@@ -87,6 +87,7 @@ gsed -i -E 's|VSCodium/vscodium|zokugun/MrCode|g' check_tags.sh
 gsed -i -E 's/VSCodium/MrCode/g' check_tags.sh
 gsed -i -E 's/darwin-\$MS_TAG/darwin-$VSCODE_ARCH-$RELEASE_VERSION/g' check_tags.sh
 gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' check_tags.sh
+gsed -i -E 's|([.-])\$\{RELEASE\_VERSION\}|\1${RELEASE_VERSION/+/.}|g' check_tags.sh
 
 # update_version.sh
 backup 'update_version.sh'
