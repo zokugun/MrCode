@@ -145,6 +145,18 @@ done
 
 cd vscode || exit
 
+for file in ../../patches/*.patch; do
+    if [ -f "$file" ]; then
+        echo "applying $(basename -- $file)"
+
+        git apply --ignore-whitespace "$file"
+
+        if [ $? -ne 0 ]; then
+            echo "failed to apply $(basename -- $file)" 1>&2
+        fi
+    fi
+done
+
 # package.json
 backup 'package.json'
 gsed -i -E "s/\"version\": \".*\"/\"version\": \"${RELEASE_VERSION}\"/" package.json
@@ -198,17 +210,5 @@ gsed -i -E 's|vscode|mrcode|g' resources/linux/debian/postinst.template
 backup 'resources/linux/snap/snapcraft.yaml'
 gsed -i -E 's|summary: .*|summary: MrCode. Code editing.|g' resources/linux/snap/snapcraft.yaml
 gsed -i -E '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based on Visual Studio Code.\n|g;}' resources/linux/snap/snapcraft.yaml
-
-for file in ../../patches/*.patch; do
-    if [ -f "$file" ]; then
-        echo "applying $(basename -- $file)"
-
-        git apply --ignore-whitespace "$file"
-
-        if [ $? -ne 0 ]; then
-            echo "failed to apply $(basename -- $file)" 1>&2
-        fi
-    fi
-done
 
 cd ../..
