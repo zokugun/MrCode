@@ -1,18 +1,74 @@
+diff --git a/build/gulpfile.vscode.linux.js b/build/gulpfile.vscode.linux.js
+index 3423e86..596283e 100644
+--- a/build/gulpfile.vscode.linux.js
++++ b/build/gulpfile.vscode.linux.js
+@@ -18,9 +18,6 @@ const product = require('../product.json');
+ const rpmDependencies = require('../resources/linux/rpm/dependencies.json');
+ const path = require('path');
+ const root = path.dirname(__dirname);
+-const commit = util.getVersion(root);
+-
+-const linuxPackageRevision = Math.floor(new Date().getTime() / 1000);
+ 
+ function getDebPackageArch(arch) {
+ 	return { x64: 'amd64', armhf: 'armhf', arm64: 'arm64' }[arch];
+@@ -78,7 +75,7 @@ function prepareDebPackage(arch) {
+ 				const that = this;
+ 				gulp.src('resources/linux/debian/control.template', { base: '.' })
+ 					.pipe(replace('@@NAME@@', product.applicationName))
+-					.pipe(replace('@@VERSION@@', packageJson.version + '-' + linuxPackageRevision))
++					.pipe(replace('@@VERSION@@', packageJson.version.replace('+', '.')))
+ 					.pipe(replace('@@ARCHITECTURE@@', debArch))
+ 					.pipe(replace('@@INSTALLEDSIZE@@', Math.ceil(size / 1024)))
+ 					.pipe(rename('DEBIAN/control'))
+@@ -168,8 +165,7 @@ function prepareRpmPackage(arch) {
+ 			.pipe(replace('@@NAME@@', product.applicationName))
+ 			.pipe(replace('@@NAME_LONG@@', product.nameLong))
+ 			.pipe(replace('@@ICON@@', product.linuxIconName))
+-			.pipe(replace('@@VERSION@@', packageJson.version))
+-			.pipe(replace('@@RELEASE@@', linuxPackageRevision))
++			.pipe(replace('@@VERSION@@', packageJson.version.replace('+', '.')))
+ 			.pipe(replace('@@ARCHITECTURE@@', rpmArch))
+ 			.pipe(replace('@@LICENSE@@', product.licenseName))
+ 			.pipe(replace('@@QUALITY@@', product.quality || '@@QUALITY@@'))
+@@ -233,7 +229,7 @@ function prepareSnapPackage(arch) {
+ 
+ 		const snapcraft = gulp.src('resources/linux/snap/snapcraft.yaml', { base: '.' })
+ 			.pipe(replace('@@NAME@@', product.applicationName))
+-			.pipe(replace('@@VERSION@@', commit.substr(0, 8)))
++			.pipe(replace('@@VERSION@@', packageJson.version.replace('+', '.')))
+ 			// Possible run-on values https://snapcraft.io/docs/architectures
+ 			.pipe(replace('@@ARCHITECTURE@@', arch === 'x64' ? 'amd64' : arch))
+ 			.pipe(rename('snap/snapcraft.yaml'));
 diff --git a/build/gulpfile.vscode.win32.js b/build/gulpfile.vscode.win32.js
-index 0113607..511a162 100644
+index 1a73ae9..137b8e6 100644
 --- a/build/gulpfile.vscode.win32.js
 +++ b/build/gulpfile.vscode.win32.js
-@@ -88,7 +88,7 @@ function buildWin32Setup(arch, target) {
+@@ -87,8 +87,8 @@ function buildWin32Setup(arch, target) {
+ 			NameLong: product.nameLong,
  			NameShort: product.nameShort,
  			DirName: product.win32DirName,
- 			Version: pkg.version,
+-			Version: pkg.version,
 -			RawVersion: pkg.version.replace(/-\w+$/, ''),
++			Version: pkg.version.replace('+', '.'),
 +			RawVersion: pkg.version.replace(/-\w+$/, '').replace('+', '.'),
  			NameVersion: product.win32NameVersion + (target === 'user' ? ' (User)' : ''),
  			ExeBasename: product.nameShort,
  			RegValueName: product.win32RegValueName,
+diff --git a/resources/linux/rpm/code.spec.template b/resources/linux/rpm/code.spec.template
+index 5b7eadb..b24dc0b 100644
+--- a/resources/linux/rpm/code.spec.template
++++ b/resources/linux/rpm/code.spec.template
+@@ -1,6 +1,6 @@
+ Name:     @@NAME@@
+ Version:  @@VERSION@@
+-Release:  @@RELEASE@@.el7
++Release:  el7
+ Summary:  Code editing. Redefined.
+ Group:    Development/Tools
+ Vendor:   Microsoft Corporation
 diff --git a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
-index 3d39153..dedaa27 100644
+index 60e7e06..5f1a38c 100644
 --- a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
 +++ b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
 @@ -26,6 +26,7 @@ import { getServiceMachineId } from 'vs/platform/serviceMachineId/common/service
@@ -23,7 +79,7 @@ index 3d39153..dedaa27 100644
  
  const CURRENT_TARGET_PLATFORM = isWeb ? TargetPlatform.WEB : getTargetPlatform(platform, arch);
  
-@@ -950,10 +951,11 @@ export class ExtensionGalleryServiceWithNoStorageService extends AbstractExtensi
+@@ -959,10 +960,11 @@ export class ExtensionGalleryServiceWithNoStorageService extends AbstractExtensi
  	}
  }
  
