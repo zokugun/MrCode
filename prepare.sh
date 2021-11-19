@@ -79,6 +79,7 @@ gsed -i -E 's/VSCodium/MrCode/g' prepare_artifacts.sh
 gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' prepare_artifacts.sh
 gsed -i 's|MrCode-${VSCODE_ARCH}-${RELEASE_VERSION}.msi artifacts/|MrCode-${VSCODE_ARCH}-${MS_TAG}.msi artifacts\\\\MrCode-${VSCODE_ARCH}-${RELEASE_VERSION}.msi|' prepare_artifacts.sh
 gsed -i 's|MrCode-${VSCODE_ARCH}-updates-disabled-${RELEASE_VERSION}.msi artifacts/|MrCode-${VSCODE_ARCH}-updates-disabled-${MS_TAG}.msi artifacts\\\\MrCode-${VSCODE_ARCH}-updates-disabled-${RELEASE_VERSION}.msi|' prepare_artifacts.sh
+gsed -i -E 's|([.-])\$\{RELEASE\_VERSION\}|\1${RELEASE_VERSION/+/.}|g' prepare_artifacts.sh
 
 # check_tags.sh
 backup 'check_tags.sh'
