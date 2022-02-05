@@ -1,41 +1,55 @@
 diff --git a/.eslintrc.json b/.eslintrc.json
-index ffc218d..d2aea33 100644
+index 06eeba2..585aa4b 100644
 --- a/.eslintrc.json
 +++ b/.eslintrc.json
-@@ -647,8 +647,8 @@
- 				"target": "**/vs/workbench/contrib/terminal/browser/**",
- 				"restrictions": [
- 					// xterm and its addons are strictly browser-only components
+@@ -148,12 +148,12 @@
+ 					"vscode-textmate",
+ 					"windows-process-tree",
+ 					"worker_threads",
 -					"xterm",
--					"xterm-addon-*",
+-					"xterm-addon-search",
+-					"xterm-addon-serialize",
+-					"xterm-addon-unicode11",
+-					"xterm-addon-webgl",
+-					"xterm-headless",
 +					"@daiyam/xterm-tab",
-+					"@daiyam/xterm-tab-addon-*",
- 					"vs/nls",
- 					"vs/css!./**/*",
- 					"**/vs/base/**/{common,browser}/**",
-@@ -969,7 +969,7 @@
- 					"sinon",
- 					"sinon-test",
- 					"crypto",
--					"xterm*"
-+					"@daiyam/xterm-tab*"
++					"@daiyam/xterm-tab-addon-search",
++					"@daiyam/xterm-tab-addon-serialize",
++					"@daiyam/xterm-tab-addon-unicode11",
++					"@daiyam/xterm-tab-addon-webgl",
++					"@daiyam/xterm-tab-headless",
+ 					"yauzl",
+ 					"yazl",
+ 					"zlib"
+@@ -343,8 +343,8 @@
+ 					"vs/workbench/api/~",
+ 					"vs/workbench/services/*/~",
+ 					"vs/workbench/contrib/*/~",
+-					{ "when": "hasBrowser", "pattern": "xterm" }, // node module allowed even in /browser/
+-					{ "when": "hasBrowser", "pattern": "xterm-addon-*" }, // node module allowed even in /browser/
++					{ "when": "hasBrowser", "pattern": "@daiyam/xterm-tab" }, // node module allowed even in /browser/
++					{ "when": "hasBrowser", "pattern": "@daiyam/xterm-tab-addon-*" }, // node module allowed even in /browser/
+ 					{ "when": "hasBrowser", "pattern": "vscode-textmate" } // node module allowed even in /browser/
  				]
  			},
- 			{
-@@ -980,7 +980,7 @@
- 					"sinon",
- 					"sinon-test",
- 					"crypto",
--					"xterm*"
-+					"@daiyam/xterm-tab*"
- 				]
- 			}
- 		],
+diff --git a/.vscode/settings.json b/.vscode/settings.json
+index 1a6af10..6722b43 100644
+--- a/.vscode/settings.json
++++ b/.vscode/settings.json
+@@ -81,7 +81,7 @@
+ 	},
+ 	"[javascript]": {
+ 		"editor.defaultFormatter": "vscode.typescript-language-features",
+-		"editor.formatOnSave": true
++		// "editor.formatOnSave": true
+ 	},
+ 	"typescript.tsc.autoDetect": "off",
+ 	"testing.autoRun.mode": "rerun",
 diff --git a/build/.moduleignore b/build/.moduleignore
-index 5bbca46..333ea49 100644
+index 29b676c..9b13309 100644
 --- a/build/.moduleignore
 +++ b/build/.moduleignore
-@@ -142,13 +142,13 @@ zone.js/dist/**
+@@ -141,13 +141,13 @@ zone.js/dist/**
  !zone.js/dist/zone-node.js
  
  # https://github.com/xtermjs/xterm.js/issues/3137
@@ -56,7 +70,7 @@ index 5bbca46..333ea49 100644
  
  
 diff --git a/build/.webignore b/build/.webignore
-index fc1d206..f0a66f6 100644
+index f55882b..8b8d93f 100644
 --- a/build/.webignore
 +++ b/build/.webignore
 @@ -18,17 +18,17 @@ jschardet/dist/jschardet.js
@@ -86,207 +100,207 @@ index fc1d206..f0a66f6 100644
  # This makes sure the model is included in the package
  !@vscode/vscode-languagedetection/model/**
 diff --git a/package.json b/package.json
-index 18821d0..79123f6 100644
+index 5d6022a..6c8ba54 100644
 --- a/package.json
 +++ b/package.json
 @@ -85,12 +85,12 @@
+     "vscode-proxy-agent": "^0.11.0",
      "vscode-regexpp": "^3.1.0",
-     "vscode-ripgrep": "^1.12.1",
-     "vscode-textmate": "5.4.1",
--    "xterm": "4.15.0-beta.10",
--    "xterm-addon-search": "0.9.0-beta.5",
--    "xterm-addon-serialize": "0.7.0-beta.2",
--    "xterm-addon-unicode11": "0.3.0",
--    "xterm-addon-webgl": "0.12.0-beta.15",
--    "xterm-headless": "4.15.0-beta.10",
-+    "@daiyam/xterm-tab": "4.15.0-d.3",
-+    "@daiyam/xterm-tab-addon-search": "0.9.0-d.4",
-+    "@daiyam/xterm-tab-addon-serialize": "0.7.0-d.2",
-+    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.4",
-+    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.4",
-+    "@daiyam/xterm-tab-headless": "4.15.0-d.3",
+     "vscode-textmate": "6.0.0",
+-    "xterm": "4.17.0-beta.7",
+-    "xterm-addon-search": "0.9.0-beta.8",
+-    "xterm-addon-serialize": "0.7.0-beta.6",
+-    "xterm-addon-unicode11": "0.4.0-beta.1",
+-    "xterm-addon-webgl": "0.12.0-beta.21",
+-    "xterm-headless": "4.17.0-beta.7",
++    "@daiyam/xterm-tab": "4.17.0-d.1",
++    "@daiyam/xterm-tab-addon-search": "0.9.0-d.5",
++    "@daiyam/xterm-tab-addon-serialize": "0.7.0-d.3",
++    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.5",
++    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.5",
++    "@daiyam/xterm-tab-headless": "4.17.0-d.1",
      "yauzl": "^2.9.2",
      "yazl": "^2.4.3"
    },
 diff --git a/remote/package.json b/remote/package.json
-index 0cf9004..b1588fd 100644
+index 4bc4099..c9f1922 100644
 --- a/remote/package.json
 +++ b/remote/package.json
-@@ -25,12 +25,12 @@
+@@ -24,12 +24,12 @@
+     "vscode-proxy-agent": "^0.11.0",
      "vscode-regexpp": "^3.1.0",
-     "vscode-ripgrep": "^1.12.1",
-     "vscode-textmate": "5.4.1",
--    "xterm": "4.15.0-beta.10",
--    "xterm-addon-search": "0.9.0-beta.5",
--    "xterm-addon-serialize": "0.7.0-beta.2",
--    "xterm-addon-unicode11": "0.3.0",
--    "xterm-addon-webgl": "0.12.0-beta.15",
--    "xterm-headless": "4.15.0-beta.10",
-+    "@daiyam/xterm-tab": "4.15.0-d.3",
-+    "@daiyam/xterm-tab-addon-search": "0.9.0-d.4",
-+    "@daiyam/xterm-tab-addon-serialize": "0.7.0-d.2",
-+    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.4",
-+    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.4",
-+    "@daiyam/xterm-tab-headless": "4.15.0-d.3",
+     "vscode-textmate": "6.0.0",
+-    "xterm": "4.17.0-beta.7",
+-    "xterm-addon-search": "0.9.0-beta.8",
+-    "xterm-addon-serialize": "0.7.0-beta.6",
+-    "xterm-addon-unicode11": "0.4.0-beta.1",
+-    "xterm-addon-webgl": "0.12.0-beta.21",
+-    "xterm-headless": "4.17.0-beta.7",
++    "@daiyam/xterm-tab": "4.17.0-d.1",
++    "@daiyam/xterm-tab-addon-search": "0.9.0-d.5",
++    "@daiyam/xterm-tab-addon-serialize": "0.7.0-d.3",
++    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.5",
++    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.5",
++    "@daiyam/xterm-tab-headless": "4.17.0-d.1",
      "yauzl": "^2.9.2",
      "yazl": "^2.4.3"
    },
 diff --git a/remote/web/package.json b/remote/web/package.json
-index 307a919..da762fa 100644
+index d3d15a7..afce45e 100644
 --- a/remote/web/package.json
 +++ b/remote/web/package.json
 @@ -10,9 +10,9 @@
  		"tas-client-umd": "0.1.4",
- 		"vscode-oniguruma": "1.5.1",
- 		"vscode-textmate": "5.4.1",
--		"xterm": "4.15.0-beta.10",
--		"xterm-addon-search": "0.9.0-beta.5",
--		"xterm-addon-unicode11": "0.3.0",
--		"xterm-addon-webgl": "0.12.0-beta.15"
-+		"@daiyam/xterm-tab": "4.15.0-d.3",
-+    "@daiyam/xterm-tab-addon-search": "0.9.0-d.4",
-+    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.4",
-+    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.4"
+ 		"vscode-oniguruma": "1.6.1",
+ 		"vscode-textmate": "6.0.0",
+-		"xterm": "4.17.0-beta.7",
+-		"xterm-addon-search": "0.9.0-beta.8",
+-		"xterm-addon-unicode11": "0.4.0-beta.1",
+-		"xterm-addon-webgl": "0.12.0-beta.21"
++    "@daiyam/xterm-tab": "4.17.0-d.1",
++    "@daiyam/xterm-tab-addon-search": "0.9.0-d.5",
++    "@daiyam/xterm-tab-addon-unicode11": "0.3.0-d.5",
++    "@daiyam/xterm-tab-addon-webgl": "0.12.0-d.5"
  	}
  }
 diff --git a/remote/web/yarn.lock b/remote/web/yarn.lock
-index 384abe2..e79fc39 100644
+index d316b5c..6b35585 100644
 --- a/remote/web/yarn.lock
 +++ b/remote/web/yarn.lock
 @@ -2,6 +2,26 @@
  # yarn lockfile v1
  
  
-+"@daiyam/xterm-tab-addon-search@0.9.0-d.4":
-+  version "0.9.0-d.4"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.4.tgz#a77d2f4453d6de24a851e24d73e724b21d6f04c7"
-+  integrity sha512-1yE8/i7lTugE/B8XK1kw6hSft7fzvb7ou5X8VegUz4dnfDucPHHvVidUG7AVI5PGwt3wRFmVq7SO4kaFz62+fg==
++"@daiyam/xterm-tab-addon-search@0.9.0-d.5":
++  version "0.9.0-d.5"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.5.tgz#2dfba1768b19e7100ce0d3e098586bb0c20f53c9"
++  integrity sha512-Dc4XNJfOuZ5Pm6pf8ljRIB6DqxGImhqqsewo+UCynYWajt9KVCzvt5egx4BHiJy57gCwJfFoGd2uF5sC7MkMcQ==
 +
-+"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.4":
-+  version "0.3.0-d.4"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.4.tgz#ac8cf75c81277da2a550b5354279860f3a72d0f6"
-+  integrity sha512-K2BD/Hz4qwvIh5x9riMQqoIPrwsIWI8ubYl1G//dH04kQT5MFzD3yM89iBtjJIl+sBjVehcYXehxkyu/4JOTDA==
++"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.5":
++  version "0.3.0-d.5"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.5.tgz#69a756c35754ab82acffc8fd362cbc3e3488dcfe"
++  integrity sha512-ypd2uNFdgDySWuy5/Ri7KIg4PHBa3461kjpfqvVAEovLyhrQTmRycM1WD9q9+Koe17vmjpI+GHNAK4ZIIt9ydA==
 +
-+"@daiyam/xterm-tab-addon-webgl@0.12.0-d.4":
-+  version "0.12.0-d.4"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.4.tgz#fe881d0e46713e559098433913878540ad321878"
-+  integrity sha512-p4S0sbxPb6p/227Lz8mVdj5NdvOg4gHLx2IHV1QAHN2d1/4EEHv8zyZJJZSyir/6BZrgsCErvrKHNpGU8dCIzQ==
++"@daiyam/xterm-tab-addon-webgl@0.12.0-d.5":
++  version "0.12.0-d.5"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.5.tgz#c3cb987456c7e0d0c0347d60cffa66ea8f5ad44f"
++  integrity sha512-iNtbavscXWq/geV3gnoXOtZzs8J08702EpTnUS0Cc/7zxJzVsTodTQX87Fu8VS/zs4+xO5aLfPqZ+P7K55dmRQ==
 +
-+"@daiyam/xterm-tab@4.15.0-d.3":
-+  version "4.15.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.15.0-d.3.tgz#d7f47b6eb0045a5be072418249a3dd5eeba36ab1"
-+  integrity sha512-QkVlrzouUl91oLW+DhlGa/bDbbc0I60Ok04GqP2XgNuWOH5oim6XdLC+9a9FqgYwL21/voEeZ8mGqRsZpbW1Cw==
++"@daiyam/xterm-tab@4.17.0-d.1":
++  version "4.17.0-d.1"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.17.0-d.1.tgz#e4f442fa53d063f7320520f0fa5b4b03ee4070fd"
++  integrity sha512-Bg+ojYHMOkxoBSANst70CDKC1EEi14PT73q8zpxjlMuR7ELoly4PP6N1d0HX/A7RcCxUt9LzAMK5qcCAhhd91Q==
 +
  "@microsoft/applicationinsights-analytics-js@2.6.4":
    version "2.6.4"
    resolved "https://registry.yarnpkg.com/@microsoft/applicationinsights-analytics-js/-/applicationinsights-analytics-js-2.6.4.tgz#22ad17276ed922f2f0e66b7efe304f31c50ede64"
-@@ -112,23 +132,3 @@ vscode-textmate@5.4.1:
-   version "5.4.1"
-   resolved "https://registry.yarnpkg.com/vscode-textmate/-/vscode-textmate-5.4.1.tgz#09d566724fc76b60b3ad9791eebf1f0b50f29e5a"
-   integrity sha512-4CvPHmfuZQaXrcCpathdh6jo7myuR+MU8BvscgQADuponpbqfmu2rwTOtCXhGwwEgStvJF8V4s9FwMKRVLNmKQ==
+@@ -112,23 +132,3 @@ vscode-textmate@6.0.0:
+   version "6.0.0"
+   resolved "https://registry.yarnpkg.com/vscode-textmate/-/vscode-textmate-6.0.0.tgz#a3777197235036814ac9a92451492f2748589210"
+   integrity sha512-gu73tuZfJgu+mvCSy4UZwd2JXykjK9zAZsfmDeut5dx/1a7FeTk0XwJsSuqQn+cuMCGVbIBfl+s53X4T19DnzQ==
 -
--xterm-addon-search@0.9.0-beta.5:
--  version "0.9.0-beta.5"
--  resolved "https://registry.yarnpkg.com/xterm-addon-search/-/xterm-addon-search-0.9.0-beta.5.tgz#e0e60a203d1c9d6c8af933648a46865dba299302"
--  integrity sha512-ylfqim0ISBvuuX83LQwgu/06p5GC545QsAo9SssXw03TPpIrcd0zwaVMEnhOftSIzM9EKRRsyx3GbBjgUdiF5w==
+-xterm-addon-search@0.9.0-beta.8:
+-  version "0.9.0-beta.8"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-search/-/xterm-addon-search-0.9.0-beta.8.tgz#b3cbe364e24ea5765c36cba47c78a14acbe69062"
+-  integrity sha512-FCv5zo6BVc7DaG3kLEOskKDCns7y2fRHqmZDrSmyfCd1lPmm9OA3UYdxZy5BtNkn6bc8amwpB7J2bIdu8VV7Qg==
 -
--xterm-addon-unicode11@0.3.0:
--  version "0.3.0"
--  resolved "https://registry.yarnpkg.com/xterm-addon-unicode11/-/xterm-addon-unicode11-0.3.0.tgz#e4435c3c91a5294a7eb8b79c380acbb28a659463"
--  integrity sha512-x5fHDZT2j9tlTlHnzPHt++9uKZ2kJ/lYQOj3L6xJA22xoJsS8UQRw/5YIFg2FUHqEAbV77Z1fZij/9NycMSH/A==
+-xterm-addon-unicode11@0.4.0-beta.1:
+-  version "0.4.0-beta.1"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-unicode11/-/xterm-addon-unicode11-0.4.0-beta.1.tgz#aeefd26e87bad15d8dfd8a1e0b804fe408c9b882"
+-  integrity sha512-pG8mpxnqpYDry0e20vuEFKhd4kKIcLLNwdNftNvfo+R/EjYRnTYnF+H8L+7eQHq6hqDH61xCEP4H4qR2CyT4pg==
 -
--xterm-addon-webgl@0.12.0-beta.15:
--  version "0.12.0-beta.15"
--  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.15.tgz#9ae82127f2a39b3cb7f5ae45a6af223810c933d4"
--  integrity sha512-LWZ3iLspQOCc26OoT8qa+SuyuIcn2cAMRbBkinOuQCk4aW5kjovIrGovj9yVAcXNvOBnPm3sUqmnwGlN579kDA==
+-xterm-addon-webgl@0.12.0-beta.21:
+-  version "0.12.0-beta.21"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.21.tgz#8c476d25ec40b7535dedbd87b9cdf5eeeb41fc93"
+-  integrity sha512-aeZcjxbtPfkVutNnXqCv9E5V4DoYecUFztWOjBzI/dgC1xfMOMVWzsymK9H1EUfd6u0ymEIeOjvX9bHsXNUzdA==
 -
--xterm@4.15.0-beta.10:
--  version "4.15.0-beta.10"
--  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.15.0-beta.10.tgz#8cda3d7885e8345f2fc6cf9275a43f3833d29acf"
--  integrity sha512-valoh5ZcY/y7Pe+ffgcSAEFeuZfjzVeUUXcthdxTTsrGEiU1s4QR2EOg4U5jn5wye/Nc6mSfLW3s79R6Ac186w==
+-xterm@4.17.0-beta.7:
+-  version "4.17.0-beta.7"
+-  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.17.0-beta.7.tgz#c11d52403a8d6456b92f2086e1797c64018328d6"
+-  integrity sha512-FhC12WUljy8pTWr0oquVE0U567H1ZPAREKkN+wWLSZODNJwc8/txP2Ajg9byG++bkxfBP3CNEmDzaP0hoall8Q==
 diff --git a/remote/yarn.lock b/remote/yarn.lock
-index 293ab74..073da8b 100644
+index 2c93f0c..483b468 100644
 --- a/remote/yarn.lock
 +++ b/remote/yarn.lock
 @@ -2,6 +2,36 @@
  # yarn lockfile v1
  
  
-+"@daiyam/xterm-tab-addon-search@0.9.0-d.4":
-+  version "0.9.0-d.4"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.4.tgz#a77d2f4453d6de24a851e24d73e724b21d6f04c7"
-+  integrity sha512-1yE8/i7lTugE/B8XK1kw6hSft7fzvb7ou5X8VegUz4dnfDucPHHvVidUG7AVI5PGwt3wRFmVq7SO4kaFz62+fg==
++"@daiyam/xterm-tab-addon-search@0.9.0-d.5":
++  version "0.9.0-d.5"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.5.tgz#2dfba1768b19e7100ce0d3e098586bb0c20f53c9"
++  integrity sha512-Dc4XNJfOuZ5Pm6pf8ljRIB6DqxGImhqqsewo+UCynYWajt9KVCzvt5egx4BHiJy57gCwJfFoGd2uF5sC7MkMcQ==
 +
-+"@daiyam/xterm-tab-addon-serialize@0.7.0-d.2":
-+  version "0.7.0-d.2"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.7.0-d.2.tgz#8e1f55cc0419d1c8d0528de2ebf58d181a4bcb03"
-+  integrity sha512-orMfSSm3hFoNHtle/dnmKhpVT7Fb26FeF3tah1dupuiY3W/kusLrJR4viyxMywBHFXUHM+DSB5wIVaV5Ail5XQ==
++"@daiyam/xterm-tab-addon-serialize@0.7.0-d.3":
++  version "0.7.0-d.3"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.7.0-d.3.tgz#0dd9193a12afc25c861576475a449904bea5b23d"
++  integrity sha512-yb+LUMdiAfuUnwhAwAw/7bNJ6uVTmudfxCL/w7VtoG6ZHnhbMgaNjK5k/QUkmTGEll0gwMYaaFSqPr7NMRtb4w==
 +
-+"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.4":
-+  version "0.3.0-d.4"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.4.tgz#ac8cf75c81277da2a550b5354279860f3a72d0f6"
-+  integrity sha512-K2BD/Hz4qwvIh5x9riMQqoIPrwsIWI8ubYl1G//dH04kQT5MFzD3yM89iBtjJIl+sBjVehcYXehxkyu/4JOTDA==
++"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.5":
++  version "0.3.0-d.5"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.5.tgz#69a756c35754ab82acffc8fd362cbc3e3488dcfe"
++  integrity sha512-ypd2uNFdgDySWuy5/Ri7KIg4PHBa3461kjpfqvVAEovLyhrQTmRycM1WD9q9+Koe17vmjpI+GHNAK4ZIIt9ydA==
 +
-+"@daiyam/xterm-tab-addon-webgl@0.12.0-d.4":
-+  version "0.12.0-d.4"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.4.tgz#fe881d0e46713e559098433913878540ad321878"
-+  integrity sha512-p4S0sbxPb6p/227Lz8mVdj5NdvOg4gHLx2IHV1QAHN2d1/4EEHv8zyZJJZSyir/6BZrgsCErvrKHNpGU8dCIzQ==
++"@daiyam/xterm-tab-addon-webgl@0.12.0-d.5":
++  version "0.12.0-d.5"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.5.tgz#c3cb987456c7e0d0c0347d60cffa66ea8f5ad44f"
++  integrity sha512-iNtbavscXWq/geV3gnoXOtZzs8J08702EpTnUS0Cc/7zxJzVsTodTQX87Fu8VS/zs4+xO5aLfPqZ+P7K55dmRQ==
 +
-+"@daiyam/xterm-tab-headless@4.15.0-d.3":
-+  version "4.15.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-headless/-/xterm-tab-headless-4.15.0-d.3.tgz#99e8b52a3b09285917ee1460d4a1022108b76f23"
-+  integrity sha512-4ugts5aBQ0cykoPL+LeE52d56c6L9g3E/duzodg7mipdNyjeONB89JNt7FykAMcOCxw7WdCzvhZN/ADvhk6RwA==
++"@daiyam/xterm-tab-headless@4.17.0-d.1":
++  version "4.17.0-d.1"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-headless/-/xterm-tab-headless-4.17.0-d.1.tgz#4fea23880793796dfba5f4c347faf2458c973ef4"
++  integrity sha512-aW0I9Q/Ey6sYxadrUhXZro0VZtm7H2DzbOx9RibNRAz1+J3VzAfAgh4r8Sk7Xn8i8TVS0M+6MQ5DVOQGT3jCPA==
 +
-+"@daiyam/xterm-tab@4.15.0-d.3":
-+  version "4.15.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.15.0-d.3.tgz#d7f47b6eb0045a5be072418249a3dd5eeba36ab1"
-+  integrity sha512-QkVlrzouUl91oLW+DhlGa/bDbbc0I60Ok04GqP2XgNuWOH5oim6XdLC+9a9FqgYwL21/voEeZ8mGqRsZpbW1Cw==
++"@daiyam/xterm-tab@4.17.0-d.1":
++  version "4.17.0-d.1"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.17.0-d.1.tgz#e4f442fa53d063f7320520f0fa5b4b03ee4070fd"
++  integrity sha512-Bg+ojYHMOkxoBSANst70CDKC1EEi14PT73q8zpxjlMuR7ELoly4PP6N1d0HX/A7RcCxUt9LzAMK5qcCAhhd91Q==
 +
  "@microsoft/applicationinsights-analytics-js@2.6.4":
    version "2.6.4"
    resolved "https://registry.yarnpkg.com/@microsoft/applicationinsights-analytics-js/-/applicationinsights-analytics-js-2.6.4.tgz#22ad17276ed922f2f0e66b7efe304f31c50ede64"
-@@ -643,36 +673,6 @@ xregexp@2.0.0:
+@@ -990,36 +1020,6 @@ xregexp@2.0.0:
    resolved "https://registry.yarnpkg.com/xregexp/-/xregexp-2.0.0.tgz#52a63e56ca0b84a7f3a5f3d61872f126ad7a5943"
    integrity sha1-UqY+VsoLhKfzpfPWGHLxJq16WUM=
  
--xterm-addon-search@0.9.0-beta.5:
--  version "0.9.0-beta.5"
--  resolved "https://registry.yarnpkg.com/xterm-addon-search/-/xterm-addon-search-0.9.0-beta.5.tgz#e0e60a203d1c9d6c8af933648a46865dba299302"
--  integrity sha512-ylfqim0ISBvuuX83LQwgu/06p5GC545QsAo9SssXw03TPpIrcd0zwaVMEnhOftSIzM9EKRRsyx3GbBjgUdiF5w==
+-xterm-addon-search@0.9.0-beta.8:
+-  version "0.9.0-beta.8"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-search/-/xterm-addon-search-0.9.0-beta.8.tgz#b3cbe364e24ea5765c36cba47c78a14acbe69062"
+-  integrity sha512-FCv5zo6BVc7DaG3kLEOskKDCns7y2fRHqmZDrSmyfCd1lPmm9OA3UYdxZy5BtNkn6bc8amwpB7J2bIdu8VV7Qg==
 -
--xterm-addon-serialize@0.7.0-beta.2:
--  version "0.7.0-beta.2"
--  resolved "https://registry.yarnpkg.com/xterm-addon-serialize/-/xterm-addon-serialize-0.7.0-beta.2.tgz#ced9f664c74ab88448e7b63850721bc272aa6806"
--  integrity sha512-KuSwdx2AAliUv7SvjKYUKHrB7vscbHLv8QsmwSDI3pgL1BpjyLJ8LR99iFFfuNpPW9CG4TX6adKPIJXtqiN3Vg==
+-xterm-addon-serialize@0.7.0-beta.6:
+-  version "0.7.0-beta.6"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-serialize/-/xterm-addon-serialize-0.7.0-beta.6.tgz#f1512f0690821d0c2a88700fb706c1212f69a39a"
+-  integrity sha512-tP/larcKOQaCgfq5XlQT8plTRwi2fZHqy8UqbMnZ6LQZajvc01oGp5njaasfXu5vyIFhugp5fgH5vy5zgspbwg==
 -
--xterm-addon-unicode11@0.3.0:
--  version "0.3.0"
--  resolved "https://registry.yarnpkg.com/xterm-addon-unicode11/-/xterm-addon-unicode11-0.3.0.tgz#e4435c3c91a5294a7eb8b79c380acbb28a659463"
--  integrity sha512-x5fHDZT2j9tlTlHnzPHt++9uKZ2kJ/lYQOj3L6xJA22xoJsS8UQRw/5YIFg2FUHqEAbV77Z1fZij/9NycMSH/A==
+-xterm-addon-unicode11@0.4.0-beta.1:
+-  version "0.4.0-beta.1"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-unicode11/-/xterm-addon-unicode11-0.4.0-beta.1.tgz#aeefd26e87bad15d8dfd8a1e0b804fe408c9b882"
+-  integrity sha512-pG8mpxnqpYDry0e20vuEFKhd4kKIcLLNwdNftNvfo+R/EjYRnTYnF+H8L+7eQHq6hqDH61xCEP4H4qR2CyT4pg==
 -
--xterm-addon-webgl@0.12.0-beta.15:
--  version "0.12.0-beta.15"
--  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.15.tgz#9ae82127f2a39b3cb7f5ae45a6af223810c933d4"
--  integrity sha512-LWZ3iLspQOCc26OoT8qa+SuyuIcn2cAMRbBkinOuQCk4aW5kjovIrGovj9yVAcXNvOBnPm3sUqmnwGlN579kDA==
+-xterm-addon-webgl@0.12.0-beta.21:
+-  version "0.12.0-beta.21"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.21.tgz#8c476d25ec40b7535dedbd87b9cdf5eeeb41fc93"
+-  integrity sha512-aeZcjxbtPfkVutNnXqCv9E5V4DoYecUFztWOjBzI/dgC1xfMOMVWzsymK9H1EUfd6u0ymEIeOjvX9bHsXNUzdA==
 -
--xterm-headless@4.15.0-beta.10:
--  version "4.15.0-beta.10"
--  resolved "https://registry.yarnpkg.com/xterm-headless/-/xterm-headless-4.15.0-beta.10.tgz#2dbcb40dfda7ecfdacc7b63889c80da965480ce7"
--  integrity sha512-kDAzmaeFX8hAJvbPUJc4dW4SoVBSg4onCVOPyi8QTmxZz1o7I9mX4U7DX1v3PceyfrU27A9k6zXjuTuPjxCCSQ==
+-xterm-headless@4.17.0-beta.7:
+-  version "4.17.0-beta.7"
+-  resolved "https://registry.yarnpkg.com/xterm-headless/-/xterm-headless-4.17.0-beta.7.tgz#6ae3f5436a29f7e4554c6d9d7f4f3eb958d18240"
+-  integrity sha512-1JoKhlsENqWqDIKNHxm5jBQj3Es3gHHM+wDi9ESyodn6J+FpTkM5859wnL+/rEm7PKKvahPICqjTSjdXq5Jv9g==
 -
--xterm@4.15.0-beta.10:
--  version "4.15.0-beta.10"
--  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.15.0-beta.10.tgz#8cda3d7885e8345f2fc6cf9275a43f3833d29acf"
--  integrity sha512-valoh5ZcY/y7Pe+ffgcSAEFeuZfjzVeUUXcthdxTTsrGEiU1s4QR2EOg4U5jn5wye/Nc6mSfLW3s79R6Ac186w==
+-xterm@4.17.0-beta.7:
+-  version "4.17.0-beta.7"
+-  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.17.0-beta.7.tgz#c11d52403a8d6456b92f2086e1797c64018328d6"
+-  integrity sha512-FhC12WUljy8pTWr0oquVE0U567H1ZPAREKkN+wWLSZODNJwc8/txP2Ajg9byG++bkxfBP3CNEmDzaP0hoall8Q==
 -
  yauzl@^2.9.2:
    version "2.10.0"
    resolved "https://registry.yarnpkg.com/yauzl/-/yauzl-2.10.0.tgz#c7eb17c93e112cb1086fa6d8e51fb0667b79a5f9"
 diff --git a/src/bootstrap-window.js b/src/bootstrap-window.js
-index 009ea7a..be8c3ed 100644
+index 2fa5f61..60f4fd5 100644
 --- a/src/bootstrap-window.js
 +++ b/src/bootstrap-window.js
-@@ -130,10 +130,10 @@
+@@ -135,10 +135,10 @@
  		loaderConfig.paths = {
  			'vscode-textmate': `${baseNodeModulesPath}/vscode-textmate/release/main.js`,
  			'vscode-oniguruma': `${baseNodeModulesPath}/vscode-oniguruma/release/main.js`,
@@ -298,15 +312,15 @@ index 009ea7a..be8c3ed 100644
 +			'@daiyam/xterm-tab-addon-search': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-search/lib/xterm-addon-search.js`,
 +			'@daiyam/xterm-tab-addon-unicode11': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-unicode11/lib/xterm-addon-unicode11.js`,
 +			'@daiyam/xterm-tab-addon-webgl': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-webgl/lib/xterm-addon-webgl.js`,
- 			'iconv-lite-umd': `${baseNodeModulesPath}/iconv-lite-umd/lib/iconv-lite-umd.js`,
+ 			'@vscode/iconv-lite-umd': `${baseNodeModulesPath}/@vscode/iconv-lite-umd/lib/iconv-lite-umd.js`,
  			'jschardet': `${baseNodeModulesPath}/jschardet/dist/jschardet.min.js`,
  			'@vscode/vscode-languagedetection': `${baseNodeModulesPath}/@vscode/vscode-languagedetection/dist/lib/index.js`,
 diff --git a/src/vs/platform/terminal/node/ptyService.ts b/src/vs/platform/terminal/node/ptyService.ts
-index 5d2ae38..f2c9cc7 100644
+index ad34064..4d12114 100644
 --- a/src/vs/platform/terminal/node/ptyService.ts
 +++ b/src/vs/platform/terminal/node/ptyService.ts
 @@ -15,9 +15,9 @@ import { RequestStore } from 'vs/platform/terminal/common/requestStore';
- import { IProcessDataEvent, IProcessReadyEvent, IPtyService, IRawTerminalInstanceLayoutInfo, IReconnectConstants, IRequestResolveVariablesEvent, IShellLaunchConfig, ITerminalDimensionsOverride, ITerminalInstanceLayoutInfoById, ITerminalLaunchError, ITerminalsLayoutInfo, ITerminalTabLayoutInfoById, TerminalIcon, IProcessProperty, TerminalShellType, TitleEventSource, ProcessPropertyType, ProcessCapability, IProcessPropertyMap, IFixedTerminalDimensions } from 'vs/platform/terminal/common/terminal';
+ import { IProcessDataEvent, IProcessReadyEvent, IPtyService, IRawTerminalInstanceLayoutInfo, IReconnectConstants, IRequestResolveVariablesEvent, IShellLaunchConfig, ITerminalInstanceLayoutInfoById, ITerminalLaunchError, ITerminalsLayoutInfo, ITerminalTabLayoutInfoById, TerminalIcon, IProcessProperty, TitleEventSource, ProcessPropertyType, IProcessPropertyMap, IFixedTerminalDimensions, IPersistentTerminalProcessLaunchOptions, ICrossVersionSerializedTerminalState, ISerializedTerminalState } from 'vs/platform/terminal/common/terminal';
  import { TerminalDataBufferer } from 'vs/platform/terminal/common/terminalDataBuffering';
  import { escapeNonWindowsPath } from 'vs/platform/terminal/common/terminalEnvironment';
 -import { Terminal as XtermTerminal } from 'xterm-headless';
@@ -318,7 +332,7 @@ index 5d2ae38..f2c9cc7 100644
  import { IGetTerminalLayoutInfoArgs, IProcessDetails, IPtyHostProcessReplayEvent, ISetTerminalLayoutInfoArgs, ITerminalTabLayoutInfoDto } from 'vs/platform/terminal/common/terminalProcess';
  import { getWindowsBuildNumber } from 'vs/platform/terminal/node/terminalEnvironment';
  import { TerminalProcess } from 'vs/platform/terminal/node/terminalProcess';
-@@ -752,14 +752,14 @@ class XtermSerializer implements ITerminalSerializer {
+@@ -797,14 +797,14 @@ class XtermSerializer implements ITerminalSerializer {
  
  	async _getUnicode11Constructor(): Promise<typeof Unicode11Addon> {
  		if (!Unicode11Addon) {
@@ -335,55 +349,42 @@ index 5d2ae38..f2c9cc7 100644
  		}
  		return SerializeAddon;
  	}
-diff --git a/src/vs/workbench/contrib/terminal/browser/addons/commandTrackerAddon.ts b/src/vs/workbench/contrib/terminal/browser/addons/commandTrackerAddon.ts
-index aa08c65..039a6b2 100644
---- a/src/vs/workbench/contrib/terminal/browser/addons/commandTrackerAddon.ts
-+++ b/src/vs/workbench/contrib/terminal/browser/addons/commandTrackerAddon.ts
-@@ -3,7 +3,7 @@
-  *  Licensed under the MIT License. See License.txt in the project root for license information.
-  *--------------------------------------------------------------------------------------------*/
+diff --git a/src/vs/workbench/contrib/terminal/browser/capabilities/commandDetectionCapability.ts b/src/vs/workbench/contrib/terminal/browser/capabilities/commandDetectionCapability.ts
+index 62f7750..b78ed1d 100644
+--- a/src/vs/workbench/contrib/terminal/browser/capabilities/commandDetectionCapability.ts
++++ b/src/vs/workbench/contrib/terminal/browser/capabilities/commandDetectionCapability.ts
+@@ -7,7 +7,7 @@ import { Emitter } from 'vs/base/common/event';
+ import { ILogService } from 'vs/platform/log/common/log';
+ import { ICommandDetectionCapability, TerminalCapability } from 'vs/workbench/contrib/terminal/common/capabilities/capabilities';
+ import { ITerminalCommand } from 'vs/workbench/contrib/terminal/common/terminal';
+-import { IBuffer, IMarker, Terminal } from 'xterm';
++import { IBuffer, IMarker, Terminal } from '@daiyam/xterm-tab';
  
--import type { Terminal, IMarker, ITerminalAddon } from 'xterm';
-+import type { Terminal, IMarker, ITerminalAddon } from '@daiyam/xterm-tab';
- import { ICommandTracker } from 'vs/workbench/contrib/terminal/common/terminal';
+ interface ICurrentPartialCommand {
+ 	previousCommandMarker?: IMarker;
+diff --git a/src/vs/workbench/contrib/terminal/browser/capabilities/partialCommandDetectionCapability.ts b/src/vs/workbench/contrib/terminal/browser/capabilities/partialCommandDetectionCapability.ts
+index e349ac1..9aa56ca 100644
+--- a/src/vs/workbench/contrib/terminal/browser/capabilities/partialCommandDetectionCapability.ts
++++ b/src/vs/workbench/contrib/terminal/browser/capabilities/partialCommandDetectionCapability.ts
+@@ -5,7 +5,7 @@
  
- /**
-diff --git a/src/vs/workbench/contrib/terminal/browser/addons/lineDataEventAddon.ts b/src/vs/workbench/contrib/terminal/browser/addons/lineDataEventAddon.ts
-index c0bceda..cd8008e 100644
---- a/src/vs/workbench/contrib/terminal/browser/addons/lineDataEventAddon.ts
-+++ b/src/vs/workbench/contrib/terminal/browser/addons/lineDataEventAddon.ts
-@@ -6,7 +6,7 @@
  import { Emitter } from 'vs/base/common/event';
- import { Disposable, toDisposable } from 'vs/base/common/lifecycle';
- import { OperatingSystem } from 'vs/base/common/platform';
--import type { Terminal as XTermTerminal, IBuffer, ITerminalAddon } from 'xterm';
-+import type { Terminal as XTermTerminal, IBuffer, ITerminalAddon } from '@daiyam/xterm-tab';
+ import { IPartialCommandDetectionCapability, TerminalCapability } from 'vs/workbench/contrib/terminal/common/capabilities/capabilities';
+-import { IMarker, Terminal } from 'xterm';
++import { IMarker, Terminal } from '@daiyam/xterm-tab';
  
- /**
-  * Provides extensions to the xterm object in a modular, testable way.
-diff --git a/src/vs/workbench/contrib/terminal/browser/addons/navigationModeAddon.ts b/src/vs/workbench/contrib/terminal/browser/addons/navigationModeAddon.ts
-index 8487459..dfb51f5 100644
---- a/src/vs/workbench/contrib/terminal/browser/addons/navigationModeAddon.ts
-+++ b/src/vs/workbench/contrib/terminal/browser/addons/navigationModeAddon.ts
-@@ -4,7 +4,7 @@
-  *--------------------------------------------------------------------------------------------*/
- 
- import { IContextKey } from 'vs/platform/contextkey/common/contextkey';
--import type { Terminal, ITerminalAddon } from 'xterm';
-+import type { Terminal, ITerminalAddon } from '@daiyam/xterm-tab';
- import { addDisposableListener } from 'vs/base/browser/dom';
- import { INavigationMode } from 'vs/workbench/contrib/terminal/common/terminal';
- 
+ const enum Constants {
+ 	/**
 diff --git a/src/vs/workbench/contrib/terminal/browser/links/terminalBaseLinkProvider.ts b/src/vs/workbench/contrib/terminal/browser/links/terminalBaseLinkProvider.ts
-index 3adccc7..726e49f 100644
+index 28d61c9..699d669 100644
 --- a/src/vs/workbench/contrib/terminal/browser/links/terminalBaseLinkProvider.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/links/terminalBaseLinkProvider.ts
 @@ -3,7 +3,7 @@
   *  Licensed under the MIT License. See License.txt in the project root for license information.
   *--------------------------------------------------------------------------------------------*/
  
--import type { ILinkProvider, ILink } from 'xterm';
-+import type { ILinkProvider, ILink } from '@daiyam/xterm-tab';
+-import type { ILinkProvider } from 'xterm';
++import type { ILinkProvider } from '@daiyam/xterm-tab';
  import { TerminalLink } from 'vs/workbench/contrib/terminal/browser/links/terminalLink';
  
  export abstract class TerminalBaseLinkProvider implements ILinkProvider {
@@ -401,7 +402,7 @@ index 64da59b..eb1fe4a 100644
  import { TerminalLink } from 'vs/workbench/contrib/terminal/browser/links/terminalLink';
  import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
 diff --git a/src/vs/workbench/contrib/terminal/browser/links/terminalLink.ts b/src/vs/workbench/contrib/terminal/browser/links/terminalLink.ts
-index e142136..73b13b8 100644
+index 3815b4d..50f82fc 100644
 --- a/src/vs/workbench/contrib/terminal/browser/links/terminalLink.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/links/terminalLink.ts
 @@ -3,7 +3,7 @@
@@ -427,20 +428,33 @@ index a0f2a0d..78f1eba 100644
  
  /**
 diff --git a/src/vs/workbench/contrib/terminal/browser/links/terminalLinkManager.ts b/src/vs/workbench/contrib/terminal/browser/links/terminalLinkManager.ts
-index fda5316..c2251c1 100644
+index a0107d8..3edaa62 100644
 --- a/src/vs/workbench/contrib/terminal/browser/links/terminalLinkManager.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/links/terminalLinkManager.ts
 @@ -13,7 +13,7 @@ import { ITerminalProcessManager, ITerminalConfiguration, TERMINAL_CONFIG_SECTIO
  import { ITextEditorSelection } from 'vs/platform/editor/common/editor';
  import { IEditorService } from 'vs/workbench/services/editor/common/editorService';
  import { IFileService } from 'vs/platform/files/common/files';
--import type { Terminal, IViewportRange, ILinkProvider } from 'xterm';
-+import type { Terminal, IViewportRange, ILinkProvider } from '@daiyam/xterm-tab';
+-import type { Terminal, IViewportRange, ILinkProvider, ILink } from 'xterm';
++import type { Terminal, IViewportRange, ILinkProvider, ILink } from '@daiyam/xterm-tab';
  import { Schemas } from 'vs/base/common/network';
  import { posix, win32 } from 'vs/base/common/path';
- import { ITerminalExternalLinkProvider, ITerminalInstance } from 'vs/workbench/contrib/terminal/browser/terminal';
+ import { ITerminalExternalLinkProvider, ITerminalInstance, TerminalLinkQuickPickEvent } from 'vs/workbench/contrib/terminal/browser/terminal';
+diff --git a/src/vs/workbench/contrib/terminal/browser/links/terminalLinkQuickpick.ts b/src/vs/workbench/contrib/terminal/browser/links/terminalLinkQuickpick.ts
+index 3d0f1be..dd8b0fe 100644
+--- a/src/vs/workbench/contrib/terminal/browser/links/terminalLinkQuickpick.ts
++++ b/src/vs/workbench/contrib/terminal/browser/links/terminalLinkQuickpick.ts
+@@ -8,7 +8,7 @@ import { localize } from 'vs/nls';
+ import { IQuickInputService, IQuickPickItem, IQuickPickSeparator } from 'vs/platform/quickinput/common/quickInput';
+ import { IDetectedLinks } from 'vs/workbench/contrib/terminal/browser/links/terminalLinkManager';
+ import { TerminalLinkQuickPickEvent } from 'vs/workbench/contrib/terminal/browser/terminal';
+-import { ILink } from 'xterm';
++import { ILink } from '@daiyam/xterm-tab';
+ 
+ export class TerminalLinkQuickpick {
+ 	constructor(
 diff --git a/src/vs/workbench/contrib/terminal/browser/links/terminalProtocolLinkProvider.ts b/src/vs/workbench/contrib/terminal/browser/links/terminalProtocolLinkProvider.ts
-index f54cd67..63ed1e7 100644
+index 226b0a4..688b390 100644
 --- a/src/vs/workbench/contrib/terminal/browser/links/terminalProtocolLinkProvider.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/links/terminalProtocolLinkProvider.ts
 @@ -3,7 +3,7 @@
@@ -449,11 +463,11 @@ index f54cd67..63ed1e7 100644
  
 -import type { Terminal, IViewportRange, IBufferLine } from 'xterm';
 +import type { Terminal, IViewportRange, IBufferLine } from '@daiyam/xterm-tab';
- import { ILinkComputerTarget, LinkComputer } from 'vs/editor/common/modes/linkComputer';
+ import { ILinkComputerTarget, LinkComputer } from 'vs/editor/common/languages/linkComputer';
  import { getXtermLineContent, convertLinkRangeToBuffer } from 'vs/workbench/contrib/terminal/browser/links/terminalLinkHelpers';
  import { TerminalLink, OPEN_FILE_LABEL, FOLDER_IN_WORKSPACE_LABEL, FOLDER_NOT_IN_WORKSPACE_LABEL } from 'vs/workbench/contrib/terminal/browser/links/terminalLink';
 diff --git a/src/vs/workbench/contrib/terminal/browser/links/terminalValidatedLocalLinkProvider.ts b/src/vs/workbench/contrib/terminal/browser/links/terminalValidatedLocalLinkProvider.ts
-index aaa34fa..ac315a1 100644
+index 80c855c..5e6cf4f 100644
 --- a/src/vs/workbench/contrib/terminal/browser/links/terminalValidatedLocalLinkProvider.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/links/terminalValidatedLocalLinkProvider.ts
 @@ -3,7 +3,7 @@
@@ -466,115 +480,47 @@ index aaa34fa..ac315a1 100644
  import { OperatingSystem } from 'vs/base/common/platform';
  import { URI } from 'vs/base/common/uri';
 diff --git a/src/vs/workbench/contrib/terminal/browser/links/terminalWordLinkProvider.ts b/src/vs/workbench/contrib/terminal/browser/links/terminalWordLinkProvider.ts
-index 46b346d..81bdb37 100644
+index 6c623b5..4012cdd 100644
 --- a/src/vs/workbench/contrib/terminal/browser/links/terminalWordLinkProvider.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/links/terminalWordLinkProvider.ts
 @@ -3,7 +3,7 @@
   *  Licensed under the MIT License. See License.txt in the project root for license information.
   *--------------------------------------------------------------------------------------------*/
  
--import type { Terminal, IViewportRange, IBufferLine, IBufferRange } from 'xterm';
-+import type { Terminal, IViewportRange, IBufferLine, IBufferRange } from '@daiyam/xterm-tab';
+-import type { IViewportRange, IBufferLine, IBufferRange } from 'xterm';
++import type { IViewportRange, IBufferLine, IBufferRange } from '@daiyam/xterm-tab';
  import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
  import { ITerminalConfiguration, TERMINAL_CONFIG_SECTION } from 'vs/workbench/contrib/terminal/common/terminal';
  import { TerminalLink } from 'vs/workbench/contrib/terminal/browser/links/terminalLink';
-diff --git a/src/vs/workbench/contrib/terminal/browser/terminal.ts b/src/vs/workbench/contrib/terminal/browser/terminal.ts
-index f161aed..a1f741c 100644
---- a/src/vs/workbench/contrib/terminal/browser/terminal.ts
-+++ b/src/vs/workbench/contrib/terminal/browser/terminal.ts
-@@ -10,10 +10,10 @@ import { FindReplaceState } from 'vs/editor/contrib/find/findState';
- import { createDecorator } from 'vs/platform/instantiation/common/instantiation';
- import { IShellLaunchConfig, ITerminalChildProcess, ITerminalDimensions, ITerminalLaunchError, ITerminalProfile, ITerminalTabLayoutInfoById, TerminalIcon, TitleEventSource, TerminalShellType, IExtensionTerminalProfile, TerminalLocation, ICreateContributedTerminalProfileOptions, ProcessPropertyType, ProcessCapability } from 'vs/platform/terminal/common/terminal';
- import { ICommandTracker, INavigationMode, IOffProcessTerminalService, IRemoteTerminalAttachTarget, IStartExtensionTerminalRequest, ITerminalConfigHelper, ITerminalProcessExtHostProxy } from 'vs/workbench/contrib/terminal/common/terminal';
--import type { Terminal as XTermTerminal } from 'xterm';
--import type { SearchAddon as XTermSearchAddon } from 'xterm-addon-search';
--import type { Unicode11Addon as XTermUnicode11Addon } from 'xterm-addon-unicode11';
--import type { WebglAddon as XTermWebglAddon } from 'xterm-addon-webgl';
-+import type { Terminal as XTermTerminal } from '@daiyam/xterm-tab';
-+import type { SearchAddon as XTermSearchAddon } from '@daiyam/xterm-tab-addon-search';
-+import type { Unicode11Addon as XTermUnicode11Addon } from '@daiyam/xterm-tab-addon-unicode11';
-+import type { WebglAddon as XTermWebglAddon } from '@daiyam/xterm-tab-addon-webgl';
- import { ITerminalStatusList } from 'vs/workbench/contrib/terminal/browser/terminalStatusList';
- import { ICompleteTerminalConfiguration } from 'vs/workbench/contrib/terminal/common/remoteTerminalChannel';
- import { Orientation } from 'vs/base/browser/ui/splitview/splitview';
 diff --git a/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts b/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts
-index cd45b4a..ca91e52 100644
+index d8b6b5f..b82afbc 100644
 --- a/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts
-@@ -31,10 +31,10 @@ import { TerminalLinkManager } from 'vs/workbench/contrib/terminal/browser/links
+@@ -29,7 +29,7 @@ import { IDetectedLinks, TerminalLinkManager } from 'vs/workbench/contrib/termin
  import { IAccessibilityService } from 'vs/platform/accessibility/common/accessibility';
- import { ITerminalInstanceService, ITerminalInstance, ITerminalExternalLinkProvider, IRequestAddInstanceToGroupEvent } from 'vs/workbench/contrib/terminal/browser/terminal';
+ import { ITerminalInstance, ITerminalExternalLinkProvider, IRequestAddInstanceToGroupEvent } from 'vs/workbench/contrib/terminal/browser/terminal';
  import { TerminalProcessManager } from 'vs/workbench/contrib/terminal/browser/terminalProcessManager';
--import type { Terminal as XTermTerminal, IBuffer, ITerminalAddon, RendererType, ITheme } from 'xterm';
--import type { SearchAddon, ISearchOptions } from 'xterm-addon-search';
--import type { Unicode11Addon } from 'xterm-addon-unicode11';
--import type { WebglAddon } from 'xterm-addon-webgl';
-+import type { Terminal as XTermTerminal, IBuffer, ITerminalAddon, RendererType, ITheme } from '@daiyam/xterm-tab';
-+import type { SearchAddon, ISearchOptions } from '@daiyam/xterm-tab-addon-search';
-+import type { Unicode11Addon } from '@daiyam/xterm-tab-addon-unicode11';
-+import type { WebglAddon } from '@daiyam/xterm-tab-addon-webgl';
- import { CommandTrackerAddon } from 'vs/workbench/contrib/terminal/browser/addons/commandTrackerAddon';
- import { NavigationModeAddon } from 'vs/workbench/contrib/terminal/browser/addons/navigationModeAddon';
- import { XTermCore } from 'vs/workbench/contrib/terminal/browser/xterm-private';
-diff --git a/src/vs/workbench/contrib/terminal/browser/terminalInstanceService.ts b/src/vs/workbench/contrib/terminal/browser/terminalInstanceService.ts
-index a747adf..6c6c7e0 100644
---- a/src/vs/workbench/contrib/terminal/browser/terminalInstanceService.ts
-+++ b/src/vs/workbench/contrib/terminal/browser/terminalInstanceService.ts
-@@ -4,10 +4,10 @@
-  *--------------------------------------------------------------------------------------------*/
- 
- import { IRemoteTerminalService, ITerminalInstance, ITerminalInstanceService } from 'vs/workbench/contrib/terminal/browser/terminal';
--import type { Terminal as XTermTerminal } from 'xterm';
--import type { SearchAddon as XTermSearchAddon } from 'xterm-addon-search';
--import type { Unicode11Addon as XTermUnicode11Addon } from 'xterm-addon-unicode11';
--import type { WebglAddon as XTermWebglAddon } from 'xterm-addon-webgl';
-+import type { Terminal as XTermTerminal } from '@daiyam/xterm-tab';
-+import type { SearchAddon as XTermSearchAddon } from '@daiyam/xterm-tab-addon-search';
-+import type { Unicode11Addon as XTermUnicode11Addon } from '@daiyam/xterm-tab-addon-unicode11';
-+import type { WebglAddon as XTermWebglAddon } from '@daiyam/xterm-tab-addon-webgl';
- import { registerSingleton } from 'vs/platform/instantiation/common/extensions';
- import { Disposable } from 'vs/base/common/lifecycle';
- import { IShellLaunchConfig, ITerminalProfile, TerminalLocation, TerminalShellType, WindowsShellType } from 'vs/platform/terminal/common/terminal';
-@@ -102,28 +102,28 @@ export class TerminalInstanceService extends Disposable implements ITerminalInst
- 
- 	async getXtermConstructor(): Promise<typeof XTermTerminal> {
- 		if (!Terminal) {
--			Terminal = (await import('xterm')).Terminal;
-+			Terminal = (await import('@daiyam/xterm-tab')).Terminal;
- 		}
- 		return Terminal;
+-import type { Terminal as XTermTerminal, ITerminalAddon } from 'xterm';
++import type { Terminal as XTermTerminal, ITerminalAddon } from '@daiyam/xterm-tab';
+ import { NavigationModeAddon } from 'vs/workbench/contrib/terminal/browser/xterm/navigationModeAddon';
+ import { IViewsService, IViewDescriptorService, ViewContainerLocation } from 'vs/workbench/common/views';
+ import { EnvironmentVariableInfoWidget } from 'vs/workbench/contrib/terminal/browser/widgets/environmentVariableInfoWidget';
+@@ -94,7 +94,7 @@ function getXtermConstructor(): Promise<typeof XTermTerminal> {
+ 		return xtermConstructor;
  	}
- 
- 	async getXtermSearchConstructor(): Promise<typeof XTermSearchAddon> {
- 		if (!SearchAddon) {
--			SearchAddon = (await import('xterm-addon-search')).SearchAddon;
-+			SearchAddon = (await import('@daiyam/xterm-tab-addon-search')).SearchAddon;
- 		}
- 		return SearchAddon;
- 	}
- 
- 	async getXtermUnicode11Constructor(): Promise<typeof XTermUnicode11Addon> {
- 		if (!Unicode11Addon) {
--			Unicode11Addon = (await import('xterm-addon-unicode11')).Unicode11Addon;
-+			Unicode11Addon = (await import('@daiyam/xterm-tab-addon-unicode11')).Unicode11Addon;
- 		}
- 		return Unicode11Addon;
- 	}
- 
- 	async getXtermWebglConstructor(): Promise<typeof XTermWebglAddon> {
- 		if (!WebglAddon) {
--			WebglAddon = (await import('xterm-addon-webgl')).WebglAddon;
-+			WebglAddon = (await import('@daiyam/xterm-tab-addon-webgl')).WebglAddon;
- 		}
- 		return WebglAddon;
- 	}
+ 	xtermConstructor = Promises.withAsyncBody<typeof XTermTerminal>(async (resolve) => {
+-		const Terminal = (await import('xterm')).Terminal;
++		const Terminal = (await import('@daiyam/xterm-tab')).Terminal;
+ 		// Localize strings
+ 		Terminal.strings.promptLabel = nls.localize('terminal.integrated.a11yPromptLabel', 'Terminal input');
+ 		Terminal.strings.tooMuchOutput = nls.localize('terminal.integrated.a11yTooMuchOutput', 'Too much output to announce, navigate to rows manually to read');
 diff --git a/src/vs/workbench/contrib/terminal/browser/terminalTypeAheadAddon.ts b/src/vs/workbench/contrib/terminal/browser/terminalTypeAheadAddon.ts
-index 8bdf4fc..08a86c3 100644
+index e4a3077..a4ab1c2 100644
 --- a/src/vs/workbench/contrib/terminal/browser/terminalTypeAheadAddon.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/terminalTypeAheadAddon.ts
 @@ -13,7 +13,7 @@ import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
  import { TerminalConfigHelper } from 'vs/workbench/contrib/terminal/browser/terminalConfigHelper';
- import { XTermAttributes, XTermCore } from 'vs/workbench/contrib/terminal/browser/xterm-private';
+ import { XtermAttributes, IXtermCore } from 'vs/workbench/contrib/terminal/browser/xterm-private';
  import { DEFAULT_LOCAL_ECHO_EXCLUDE, IBeforeProcessDataEvent, ITerminalConfiguration, ITerminalProcessManager } from 'vs/workbench/contrib/terminal/common/terminal';
 -import type { IBuffer, IBufferCell, IDisposable, ITerminalAddon, Terminal } from 'xterm';
 +import type { IBuffer, IBufferCell, IDisposable, ITerminalAddon, Terminal } from '@daiyam/xterm-tab';
@@ -595,7 +541,7 @@ index 36606fc..af7ea06 100644
  import { registerThemingParticipant } from 'vs/platform/theme/common/themeService';
  import { editorHoverHighlight } from 'vs/platform/theme/common/colorRegistry';
 diff --git a/src/vs/workbench/contrib/terminal/browser/xterm-private.d.ts b/src/vs/workbench/contrib/terminal/browser/xterm-private.d.ts
-index 35d8ed4..c847446 100644
+index cf8f8c4..ec2c08f 100644
 --- a/src/vs/workbench/contrib/terminal/browser/xterm-private.d.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/xterm-private.d.ts
 @@ -5,7 +5,7 @@
@@ -605,21 +551,130 @@ index 35d8ed4..c847446 100644
 -import { IBufferCell } from 'xterm';
 +import { IBufferCell } from '@daiyam/xterm-tab';
  
- export type XTermAttributes = Omit<IBufferCell, 'getWidth' | 'getChars' | 'getCode'> & { clone?(): XTermAttributes };
+ export type XtermAttributes = Omit<IBufferCell, 'getWidth' | 'getChars' | 'getCode'> & { clone?(): XtermAttributes };
  
-diff --git a/src/vs/workbench/contrib/terminal/test/browser/addons/lineDataEventAddon.test.ts b/src/vs/workbench/contrib/terminal/test/browser/addons/lineDataEventAddon.test.ts
-index 2ace440..968aa59 100644
---- a/src/vs/workbench/contrib/terminal/test/browser/addons/lineDataEventAddon.test.ts
-+++ b/src/vs/workbench/contrib/terminal/test/browser/addons/lineDataEventAddon.test.ts
+diff --git a/src/vs/workbench/contrib/terminal/browser/xterm/commandTrackerAddon.ts b/src/vs/workbench/contrib/terminal/browser/xterm/commandTrackerAddon.ts
+index f99ade0..669af77 100644
+--- a/src/vs/workbench/contrib/terminal/browser/xterm/commandTrackerAddon.ts
++++ b/src/vs/workbench/contrib/terminal/browser/xterm/commandTrackerAddon.ts
+@@ -7,7 +7,7 @@ import { coalesce } from 'vs/base/common/arrays';
+ import { Disposable } from 'vs/base/common/lifecycle';
+ import { ICommandTracker } from 'vs/workbench/contrib/terminal/browser/terminal';
+ import { ICommandDetectionCapability, IPartialCommandDetectionCapability, ITerminalCapabilityStore, TerminalCapability } from 'vs/workbench/contrib/terminal/common/capabilities/capabilities';
+-import type { Terminal, IMarker, ITerminalAddon } from 'xterm';
++import type { Terminal, IMarker, ITerminalAddon } from '@daiyam/xterm-tab';
+ 
+ enum Boundary {
+ 	Top,
+diff --git a/src/vs/workbench/contrib/terminal/browser/xterm/lineDataEventAddon.ts b/src/vs/workbench/contrib/terminal/browser/xterm/lineDataEventAddon.ts
+index 9d16ca4..c92d986 100644
+--- a/src/vs/workbench/contrib/terminal/browser/xterm/lineDataEventAddon.ts
++++ b/src/vs/workbench/contrib/terminal/browser/xterm/lineDataEventAddon.ts
+@@ -6,7 +6,7 @@
+ import { Emitter } from 'vs/base/common/event';
+ import { Disposable, toDisposable } from 'vs/base/common/lifecycle';
+ import { OperatingSystem } from 'vs/base/common/platform';
+-import type { Terminal as XTermTerminal, IBuffer, ITerminalAddon } from 'xterm';
++import type { Terminal as XTermTerminal, IBuffer, ITerminalAddon } from '@daiyam/xterm-tab';
+ 
+ /**
+  * Provides extensions to the xterm object in a modular, testable way.
+diff --git a/src/vs/workbench/contrib/terminal/browser/xterm/navigationModeAddon.ts b/src/vs/workbench/contrib/terminal/browser/xterm/navigationModeAddon.ts
+index 8487459..dfb51f5 100644
+--- a/src/vs/workbench/contrib/terminal/browser/xterm/navigationModeAddon.ts
++++ b/src/vs/workbench/contrib/terminal/browser/xterm/navigationModeAddon.ts
+@@ -4,7 +4,7 @@
+  *--------------------------------------------------------------------------------------------*/
+ 
+ import { IContextKey } from 'vs/platform/contextkey/common/contextkey';
+-import type { Terminal, ITerminalAddon } from 'xterm';
++import type { Terminal, ITerminalAddon } from '@daiyam/xterm-tab';
+ import { addDisposableListener } from 'vs/base/browser/dom';
+ import { INavigationMode } from 'vs/workbench/contrib/terminal/common/terminal';
+ 
+diff --git a/src/vs/workbench/contrib/terminal/browser/xterm/shellIntegrationAddon.ts b/src/vs/workbench/contrib/terminal/browser/xterm/shellIntegrationAddon.ts
+index 2b93234..1e1d1fe 100644
+--- a/src/vs/workbench/contrib/terminal/browser/xterm/shellIntegrationAddon.ts
++++ b/src/vs/workbench/contrib/terminal/browser/xterm/shellIntegrationAddon.ts
 @@ -3,7 +3,7 @@
   *  Licensed under the MIT License. See License.txt in the project root for license information.
   *--------------------------------------------------------------------------------------------*/
  
+-import { ITerminalAddon, Terminal } from 'xterm';
++import { ITerminalAddon, Terminal } from '@daiyam/xterm-tab';
+ import { IShellIntegration } from 'vs/workbench/contrib/terminal/common/terminal';
+ import { Disposable } from 'vs/base/common/lifecycle';
+ import { TerminalCapabilityStore } from 'vs/workbench/contrib/terminal/common/capabilities/terminalCapabilityStore';
+diff --git a/src/vs/workbench/contrib/terminal/browser/xterm/xtermTerminal.ts b/src/vs/workbench/contrib/terminal/browser/xterm/xtermTerminal.ts
+index 5df6123..118b914 100644
+--- a/src/vs/workbench/contrib/terminal/browser/xterm/xtermTerminal.ts
++++ b/src/vs/workbench/contrib/terminal/browser/xterm/xtermTerminal.ts
+@@ -3,10 +3,10 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
+-import type { IBuffer, ITheme, RendererType, Terminal as RawXtermTerminal } from 'xterm';
+-import type { ISearchOptions, SearchAddon as SearchAddonType } from 'xterm-addon-search';
+-import type { Unicode11Addon as Unicode11AddonType } from 'xterm-addon-unicode11';
+-import type { WebglAddon as WebglAddonType } from 'xterm-addon-webgl';
++import type { IBuffer, ITheme, RendererType, Terminal as RawXtermTerminal } from '@daiyam/xterm-tab';
++import type { ISearchOptions, SearchAddon as SearchAddonType } from '@daiyam/xterm-tab-addon-search';
++import type { Unicode11Addon as Unicode11AddonType } from '@daiyam/xterm-tab-addon-unicode11';
++import type { WebglAddon as WebglAddonType } from '@daiyam/xterm-tab-addon-webgl';
+ import { IXtermCore } from 'vs/workbench/contrib/terminal/browser/xterm-private';
+ import { ConfigurationTarget, IConfigurationService } from 'vs/platform/configuration/common/configuration';
+ import { TerminalConfigHelper } from 'vs/workbench/contrib/terminal/browser/terminalConfigHelper';
+@@ -362,21 +362,21 @@ export class XtermTerminal extends DisposableStore implements IXtermTerminal {
+ 
+ 	protected async _getSearchAddonConstructor(): Promise<typeof SearchAddonType> {
+ 		if (!SearchAddon) {
+-			SearchAddon = (await import('xterm-addon-search')).SearchAddon;
++			SearchAddon = (await import('@daiyam/xterm-tab-addon-search')).SearchAddon;
+ 		}
+ 		return SearchAddon;
+ 	}
+ 
+ 	protected async _getUnicode11Constructor(): Promise<typeof Unicode11AddonType> {
+ 		if (!Unicode11Addon) {
+-			Unicode11Addon = (await import('xterm-addon-unicode11')).Unicode11Addon;
++			Unicode11Addon = (await import('@daiyam/xterm-tab-addon-unicode11')).Unicode11Addon;
+ 		}
+ 		return Unicode11Addon;
+ 	}
+ 
+ 	protected async _getWebglAddonConstructor(): Promise<typeof WebglAddonType> {
+ 		if (!WebglAddon) {
+-			WebglAddon = (await import('xterm-addon-webgl')).WebglAddon;
++			WebglAddon = (await import('@daiyam/xterm-tab-addon-webgl')).WebglAddon;
+ 		}
+ 		return WebglAddon;
+ 	}
+diff --git a/src/vs/workbench/contrib/terminal/test/browser/capabilities/commandDetectionCapability.test.ts b/src/vs/workbench/contrib/terminal/test/browser/capabilities/commandDetectionCapability.test.ts
+index 5b87640..34fed6f 100644
+--- a/src/vs/workbench/contrib/terminal/test/browser/capabilities/commandDetectionCapability.test.ts
++++ b/src/vs/workbench/contrib/terminal/test/browser/capabilities/commandDetectionCapability.test.ts
+@@ -5,7 +5,7 @@
+ 
+ import { deepStrictEqual, ok } from 'assert';
+ import { timeout } from 'vs/base/common/async';
 -import { Terminal } from 'xterm';
 +import { Terminal } from '@daiyam/xterm-tab';
- import { LineDataEventAddon } from 'vs/workbench/contrib/terminal/browser/addons/lineDataEventAddon';
- import { OperatingSystem } from 'vs/base/common/platform';
+ import { CommandDetectionCapability } from 'vs/workbench/contrib/terminal/browser/capabilities/commandDetectionCapability';
+ import { NullLogService } from 'vs/platform/log/common/log';
+ import { ITerminalCommand } from 'vs/workbench/contrib/terminal/common/terminal';
+diff --git a/src/vs/workbench/contrib/terminal/test/browser/capabilities/partialCommandDetectionCapability.test.ts b/src/vs/workbench/contrib/terminal/test/browser/capabilities/partialCommandDetectionCapability.test.ts
+index 05ae39d..42a6ad2 100644
+--- a/src/vs/workbench/contrib/terminal/test/browser/capabilities/partialCommandDetectionCapability.test.ts
++++ b/src/vs/workbench/contrib/terminal/test/browser/capabilities/partialCommandDetectionCapability.test.ts
+@@ -6,7 +6,7 @@
  import { deepStrictEqual } from 'assert';
+ import { timeout } from 'vs/base/common/async';
+ import { PartialCommandDetectionCapability } from 'vs/workbench/contrib/terminal/browser/capabilities/partialCommandDetectionCapability';
+-import { IMarker, Terminal } from 'xterm';
++import { IMarker, Terminal } from '@daiyam/xterm-tab';
+ import { IXtermCore } from 'vs/workbench/contrib/terminal/browser/xterm-private';
+ 
+ async function writeP(terminal: Terminal, data: string): Promise<void> {
 diff --git a/src/vs/workbench/contrib/terminal/test/browser/links/terminalLinkHelpers.test.ts b/src/vs/workbench/contrib/terminal/test/browser/links/terminalLinkHelpers.test.ts
 index 56c271e..a07acf5 100644
 --- a/src/vs/workbench/contrib/terminal/test/browser/links/terminalLinkHelpers.test.ts
@@ -633,8 +688,21 @@ index 56c271e..a07acf5 100644
  import { convertLinkRangeToBuffer } from 'vs/workbench/contrib/terminal/browser/links/terminalLinkHelpers';
  
  suite('Workbench - Terminal Link Helpers', () => {
+diff --git a/src/vs/workbench/contrib/terminal/test/browser/links/terminalLinkManager.test.ts b/src/vs/workbench/contrib/terminal/test/browser/links/terminalLinkManager.test.ts
+index 033d449..b2e7b9e 100644
+--- a/src/vs/workbench/contrib/terminal/test/browser/links/terminalLinkManager.test.ts
++++ b/src/vs/workbench/contrib/terminal/test/browser/links/terminalLinkManager.test.ts
+@@ -3,7 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
+-import { ILink, Terminal } from 'xterm';
++import { ILink, Terminal } from '@daiyam/xterm-tab';
+ import { XtermTerminal } from 'vs/workbench/contrib/terminal/browser/xterm/xtermTerminal';
+ import { TerminalConfigHelper } from 'vs/workbench/contrib/terminal/browser/terminalConfigHelper';
+ import { TestInstantiationService } from 'vs/platform/instantiation/test/common/instantiationServiceMock';
 diff --git a/src/vs/workbench/contrib/terminal/test/browser/links/terminalProtocolLinkProvider.test.ts b/src/vs/workbench/contrib/terminal/test/browser/links/terminalProtocolLinkProvider.test.ts
-index 2f80b63..78eab4d 100644
+index f1e6768..bd973ca 100644
 --- a/src/vs/workbench/contrib/terminal/test/browser/links/terminalProtocolLinkProvider.test.ts
 +++ b/src/vs/workbench/contrib/terminal/test/browser/links/terminalProtocolLinkProvider.test.ts
 @@ -5,7 +5,7 @@
@@ -647,7 +715,7 @@ index 2f80b63..78eab4d 100644
  import { TestConfigurationService } from 'vs/platform/configuration/test/common/testConfigurationService';
  import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
 diff --git a/src/vs/workbench/contrib/terminal/test/browser/links/terminalValidatedLocalLinkProvider.test.ts b/src/vs/workbench/contrib/terminal/test/browser/links/terminalValidatedLocalLinkProvider.test.ts
-index ea781cc..ad798f5 100644
+index 57e7c0d..6554b1f 100644
 --- a/src/vs/workbench/contrib/terminal/test/browser/links/terminalValidatedLocalLinkProvider.test.ts
 +++ b/src/vs/workbench/contrib/terminal/test/browser/links/terminalValidatedLocalLinkProvider.test.ts
 @@ -5,7 +5,7 @@
@@ -660,20 +728,20 @@ index ea781cc..ad798f5 100644
  import { format } from 'vs/base/common/strings';
  import { URI } from 'vs/base/common/uri';
 diff --git a/src/vs/workbench/contrib/terminal/test/browser/links/terminalWordLinkProvider.test.ts b/src/vs/workbench/contrib/terminal/test/browser/links/terminalWordLinkProvider.test.ts
-index 97fd627..41d9a8b 100644
+index 7ba8a7d..425ea59 100644
 --- a/src/vs/workbench/contrib/terminal/test/browser/links/terminalWordLinkProvider.test.ts
 +++ b/src/vs/workbench/contrib/terminal/test/browser/links/terminalWordLinkProvider.test.ts
 @@ -4,7 +4,7 @@
   *--------------------------------------------------------------------------------------------*/
  
  import * as assert from 'assert';
--import { Terminal, ILink } from 'xterm';
-+import { Terminal, ILink } from '@daiyam/xterm-tab';
+-import { Terminal } from 'xterm';
++import { Terminal } from '@daiyam/xterm-tab';
  import { TerminalWordLinkProvider } from 'vs/workbench/contrib/terminal/browser/links/terminalWordLinkProvider';
  import { TestInstantiationService } from 'vs/platform/instantiation/test/common/instantiationServiceMock';
  import { TestConfigurationService } from 'vs/platform/configuration/test/common/testConfigurationService';
 diff --git a/src/vs/workbench/contrib/terminal/test/browser/terminalCommandTracker.test.ts b/src/vs/workbench/contrib/terminal/test/browser/terminalCommandTracker.test.ts
-index 8a53a67..f6c026b 100644
+index bcf23f5..7ed8bb5 100644
 --- a/src/vs/workbench/contrib/terminal/test/browser/terminalCommandTracker.test.ts
 +++ b/src/vs/workbench/contrib/terminal/test/browser/terminalCommandTracker.test.ts
 @@ -4,7 +4,7 @@
@@ -682,9 +750,9 @@ index 8a53a67..f6c026b 100644
  import * as assert from 'assert';
 -import { Terminal } from 'xterm';
 +import { Terminal } from '@daiyam/xterm-tab';
- import { CommandTrackerAddon } from 'vs/workbench/contrib/terminal/browser/addons/commandTrackerAddon';
+ import { CommandTrackerAddon } from 'vs/workbench/contrib/terminal/browser/xterm/commandTrackerAddon';
  import { isWindows } from 'vs/base/common/platform';
- import { XTermCore } from 'vs/workbench/contrib/terminal/browser/xterm-private';
+ import { IXtermCore } from 'vs/workbench/contrib/terminal/browser/xterm-private';
 diff --git a/src/vs/workbench/contrib/terminal/test/browser/terminalTypeahead.test.ts b/src/vs/workbench/contrib/terminal/test/browser/terminalTypeahead.test.ts
 index 0f93b55..4fac670 100644
 --- a/src/vs/workbench/contrib/terminal/test/browser/terminalTypeahead.test.ts
@@ -698,8 +766,56 @@ index 0f93b55..4fac670 100644
  import { SinonStub, stub, useFakeTimers } from 'sinon';
  import { Emitter } from 'vs/base/common/event';
  import { CharPredictState, IPrediction, PredictionStats, TypeAheadAddon } from 'vs/workbench/contrib/terminal/browser/terminalTypeAheadAddon';
+diff --git a/src/vs/workbench/contrib/terminal/test/browser/xterm/lineDataEventAddon.test.ts b/src/vs/workbench/contrib/terminal/test/browser/xterm/lineDataEventAddon.test.ts
+index 5f2bad7..700c7d8 100644
+--- a/src/vs/workbench/contrib/terminal/test/browser/xterm/lineDataEventAddon.test.ts
++++ b/src/vs/workbench/contrib/terminal/test/browser/xterm/lineDataEventAddon.test.ts
+@@ -3,7 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
+-import { Terminal } from 'xterm';
++import { Terminal } from '@daiyam/xterm-tab';
+ import { LineDataEventAddon } from 'vs/workbench/contrib/terminal/browser/xterm/lineDataEventAddon';
+ import { OperatingSystem } from 'vs/base/common/platform';
+ import { deepStrictEqual } from 'assert';
+diff --git a/src/vs/workbench/contrib/terminal/test/browser/xterm/shellIntegrationAddon.test.ts b/src/vs/workbench/contrib/terminal/test/browser/xterm/shellIntegrationAddon.test.ts
+index 26f20ee..5e27b37 100644
+--- a/src/vs/workbench/contrib/terminal/test/browser/xterm/shellIntegrationAddon.test.ts
++++ b/src/vs/workbench/contrib/terminal/test/browser/xterm/shellIntegrationAddon.test.ts
+@@ -3,7 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
+-import { Terminal } from 'xterm';
++import { Terminal } from '@daiyam/xterm-tab';
+ import { strictEqual } from 'assert';
+ import { timeout } from 'vs/base/common/async';
+ import * as sinon from 'sinon';
+diff --git a/src/vs/workbench/contrib/terminal/test/browser/xterm/xtermTerminal.test.ts b/src/vs/workbench/contrib/terminal/test/browser/xterm/xtermTerminal.test.ts
+index 975e4e6..97fdb23 100644
+--- a/src/vs/workbench/contrib/terminal/test/browser/xterm/xtermTerminal.test.ts
++++ b/src/vs/workbench/contrib/terminal/test/browser/xterm/xtermTerminal.test.ts
+@@ -3,7 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ 
+-import { IEvent, Terminal } from 'xterm';
++import { IEvent, Terminal } from '@daiyam/xterm-tab';
+ import { XtermTerminal } from 'vs/workbench/contrib/terminal/browser/xterm/xtermTerminal';
+ import { TerminalConfigHelper } from 'vs/workbench/contrib/terminal/browser/terminalConfigHelper';
+ import { TestInstantiationService } from 'vs/platform/instantiation/test/common/instantiationServiceMock';
+@@ -18,7 +18,7 @@ import { IEditorOptions } from 'vs/editor/common/config/editorOptions';
+ import { Emitter } from 'vs/base/common/event';
+ import { TERMINAL_BACKGROUND_COLOR, TERMINAL_FOREGROUND_COLOR, TERMINAL_CURSOR_FOREGROUND_COLOR, TERMINAL_CURSOR_BACKGROUND_COLOR, TERMINAL_SELECTION_BACKGROUND_COLOR } from 'vs/workbench/contrib/terminal/common/terminalColorRegistry';
+ import { PANEL_BACKGROUND, SIDE_BAR_BACKGROUND } from 'vs/workbench/common/theme';
+-import { WebglAddon } from 'xterm-addon-webgl';
++import { WebglAddon } from '@daiyam/xterm-tab-addon-webgl';
+ import { ILogService, NullLogService } from 'vs/platform/log/common/log';
+ import { IStorageService } from 'vs/platform/storage/common/storage';
+ import { TestStorageService } from 'vs/workbench/test/common/workbenchTestServices';
 diff --git a/test/unit/browser/renderer.html b/test/unit/browser/renderer.html
-index 90d121b..e20797b 100644
+index 2bf6e3a..6e5a720 100644
 --- a/test/unit/browser/renderer.html
 +++ b/test/unit/browser/renderer.html
 @@ -55,7 +55,7 @@
@@ -708,83 +824,83 @@ index 90d121b..e20797b 100644
  				'sinon-test': new URL('../../../node_modules/sinon-test/dist/sinon-test.js', baseUrl).href,
 -				xterm: new URL('../../../node_modules/xterm/lib/xterm.js', baseUrl).href,
 +				'@daiyam/xterm-tab': new URL('../../../node_modules/@daiyam/xterm-tab/lib/xterm.js', baseUrl).href,
- 				'iconv-lite-umd': new URL('../../../node_modules/iconv-lite-umd/lib/iconv-lite-umd.js', baseUrl).href,
+ 				'@vscode/iconv-lite-umd': new URL('../../../node_modules/@vscode/iconv-lite-umd/lib/iconv-lite-umd.js', baseUrl).href,
  				jschardet: new URL('../../../node_modules/jschardet/dist/jschardet.min.js', baseUrl).href
  			}
 diff --git a/yarn.lock b/yarn.lock
-index 2b4d4ce..dbd86f4 100644
+index c353a99..128d878 100644
 --- a/yarn.lock
 +++ b/yarn.lock
-@@ -145,6 +145,36 @@
+@@ -678,6 +678,36 @@
      lodash "^4.17.13"
      to-fast-properties "^2.0.0"
  
-+"@daiyam/xterm-tab-addon-search@0.9.0-d.4":
-+  version "0.9.0-d.4"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.4.tgz#a77d2f4453d6de24a851e24d73e724b21d6f04c7"
-+  integrity sha512-1yE8/i7lTugE/B8XK1kw6hSft7fzvb7ou5X8VegUz4dnfDucPHHvVidUG7AVI5PGwt3wRFmVq7SO4kaFz62+fg==
++"@daiyam/xterm-tab-addon-search@0.9.0-d.5":
++  version "0.9.0-d.5"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.9.0-d.5.tgz#2dfba1768b19e7100ce0d3e098586bb0c20f53c9"
++  integrity sha512-Dc4XNJfOuZ5Pm6pf8ljRIB6DqxGImhqqsewo+UCynYWajt9KVCzvt5egx4BHiJy57gCwJfFoGd2uF5sC7MkMcQ==
 +
-+"@daiyam/xterm-tab-addon-serialize@0.7.0-d.2":
-+  version "0.7.0-d.2"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.7.0-d.2.tgz#8e1f55cc0419d1c8d0528de2ebf58d181a4bcb03"
-+  integrity sha512-orMfSSm3hFoNHtle/dnmKhpVT7Fb26FeF3tah1dupuiY3W/kusLrJR4viyxMywBHFXUHM+DSB5wIVaV5Ail5XQ==
++"@daiyam/xterm-tab-addon-serialize@0.7.0-d.3":
++  version "0.7.0-d.3"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.7.0-d.3.tgz#0dd9193a12afc25c861576475a449904bea5b23d"
++  integrity sha512-yb+LUMdiAfuUnwhAwAw/7bNJ6uVTmudfxCL/w7VtoG6ZHnhbMgaNjK5k/QUkmTGEll0gwMYaaFSqPr7NMRtb4w==
 +
-+"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.4":
-+  version "0.3.0-d.4"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.4.tgz#ac8cf75c81277da2a550b5354279860f3a72d0f6"
-+  integrity sha512-K2BD/Hz4qwvIh5x9riMQqoIPrwsIWI8ubYl1G//dH04kQT5MFzD3yM89iBtjJIl+sBjVehcYXehxkyu/4JOTDA==
++"@daiyam/xterm-tab-addon-unicode11@0.3.0-d.5":
++  version "0.3.0-d.5"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.3.0-d.5.tgz#69a756c35754ab82acffc8fd362cbc3e3488dcfe"
++  integrity sha512-ypd2uNFdgDySWuy5/Ri7KIg4PHBa3461kjpfqvVAEovLyhrQTmRycM1WD9q9+Koe17vmjpI+GHNAK4ZIIt9ydA==
 +
-+"@daiyam/xterm-tab-addon-webgl@0.12.0-d.4":
-+  version "0.12.0-d.4"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.4.tgz#fe881d0e46713e559098433913878540ad321878"
-+  integrity sha512-p4S0sbxPb6p/227Lz8mVdj5NdvOg4gHLx2IHV1QAHN2d1/4EEHv8zyZJJZSyir/6BZrgsCErvrKHNpGU8dCIzQ==
++"@daiyam/xterm-tab-addon-webgl@0.12.0-d.5":
++  version "0.12.0-d.5"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.12.0-d.5.tgz#c3cb987456c7e0d0c0347d60cffa66ea8f5ad44f"
++  integrity sha512-iNtbavscXWq/geV3gnoXOtZzs8J08702EpTnUS0Cc/7zxJzVsTodTQX87Fu8VS/zs4+xO5aLfPqZ+P7K55dmRQ==
 +
-+"@daiyam/xterm-tab-headless@4.15.0-d.3":
-+  version "4.15.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-headless/-/xterm-tab-headless-4.15.0-d.3.tgz#99e8b52a3b09285917ee1460d4a1022108b76f23"
-+  integrity sha512-4ugts5aBQ0cykoPL+LeE52d56c6L9g3E/duzodg7mipdNyjeONB89JNt7FykAMcOCxw7WdCzvhZN/ADvhk6RwA==
++"@daiyam/xterm-tab-headless@4.17.0-d.1":
++  version "4.17.0-d.1"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab-headless/-/xterm-tab-headless-4.17.0-d.1.tgz#4fea23880793796dfba5f4c347faf2458c973ef4"
++  integrity sha512-aW0I9Q/Ey6sYxadrUhXZro0VZtm7H2DzbOx9RibNRAz1+J3VzAfAgh4r8Sk7Xn8i8TVS0M+6MQ5DVOQGT3jCPA==
 +
-+"@daiyam/xterm-tab@4.15.0-d.3":
-+  version "4.15.0-d.3"
-+  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.15.0-d.3.tgz#d7f47b6eb0045a5be072418249a3dd5eeba36ab1"
-+  integrity sha512-QkVlrzouUl91oLW+DhlGa/bDbbc0I60Ok04GqP2XgNuWOH5oim6XdLC+9a9FqgYwL21/voEeZ8mGqRsZpbW1Cw==
++"@daiyam/xterm-tab@4.17.0-d.1":
++  version "4.17.0-d.1"
++  resolved "https://registry.yarnpkg.com/@daiyam/xterm-tab/-/xterm-tab-4.17.0-d.1.tgz#e4f442fa53d063f7320520f0fa5b4b03ee4070fd"
++  integrity sha512-Bg+ojYHMOkxoBSANst70CDKC1EEi14PT73q8zpxjlMuR7ELoly4PP6N1d0HX/A7RcCxUt9LzAMK5qcCAhhd91Q==
 +
  "@discoveryjs/json-ext@^0.5.0":
    version "0.5.3"
    resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.3.tgz#90420f9f9c6d3987f176a19a7d8e764271a2f55d"
-@@ -10881,36 +10911,6 @@ xtend@~2.1.1:
+@@ -12383,36 +12413,6 @@ xtend@~2.1.1:
    dependencies:
      object-keys "~0.4.0"
  
--xterm-addon-search@0.9.0-beta.5:
--  version "0.9.0-beta.5"
--  resolved "https://registry.yarnpkg.com/xterm-addon-search/-/xterm-addon-search-0.9.0-beta.5.tgz#e0e60a203d1c9d6c8af933648a46865dba299302"
--  integrity sha512-ylfqim0ISBvuuX83LQwgu/06p5GC545QsAo9SssXw03TPpIrcd0zwaVMEnhOftSIzM9EKRRsyx3GbBjgUdiF5w==
+-xterm-addon-search@0.9.0-beta.8:
+-  version "0.9.0-beta.8"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-search/-/xterm-addon-search-0.9.0-beta.8.tgz#b3cbe364e24ea5765c36cba47c78a14acbe69062"
+-  integrity sha512-FCv5zo6BVc7DaG3kLEOskKDCns7y2fRHqmZDrSmyfCd1lPmm9OA3UYdxZy5BtNkn6bc8amwpB7J2bIdu8VV7Qg==
 -
--xterm-addon-serialize@0.7.0-beta.2:
--  version "0.7.0-beta.2"
--  resolved "https://registry.yarnpkg.com/xterm-addon-serialize/-/xterm-addon-serialize-0.7.0-beta.2.tgz#ced9f664c74ab88448e7b63850721bc272aa6806"
--  integrity sha512-KuSwdx2AAliUv7SvjKYUKHrB7vscbHLv8QsmwSDI3pgL1BpjyLJ8LR99iFFfuNpPW9CG4TX6adKPIJXtqiN3Vg==
+-xterm-addon-serialize@0.7.0-beta.6:
+-  version "0.7.0-beta.6"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-serialize/-/xterm-addon-serialize-0.7.0-beta.6.tgz#f1512f0690821d0c2a88700fb706c1212f69a39a"
+-  integrity sha512-tP/larcKOQaCgfq5XlQT8plTRwi2fZHqy8UqbMnZ6LQZajvc01oGp5njaasfXu5vyIFhugp5fgH5vy5zgspbwg==
 -
--xterm-addon-unicode11@0.3.0:
--  version "0.3.0"
--  resolved "https://registry.yarnpkg.com/xterm-addon-unicode11/-/xterm-addon-unicode11-0.3.0.tgz#e4435c3c91a5294a7eb8b79c380acbb28a659463"
--  integrity sha512-x5fHDZT2j9tlTlHnzPHt++9uKZ2kJ/lYQOj3L6xJA22xoJsS8UQRw/5YIFg2FUHqEAbV77Z1fZij/9NycMSH/A==
+-xterm-addon-unicode11@0.4.0-beta.1:
+-  version "0.4.0-beta.1"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-unicode11/-/xterm-addon-unicode11-0.4.0-beta.1.tgz#aeefd26e87bad15d8dfd8a1e0b804fe408c9b882"
+-  integrity sha512-pG8mpxnqpYDry0e20vuEFKhd4kKIcLLNwdNftNvfo+R/EjYRnTYnF+H8L+7eQHq6hqDH61xCEP4H4qR2CyT4pg==
 -
--xterm-addon-webgl@0.12.0-beta.15:
--  version "0.12.0-beta.15"
--  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.15.tgz#9ae82127f2a39b3cb7f5ae45a6af223810c933d4"
--  integrity sha512-LWZ3iLspQOCc26OoT8qa+SuyuIcn2cAMRbBkinOuQCk4aW5kjovIrGovj9yVAcXNvOBnPm3sUqmnwGlN579kDA==
+-xterm-addon-webgl@0.12.0-beta.21:
+-  version "0.12.0-beta.21"
+-  resolved "https://registry.yarnpkg.com/xterm-addon-webgl/-/xterm-addon-webgl-0.12.0-beta.21.tgz#8c476d25ec40b7535dedbd87b9cdf5eeeb41fc93"
+-  integrity sha512-aeZcjxbtPfkVutNnXqCv9E5V4DoYecUFztWOjBzI/dgC1xfMOMVWzsymK9H1EUfd6u0ymEIeOjvX9bHsXNUzdA==
 -
--xterm-headless@4.15.0-beta.10:
--  version "4.15.0-beta.10"
--  resolved "https://registry.yarnpkg.com/xterm-headless/-/xterm-headless-4.15.0-beta.10.tgz#2dbcb40dfda7ecfdacc7b63889c80da965480ce7"
--  integrity sha512-kDAzmaeFX8hAJvbPUJc4dW4SoVBSg4onCVOPyi8QTmxZz1o7I9mX4U7DX1v3PceyfrU27A9k6zXjuTuPjxCCSQ==
+-xterm-headless@4.17.0-beta.7:
+-  version "4.17.0-beta.7"
+-  resolved "https://registry.yarnpkg.com/xterm-headless/-/xterm-headless-4.17.0-beta.7.tgz#6ae3f5436a29f7e4554c6d9d7f4f3eb958d18240"
+-  integrity sha512-1JoKhlsENqWqDIKNHxm5jBQj3Es3gHHM+wDi9ESyodn6J+FpTkM5859wnL+/rEm7PKKvahPICqjTSjdXq5Jv9g==
 -
--xterm@4.15.0-beta.10:
--  version "4.15.0-beta.10"
--  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.15.0-beta.10.tgz#8cda3d7885e8345f2fc6cf9275a43f3833d29acf"
--  integrity sha512-valoh5ZcY/y7Pe+ffgcSAEFeuZfjzVeUUXcthdxTTsrGEiU1s4QR2EOg4U5jn5wye/Nc6mSfLW3s79R6Ac186w==
+-xterm@4.17.0-beta.7:
+-  version "4.17.0-beta.7"
+-  resolved "https://registry.yarnpkg.com/xterm/-/xterm-4.17.0-beta.7.tgz#c11d52403a8d6456b92f2086e1797c64018328d6"
+-  integrity sha512-FhC12WUljy8pTWr0oquVE0U567H1ZPAREKkN+wWLSZODNJwc8/txP2Ajg9byG++bkxfBP3CNEmDzaP0hoall8Q==
 -
  y18n@^3.2.1:
    version "3.2.2"

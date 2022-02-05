@@ -68,30 +68,28 @@ index 5b7eadb..b24dc0b 100644
  Group:    Development/Tools
  Vendor:   Microsoft Corporation
 diff --git a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
-index 60e7e06..5f1a38c 100644
+index 0edc274..3ce1738 100644
 --- a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
 +++ b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
-@@ -26,6 +26,7 @@ import { getServiceMachineId } from 'vs/platform/serviceMachineId/common/service
- import { IStorageService, StorageScope, StorageTarget } from 'vs/platform/storage/common/storage';
- import { ITelemetryService, TelemetryLevel } from 'vs/platform/telemetry/common/telemetry';
- import { getTelemetryLevel, supportsTelemetry } from 'vs/platform/telemetry/common/telemetryUtils';
-+import * as semver from 'semver';
+@@ -24,7 +24,7 @@ import { IFileService } from 'vs/platform/files/common/files';
+ import { ILogService } from 'vs/platform/log/common/log';
+ import { IProductService } from 'vs/platform/product/common/productService';
+ import { asJson, asText, IRequestService, isSuccess } from 'vs/platform/request/common/request';
+-import { resolveMarketplaceHeaders } from 'vs/platform/externalServices/common/marketplace';
++import { getCoreVersion, resolveMarketplaceHeaders } from 'vs/platform/externalServices/common/marketplace';
+ import { IStorageService } from 'vs/platform/storage/common/storage';
+ import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
  
- const CURRENT_TARGET_PLATFORM = isWeb ? TargetPlatform.WEB : getTargetPlatform(platform, arch);
+@@ -938,7 +938,8 @@ abstract class AbstractExtensionGalleryService implements IExtensionGalleryServi
+ 			return undefined;
+ 		}
  
-@@ -959,10 +960,11 @@ export class ExtensionGalleryServiceWithNoStorageService extends AbstractExtensi
- 	}
- }
+-		const url = isWeb ? this.api(`/itemName/${publisher}.${name}/version/${version}/statType/${type === StatisticType.Install ? '1' : '3'}/vscodewebextension`) : this.api(`/publishers/${publisher}/extensions/${name}/${version}/stats?statType=${type}`);
++		const coreVersion = getCoreVersion(version);
++		const url = isWeb ? this.api(`/itemName/${publisher}.${name}/version/${coreVersion}/statType/${type === StatisticType.Install ? '1' : '3'}/vscodewebextension`) : this.api(`/publishers/${publisher}/extensions/${name}/${coreVersion}/stats?statType=${type}`);
+ 		const Accept = isWeb ? 'api-version=6.1-preview.1' : '*/*;api-version=4.0-preview.1';
  
--export async function resolveMarketplaceHeaders(version: string, productService: IProductService, environmentService: IEnvironmentService, configurationService: IConfigurationService, fileService: IFileService, storageService: {
-+export async function resolveMarketplaceHeaders(currentVersion: string, productService: IProductService, environmentService: IEnvironmentService, configurationService: IConfigurationService, fileService: IFileService, storageService: {
- 	get: (key: string, scope: StorageScope) => string | undefined,
- 	store: (key: string, value: string, scope: StorageScope, target: StorageTarget) => void
- } | undefined): Promise<{ [key: string]: string; }> {
-+	const version = semver.parse(currentVersion)!.version;
- 	const headers: IHeaders = {
- 		'X-Market-Client-Id': `VSCode ${version}`,
- 		'User-Agent': `VSCode ${version}`
+ 		const commonHeaders = await this.commonHeadersPromise;
 diff --git a/src/vs/platform/extensions/common/extensionValidator.ts b/src/vs/platform/extensions/common/extensionValidator.ts
 index 89d668c..56b4d0d 100644
 --- a/src/vs/platform/extensions/common/extensionValidator.ts
@@ -113,3 +111,27 @@ index 89d668c..56b4d0d 100644
  		notices.push(nls.localize('versionMismatch', "Extension is not compatible with Code {0}. Extension requires: {1}.", currentVersion, requestedVersion));
  		return false;
  	}
+diff --git a/src/vs/platform/externalServices/common/marketplace.ts b/src/vs/platform/externalServices/common/marketplace.ts
+index 6d2c25a..40559e5 100644
+--- a/src/vs/platform/externalServices/common/marketplace.ts
++++ b/src/vs/platform/externalServices/common/marketplace.ts
+@@ -12,11 +12,17 @@ import { IProductService } from 'vs/platform/product/common/productService';
+ import { IStorageService } from 'vs/platform/storage/common/storage';
+ import { TelemetryLevel } from 'vs/platform/telemetry/common/telemetry';
+ import { getTelemetryLevel, supportsTelemetry } from 'vs/platform/telemetry/common/telemetryUtils';
++import * as semver from 'semver';
++
++export function getCoreVersion(version: string): string {
++	return semver.parse(version)!.version;
++}
+ 
+ export async function resolveMarketplaceHeaders(version: string, productService: IProductService, environmentService: IEnvironmentService, configurationService: IConfigurationService, fileService: IFileService, storageService: IStorageService | undefined): Promise<IHeaders> {
++	const coreVersion = getCoreVersion(version);
+ 	const headers: IHeaders = {
+-		'X-Market-Client-Id': `VSCode ${version}`,
+-		'User-Agent': `VSCode ${version} (${productService.nameShort})`
++		'X-Market-Client-Id': `VSCode ${coreVersion}`,
++		'User-Agent': `VSCode ${coreVersion} (${productService.nameShort})`
+ 	};
+ 	const uuid = await getServiceMachineId(environmentService, fileService, storageService);
+ 	if (supportsTelemetry(productService, environmentService) && getTelemetryLevel(configurationService) === TelemetryLevel.USAGE) {

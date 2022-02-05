@@ -89,18 +89,18 @@ index e8f7a8d..78117a5 100644
  					this._registerDefaultKeybinding(kk, rule.id, rule.args, rule.weight, -i - 1, rule.when);
  				}
 diff --git a/src/vs/workbench/services/configuration/browser/configurationService.ts b/src/vs/workbench/services/configuration/browser/configurationService.ts
-index 8ef000f..aa1f391 100644
+index 5e616e7..93b47dd 100644
 --- a/src/vs/workbench/services/configuration/browser/configurationService.ts
 +++ b/src/vs/workbench/services/configuration/browser/configurationService.ts
-@@ -35,6 +35,7 @@ import { IUriIdentityService } from 'vs/workbench/services/uriIdentity/common/ur
- import { IWorkspaceTrustManagementService } from 'vs/platform/workspace/common/workspaceTrust';
- import { delta, distinct } from 'vs/base/common/arrays';
- import { forEach, IStringDictionary } from 'vs/base/common/collections';
+@@ -39,6 +39,7 @@ import { IExtensionService } from 'vs/workbench/services/extensions/common/exten
+ import { IWorkbenchAssignmentService } from 'vs/workbench/services/assignment/common/assignmentService';
+ import { isUndefined } from 'vs/base/common/types';
+ import { localize } from 'vs/nls';
 +import { KeybindingsRegistry } from 'vs/platform/keybinding/common/keybindingsRegistry';
  
  class Workspace extends BaseWorkspace {
  	initialized: boolean = false;
-@@ -514,6 +515,8 @@ export class WorkspaceService extends Disposable implements IWorkbenchConfigurat
+@@ -526,6 +527,8 @@ export class WorkspaceService extends Disposable implements IWorkbenchConfigurat
  
  		await this.initializeConfiguration();
  
@@ -110,10 +110,10 @@ index 8ef000f..aa1f391 100644
  		if (hasWorkspaceBefore) {
  			const newState = this.getWorkbenchState();
 diff --git a/src/vs/workbench/services/keybinding/browser/keybindingService.ts b/src/vs/workbench/services/keybinding/browser/keybindingService.ts
-index 7bae6f5..efcd960 100644
+index 734b209..133a743 100644
 --- a/src/vs/workbench/services/keybinding/browser/keybindingService.ts
 +++ b/src/vs/workbench/services/keybinding/browser/keybindingService.ts
-@@ -853,6 +853,13 @@ const keyboardConfiguration: IConfigurationNode = {
+@@ -893,6 +893,13 @@ const keyboardConfiguration: IConfigurationNode = {
  			default: 'code',
  			markdownDescription: nls.localize('dispatch', "Controls the dispatching logic for key presses to use either `code` (recommended) or `keyCode`."),
  			included: OS === OperatingSystem.Macintosh || OS === OperatingSystem.Linux
