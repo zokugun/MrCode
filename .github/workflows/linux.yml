@@ -102,10 +102,10 @@ jobs:
           PUBLISH_AUR: ${{ secrets.PUBLISH_AUR }}
         if: env.PUBLISH_AUR != 'no'
 
-      - name: Publish mrcode
+      - name: Publish mrcode-bin
         uses: ./.github/actions/publish-aur-package
         with:
-          package_name: mrcode
+          package_name: mrcode-bin
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
@@ -113,10 +113,10 @@ jobs:
           PUBLISH_AUR: ${{ secrets.PUBLISH_AUR }}
         if: env.PUBLISH_AUR != 'no'
 
-      - name: Publish mrcode-bin
+      - name: Publish mrcode
         uses: ./.github/actions/publish-aur-package
         with:
-          package_name: mrcode-bin
+          package_name: mrcode
         env:
           SSH_PRIVATE_KEY: ${{ secrets.AUR_PRIVATE_KEY }}
           GIT_USERNAME: ${{ secrets.AUR_GIT_USERNAME }}
