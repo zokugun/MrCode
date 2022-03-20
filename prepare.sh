@@ -107,7 +107,6 @@ backup 'release.sh'
 gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' release.sh
 gsed -i -E 's|gh release view|gh release view --repo zokugun/MrCode|' release.sh
 gsed -i -E 's|gh release upload|gh release upload --repo zokugun/MrCode|' release.sh
-gsed -i -E 's|npm install -g github-release-cli|npm install -g github-release-cli\n\ngh release view --repo zokugun/MrCode|' release.sh
 gsed -i 's|gh release create "${RELEASE_VERSION}"|gh release --repo zokugun/MrCode create "${RELEASE_VERSION}" --notes "update to [${MS_TAG}](https://code.visualstudio.com/updates/v$( echo ${MS_TAG//./_} \| cut -d'_' -f 1,2 ))"|' release.sh
 gsed -i -E 's/VSCodium/zokugun/g' release.sh
 gsed -i -E 's/vscodium/MrCode/g' release.sh
