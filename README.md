@@ -25,6 +25,8 @@ What's the difference?
 - [editor.foldingStrategy](./docs/settings/editor.foldingStrategy.md)
 - [editor.showFoldingLastLine](./docs/settings/editor.showFoldingLastLine.md)
 - [keyboard.platform](./docs/settings/keyboard.platform.md)
+- terminal.integrated.enableUriLinks
+- terminal.integrated.enableWordLinks
 - [workbench.editor.openPositioning](./docs/settings/workbench.editor.openPositioning.md)
 
 ### Patched Commands
