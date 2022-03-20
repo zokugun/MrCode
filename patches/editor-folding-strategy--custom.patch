@@ -1,5 +1,5 @@
 diff --git a/src/vs/editor/common/config/editorOptions.ts b/src/vs/editor/common/config/editorOptions.ts
-index 6a28236..19e6b24 100644
+index 54b671b..d4c4412 100644
 --- a/src/vs/editor/common/config/editorOptions.ts
 +++ b/src/vs/editor/common/config/editorOptions.ts
 @@ -543,7 +543,7 @@ export interface IEditorOptions {
@@ -23,7 +23,7 @@ index 6a28236..19e6b24 100644
  	/**
  	 * Controls whether clicking on the empty content after a folded line will unfold the line.
  	 * Defaults to false.
-@@ -4402,6 +4407,7 @@ export const enum EditorOption {
+@@ -4433,6 +4438,7 @@ export const enum EditorOption {
  	selectionHighlight,
  	selectOnLineNumbers,
  	showFoldingControls,
@@ -31,7 +31,7 @@ index 6a28236..19e6b24 100644
  	showUnused,
  	snippetSuggestions,
  	smartSelect,
-@@ -4658,16 +4664,10 @@ export const EditorOptions = {
+@@ -4689,16 +4695,10 @@ export const EditorOptions = {
  		EditorOption.folding, 'folding', true,
  		{ description: nls.localize('folding', "Controls whether the editor has code folding enabled.") }
  	)),
@@ -51,7 +51,7 @@ index 6a28236..19e6b24 100644
  		}
  	)),
  	foldingHighlight: register(new EditorBooleanOption(
-@@ -4931,6 +4931,10 @@ export const EditorOptions = {
+@@ -4962,6 +4962,10 @@ export const EditorOptions = {
  			description: nls.localize('showFoldingControls', "Controls when the folding controls on the gutter are shown.")
  		}
  	)),
@@ -63,10 +63,10 @@ index 6a28236..19e6b24 100644
  		EditorOption.showUnused, 'showUnused', true,
  		{ description: nls.localize('showUnused', "Controls fading out of unused code.") }
 diff --git a/src/vs/editor/common/languages.ts b/src/vs/editor/common/languages.ts
-index f63fa53..af7efae 100644
+index cbe50cb..0bbbdc8 100644
 --- a/src/vs/editor/common/languages.ts
 +++ b/src/vs/editor/common/languages.ts
-@@ -1479,6 +1479,16 @@ export interface FoldingContext {
+@@ -1478,6 +1478,16 @@ export interface FoldingContext {
   */
  export interface FoldingRangeProvider {
  
@@ -84,7 +84,7 @@ index f63fa53..af7efae 100644
  	 * An optional event to signal that the folding ranges from this provider have changed.
  	 */
 diff --git a/src/vs/editor/common/standalone/standaloneEnums.ts b/src/vs/editor/common/standalone/standaloneEnums.ts
-index 8cd71d6..0122bfa 100644
+index 6f3f214..5527d09 100644
 --- a/src/vs/editor/common/standalone/standaloneEnums.ts
 +++ b/src/vs/editor/common/standalone/standaloneEnums.ts
 @@ -267,39 +267,40 @@ export enum EditorOption {
@@ -162,40 +162,37 @@ index 8cd71d6..0122bfa 100644
  
  /**
 diff --git a/src/vs/editor/contrib/folding/browser/folding.ts b/src/vs/editor/contrib/folding/browser/folding.ts
-index e626670..eac938a 100644
+index e714b54..a1ce114 100644
 --- a/src/vs/editor/contrib/folding/browser/folding.ts
 +++ b/src/vs/editor/contrib/folding/browser/folding.ts
 @@ -21,7 +21,7 @@ import { IEditorContribution, ScrollType } from 'vs/editor/common/editorCommon';
  import { EditorContextKeys } from 'vs/editor/common/editorContextKeys';
  import { ITextModel } from 'vs/editor/common/model';
  import { IModelContentChangedEvent } from 'vs/editor/common/textModelEvents';
--import { FoldingRangeKind, FoldingRangeProviderRegistry } from 'vs/editor/common/languages';
-+import { FoldingRangeKind, FoldingRangeProvider, FoldingRangeProviderRegistry } from 'vs/editor/common/languages';
+-import { FoldingRangeKind } from 'vs/editor/common/languages';
++import { FoldingRangeKind, FoldingRangeProvider } from 'vs/editor/common/languages';
  import { ILanguageConfigurationService } from 'vs/editor/common/languages/languageConfigurationRegistry';
  import { CollapseMemento, FoldingModel, getNextFoldLine, getParentFoldLine as getParentFoldLine, getPreviousFoldLine, setCollapseStateAtLevel, setCollapseStateForMatchingLines, setCollapseStateForRest, setCollapseStateForType, setCollapseStateLevelsDown, setCollapseStateLevelsUp, setCollapseStateUp, toggleCollapseState } from 'vs/editor/contrib/folding/browser/foldingModel';
  import { HiddenRangeModel } from 'vs/editor/contrib/folding/browser/hiddenRangeModel';
-@@ -39,6 +39,8 @@ import { INotificationService } from 'vs/platform/notification/common/notificati
- import Severity from 'vs/base/common/severity';
+@@ -40,10 +40,16 @@ import Severity from 'vs/base/common/severity';
  import { IFeatureDebounceInformation, ILanguageFeatureDebounceService } from 'vs/editor/common/services/languageFeatureDebounce';
  import { StopWatch } from 'vs/base/common/stopwatch';
+ import { ILanguageFeaturesService } from 'vs/editor/common/services/languageFeatures';
+-
 +import { NoopRangeProvider } from 'vs/editor/contrib/folding/browser/noopRangeProvider';
 +import { IndentFoldingProvider } from 'vs/editor/contrib/folding/browser/indentFoldingProvider';
  
- 
  const CONTEXT_FOLDING_ENABLED = new RawContextKey<boolean>('foldingEnabled', false);
-@@ -56,6 +58,11 @@ interface FoldingStateMemento {
- 	foldedImports?: boolean
- }
  
 +enum StrategyMode {
 +	AND,
 +	OR,
 +}
 +
- export class FoldingController extends Disposable implements IEditorContribution {
- 
- 	public static readonly ID = 'editor.contrib.folding';
-@@ -66,7 +73,6 @@ export class FoldingController extends Disposable implements IEditorContribution
+ export interface RangeProvider {
+ 	readonly id: string;
+ 	compute(cancelationToken: CancellationToken, notifyTooMany: (max: number) => void): Promise<FoldingRegions | null>;
+@@ -67,7 +73,6 @@ export class FoldingController extends Disposable implements IEditorContribution
  
  	private readonly editor: ICodeEditor;
  	private _isEnabled: boolean;
@@ -203,9 +200,9 @@ index e626670..eac938a 100644
  	private _unfoldOnClickAfterEndOfLine: boolean;
  	private _restoringViewState: boolean;
  	private _foldingImportsByDefault: boolean;
-@@ -95,6 +101,10 @@ export class FoldingController extends Disposable implements IEditorContribution
+@@ -96,6 +101,10 @@ export class FoldingController extends Disposable implements IEditorContribution
  	private readonly localToDispose = this._register(new DisposableStore());
- 	private mouseDownInfo: { lineNumber: number, iconClicked: boolean } | null;
+ 	private mouseDownInfo: { lineNumber: number; iconClicked: boolean } | null;
  
 +	private strategyMode: StrategyMode = 0;
 +	private strategyProviderIds: string[] = [];
@@ -214,7 +211,7 @@ index e626670..eac938a 100644
  	constructor(
  		editor: ICodeEditor,
  		@IContextKeyService private readonly contextKeyService: IContextKeyService,
-@@ -106,7 +116,8 @@ export class FoldingController extends Disposable implements IEditorContribution
+@@ -108,7 +117,8 @@ export class FoldingController extends Disposable implements IEditorContribution
  		this.editor = editor;
  		const options = this.editor.getOptions();
  		this._isEnabled = options.get(EditorOption.folding);
@@ -224,7 +221,7 @@ index e626670..eac938a 100644
  		this._unfoldOnClickAfterEndOfLine = options.get(EditorOption.unfoldOnClickAfterEndOfLine);
  		this._restoringViewState = false;
  		this._currentModelHasFoldedImports = false;
-@@ -145,6 +156,8 @@ export class FoldingController extends Disposable implements IEditorContribution
+@@ -147,6 +156,8 @@ export class FoldingController extends Disposable implements IEditorContribution
  		this._register(this.editor.onDidChangeModel(() => this.onModelChanged()));
  
  		this._register(this.editor.onDidChangeConfiguration((e: ConfigurationChangedEvent) => {
@@ -233,7 +230,7 @@ index e626670..eac938a 100644
  			if (e.hasChanged(EditorOption.folding)) {
  				this._isEnabled = this.editor.getOptions().get(EditorOption.folding);
  				this.foldingEnabled.set(this._isEnabled);
-@@ -156,20 +169,23 @@ export class FoldingController extends Disposable implements IEditorContribution
+@@ -158,20 +169,23 @@ export class FoldingController extends Disposable implements IEditorContribution
  				this.onModelChanged();
  			}
  			if (e.hasChanged(EditorOption.showFoldingControls) || e.hasChanged(EditorOption.foldingHighlight)) {
@@ -261,14 +258,14 @@ index e626670..eac938a 100644
  			}
  		}));
  		this.onModelChanged();
-@@ -294,25 +310,114 @@ export class FoldingController extends Disposable implements IEditorContribution
+@@ -296,25 +310,114 @@ export class FoldingController extends Disposable implements IEditorContribution
  		if (this.rangeProvider) {
  			return this.rangeProvider;
  		}
 -		this.rangeProvider = new IndentRangeProvider(editorModel, this.languageConfigurationService, this._maxFoldingRegions); // fallback
 -
 -		if (this._useFoldingProviders && this.foldingModel) {
--			let foldingProviders = FoldingRangeProviderRegistry.ordered(this.foldingModel.textModel);
+-			let foldingProviders = this.languageFeaturesService.foldingRangeProvider.ordered(this.foldingModel.textModel);
 -			if (foldingProviders.length === 0 && this.foldingStateMemento && this.foldingStateMemento.collapsedRegions) {
 -				const rangeProvider = this.rangeProvider = new InitializingRangeProvider(editorModel, this.foldingStateMemento.collapsedRegions, () => {
 -					// if after 30 the InitializingRangeProvider is still not replaced, force a refresh
@@ -286,7 +283,7 @@ index e626670..eac938a 100644
 +
 +				for (const id of this.strategyProviderIds) {
 +					if (id === 'language') {
-+						const providers = FoldingRangeProviderRegistry.ordered(this.foldingModel.textModel).filter(provider => provider.id === null);
++						const providers = this.languageFeaturesService.foldingRangeProvider.ordered(this.foldingModel.textModel).filter(provider => provider.id === null);
 +
 +						if (providers.length === 0 && this.foldingStateMemento && this.foldingStateMemento.collapsedRegions) {
 +							return this.createInitializingRangeProvider(editorModel);
@@ -296,7 +293,7 @@ index e626670..eac938a 100644
 +					} else if (id === 'indentation') {
 +						foldingProviders.push(new IndentFoldingProvider(this.languageConfigurationService));
 +					} else {
-+						const providers = FoldingRangeProviderRegistry.ordered(editorModel).filter(provider => provider.id === id);
++						const providers = this.languageFeaturesService.foldingRangeProvider.ordered(editorModel).filter(provider => provider.id === id);
 +						foldingProviders.push(...providers);
 +					}
 +				}
@@ -305,7 +302,7 @@ index e626670..eac938a 100644
 +			} else {
 +				for (const id of this.strategyProviderIds) {
 +					if (id === 'language') {
-+						const providers = FoldingRangeProviderRegistry.ordered(this.foldingModel.textModel).filter(provider => provider.id === null);
++						const providers = this.languageFeaturesService.foldingRangeProvider.ordered(this.foldingModel.textModel).filter(provider => provider.id === null);
 +
 +						if (providers.length === 0 && this.foldingStateMemento && this.foldingStateMemento.collapsedRegions) {
 +							return this.createInitializingRangeProvider(editorModel);
@@ -317,7 +314,7 @@ index e626670..eac938a 100644
 +						this.rangeProvider = new IndentRangeProvider(editorModel, this.languageConfigurationService, this._maxFoldingRegions);
 +						break;
 +					} else {
-+						const foldingProviders = FoldingRangeProviderRegistry.ordered(editorModel).filter(provider => provider.id === id);
++						const foldingProviders = this.languageFeaturesService.foldingRangeProvider.ordered(editorModel).filter(provider => provider.id === id);
 +
 +						if (foldingProviders.length > 0) {
 +							this.rangeProvider = new SyntaxRangeProvider(editorModel, foldingProviders, this.showFoldingLastLine, () => this.triggerFoldingModelChanged(), this._maxFoldingRegions);
@@ -843,10 +840,10 @@ index 78ba186..fc7ea50 100644
  			if (indentRanges) {
  				for (let i = 0; i < indentRanges.length; i++) {
 diff --git a/src/vs/monaco.d.ts b/src/vs/monaco.d.ts
-index 52e3225..5160769 100644
+index 93202c7..c206919 100644
 --- a/src/vs/monaco.d.ts
 +++ b/src/vs/monaco.d.ts
-@@ -3230,7 +3230,7 @@ declare namespace monaco.editor {
+@@ -3231,7 +3231,7 @@ declare namespace monaco.editor {
  		 * Selects the folding strategy. 'auto' uses the strategies contributed for the current document, 'indentation' uses the indentation based folding strategy.
  		 * Defaults to 'auto'.
  		 */
@@ -855,7 +852,7 @@ index 52e3225..5160769 100644
  		/**
  		 * Enable highlight for folded regions.
  		 * Defaults to true.
-@@ -3251,6 +3251,11 @@ declare namespace monaco.editor {
+@@ -3252,6 +3252,11 @@ declare namespace monaco.editor {
  		 * Defaults to 'mouseover'.
  		 */
  		showFoldingControls?: 'always' | 'mouseover';
@@ -867,7 +864,7 @@ index 52e3225..5160769 100644
  		/**
  		 * Controls whether clicking on the empty content after a folded line will unfold the line.
  		 * Defaults to false.
-@@ -4270,39 +4275,40 @@ declare namespace monaco.editor {
+@@ -4296,39 +4301,40 @@ declare namespace monaco.editor {
  		selectionHighlight = 97,
  		selectOnLineNumbers = 98,
  		showFoldingControls = 99,
@@ -941,7 +938,7 @@ index 52e3225..5160769 100644
  	}
  
  	export const EditorOptions: {
-@@ -4345,7 +4351,7 @@ declare namespace monaco.editor {
+@@ -4371,7 +4377,7 @@ declare namespace monaco.editor {
  		find: IEditorOption<EditorOption.find, Readonly<Required<IEditorFindOptions>>>;
  		fixedOverflowWidgets: IEditorOption<EditorOption.fixedOverflowWidgets, boolean>;
  		folding: IEditorOption<EditorOption.folding, boolean>;
@@ -950,7 +947,7 @@ index 52e3225..5160769 100644
  		foldingHighlight: IEditorOption<EditorOption.foldingHighlight, boolean>;
  		foldingImportsByDefault: IEditorOption<EditorOption.foldingImportsByDefault, boolean>;
  		foldingMaximumRegions: IEditorOption<EditorOption.foldingMaximumRegions, number>;
-@@ -4406,6 +4412,7 @@ declare namespace monaco.editor {
+@@ -4432,6 +4438,7 @@ declare namespace monaco.editor {
  		selectionHighlight: IEditorOption<EditorOption.selectionHighlight, boolean>;
  		selectOnLineNumbers: IEditorOption<EditorOption.selectOnLineNumbers, boolean>;
  		showFoldingControls: IEditorOption<EditorOption.showFoldingControls, 'always' | 'mouseover'>;
@@ -958,7 +955,7 @@ index 52e3225..5160769 100644
  		showUnused: IEditorOption<EditorOption.showUnused, boolean>;
  		showDeprecated: IEditorOption<EditorOption.showDeprecated, boolean>;
  		inlayHints: IEditorOption<EditorOption.inlayHints, Readonly<Required<IEditorInlayHintsOptions>>>;
-@@ -6756,6 +6763,14 @@ declare namespace monaco.languages {
+@@ -6811,6 +6818,14 @@ declare namespace monaco.languages {
  	 * A provider of folding ranges for editor models.
  	 */
  	export interface FoldingRangeProvider {
@@ -974,26 +971,26 @@ index 52e3225..5160769 100644
  		 * An optional event to signal that the folding ranges from this provider have changed.
  		 */
 diff --git a/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts b/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
-index e098e7a..3a2a264 100644
+index f8346dc..d9eb1e5 100644
 --- a/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
 +++ b/src/vs/workbench/api/browser/mainThreadLanguageFeatures.ts
-@@ -676,8 +676,10 @@ export class MainThreadLanguageFeatures implements MainThreadLanguageFeaturesSha
+@@ -678,8 +678,10 @@ export class MainThreadLanguageFeatures implements MainThreadLanguageFeaturesSha
  
  	// --- folding
  
 -	$registerFoldingRangeProvider(handle: number, selector: IDocumentFilterDto[], eventHandle: number | undefined): void {
 +	$registerFoldingRangeProvider(handle: number, id: string | null, isManagingLastLine: boolean, selector: IDocumentFilterDto[], eventHandle: number | undefined): void {
- 		const provider = <modes.FoldingRangeProvider>{
+ 		const provider = <languages.FoldingRangeProvider>{
 +			id,
 +			isManagingLastLine,
  			provideFoldingRanges: (model, context, token) => {
  				return this._proxy.$provideFoldingRanges(handle, model.uri, context, token);
  			}
 diff --git a/src/vs/workbench/api/common/extHost.protocol.ts b/src/vs/workbench/api/common/extHost.protocol.ts
-index 1f8a3c5..98b2e8d 100644
+index 411c78f..38cd230 100644
 --- a/src/vs/workbench/api/common/extHost.protocol.ts
 +++ b/src/vs/workbench/api/common/extHost.protocol.ts
-@@ -445,7 +445,7 @@ export interface MainThreadLanguageFeaturesShape extends IDisposable {
+@@ -384,7 +384,7 @@ export interface MainThreadLanguageFeaturesShape extends IDisposable {
  	$emitInlayHintsEvent(eventHandle: number): void;
  	$registerDocumentLinkProvider(handle: number, selector: IDocumentFilterDto[], supportsResolve: boolean): void;
  	$registerDocumentColorProvider(handle: number, selector: IDocumentFilterDto[]): void;
@@ -1003,10 +1000,10 @@ index 1f8a3c5..98b2e8d 100644
  	$registerSelectionRangeProvider(handle: number, selector: IDocumentFilterDto[]): void;
  	$registerCallHierarchyProvider(handle: number, selector: IDocumentFilterDto[]): void;
 diff --git a/src/vs/workbench/api/common/extHostLanguageFeatures.ts b/src/vs/workbench/api/common/extHostLanguageFeatures.ts
-index 5725608..bcd9b27 100644
+index 035389d..31ec473 100644
 --- a/src/vs/workbench/api/common/extHostLanguageFeatures.ts
 +++ b/src/vs/workbench/api/common/extHostLanguageFeatures.ts
-@@ -2147,7 +2147,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
+@@ -2151,7 +2151,7 @@ export class ExtHostLanguageFeatures implements extHostProtocol.ExtHostLanguageF
  		const eventHandle = typeof provider.onDidChangeFoldingRanges === 'function' ? this._nextHandle() : undefined;
  
  		this._adapter.set(handle, new AdapterData(new FoldingProviderAdapter(this._documents, provider), extension));
@@ -1016,10 +1013,10 @@ index 5725608..bcd9b27 100644
  
  		if (eventHandle !== undefined) {
 diff --git a/src/vscode-dts/vscode.d.ts b/src/vscode-dts/vscode.d.ts
-index 6ad7951..97e6791 100644
+index e0fceca..db0190e 100644
 --- a/src/vscode-dts/vscode.d.ts
 +++ b/src/vscode-dts/vscode.d.ts
-@@ -4637,6 +4637,16 @@ declare module 'vscode' {
+@@ -4792,6 +4792,16 @@ declare module 'vscode' {
  	 */
  	export interface FoldingRangeProvider {
  

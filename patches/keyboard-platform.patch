@@ -1,5 +1,5 @@
 diff --git a/src/vs/platform/keybinding/common/keybindingsRegistry.ts b/src/vs/platform/keybinding/common/keybindingsRegistry.ts
-index e8f7a8d..78117a5 100644
+index 75c0bd4..78117a5 100644
 --- a/src/vs/platform/keybinding/common/keybindingsRegistry.ts
 +++ b/src/vs/platform/keybinding/common/keybindingsRegistry.ts
 @@ -73,6 +73,7 @@ export interface IKeybindingsRegistry {
@@ -23,7 +23,7 @@ index e8f7a8d..78117a5 100644
  	/**
  	 * Take current platform into account and reduce to primary & secondary.
  	 */
--	private static bindToCurrentPlatform(kb: IKeybindings): { primary?: number; secondary?: number[]; } {
+-	private static bindToCurrentPlatform(kb: IKeybindings): { primary?: number; secondary?: number[] } {
 -		if (OS === OperatingSystem.Windows) {
 +	private bindToCurrentPlatform(kb: IKeybindings): { primary?: number; secondary?: number[]; } {
 +		if (this._platform === OperatingSystem.Windows) {
@@ -89,7 +89,7 @@ index e8f7a8d..78117a5 100644
  					this._registerDefaultKeybinding(kk, rule.id, rule.args, rule.weight, -i - 1, rule.when);
  				}
 diff --git a/src/vs/workbench/services/configuration/browser/configurationService.ts b/src/vs/workbench/services/configuration/browser/configurationService.ts
-index 5e616e7..93b47dd 100644
+index 0b39d04..79bcf33 100644
 --- a/src/vs/workbench/services/configuration/browser/configurationService.ts
 +++ b/src/vs/workbench/services/configuration/browser/configurationService.ts
 @@ -39,6 +39,7 @@ import { IExtensionService } from 'vs/workbench/services/extensions/common/exten
@@ -110,10 +110,10 @@ index 5e616e7..93b47dd 100644
  		if (hasWorkspaceBefore) {
  			const newState = this.getWorkbenchState();
 diff --git a/src/vs/workbench/services/keybinding/browser/keybindingService.ts b/src/vs/workbench/services/keybinding/browser/keybindingService.ts
-index 734b209..133a743 100644
+index b55025b..bd10072 100644
 --- a/src/vs/workbench/services/keybinding/browser/keybindingService.ts
 +++ b/src/vs/workbench/services/keybinding/browser/keybindingService.ts
-@@ -893,6 +893,13 @@ const keyboardConfiguration: IConfigurationNode = {
+@@ -899,6 +899,13 @@ const keyboardConfiguration: IConfigurationNode = {
  			default: 'code',
  			markdownDescription: nls.localize('dispatch', "Controls the dispatching logic for key presses to use either `code` (recommended) or `keyCode`."),
  			included: OS === OperatingSystem.Macintosh || OS === OperatingSystem.Linux
