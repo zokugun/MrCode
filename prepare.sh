@@ -48,11 +48,11 @@ gsed -i -E 's/vscode-server-oss/mrcode-server/g' prepare_vscode.sh
 
 gsed -i -E 's|updateUrl=.*|updateUrl='\''setpath(["updateUrl"]; "https://mrcode.vercel.app")'\''|' prepare_vscode.sh
 gsed -i -E 's|win32x64UserAppId=.*|win32x64UserAppId='\''setpath(["win32x64UserAppId"]; "{{7678C6A4-C40E-4B93-AA07-D50A6DF862F1}}")'\''|' prepare_vscode.sh
-gsed -i -E '/extensionAllowedProposedApi=.*/a\
+gsed -i -E 's|licenseUrl=.*|licenseUrl='\''setpath(["licenseUrl"]; "https://github.com/zokugun/MrCode/blob/master/LICENSE")'\''|' prepare_vscode.sh
+gsed -i -E 's|reportIssueUrl=.*|reportIssueUrl='\''setpath(["reportIssueUrl"]; "https://github.com/zokugun/MrCode/issues/new")'\''|' prepare_vscode.sh
+gsed -i -E '/licenseUrl=.*/a\
 dataFolderName='\''setpath(["dataFolderName"]; ".mrcode")'\''\
 darwinBundleIdentifier='\''setpath(["darwinBundleIdentifier"]; "org.zokugun.mrcode")'\''\
-licenseUrl='\''setpath(["licenseUrl"]; "https://github.com/zokugun/MrCode/blob/master/LICENSE")'\''\
-reportIssueUrl='\''setpath(["reportIssueUrl"]; "https://github.com/zokugun/MrCode/issues/new")'\''\
 enableTelemetry='\''setpath(["enableTelemetry"]; false)'\''\
 win32AppId='\''setpath(["win32AppId"]; "{{0BD0DE9B-0738-49CE-97C6-75CED083CE4E}}")'\''\
 win32x64AppId='\''setpath(["win32x64AppId"]; "{{09FF1437-F543-4CF3-9204-C4BB886DF9BE}}")'\''\
@@ -64,7 +64,7 @@ gsed -i -E 's|extensionsGallery=.*|extensionsGallery='\''setpath(["extensionsGal
 gsed -i -z -E 's/linkProtectionTrustedDomains=[^\n]*\n//g' prepare_vscode.sh
 
 gsed -i -E 's/\$\{linkProtectionTrustedDomains\} \| //' prepare_vscode.sh
-gsed -i -E 's/\$\{extensionAllowedProposedApi\}/${extensionAllowedProposedApi} | ${dataFolderName} | ${darwinBundleIdentifier} | ${licenseUrl} | ${reportIssueUrl} | ${enableTelemetry} | ${win32AppId} | ${win32x64AppId} | ${win32arm64AppId} | ${win32UserAppId} | ${win32arm64UserAppId}/' prepare_vscode.sh
+gsed -i -E 's/\$\{licenseUrl\}/${licenseUrl} | ${dataFolderName} | ${darwinBundleIdentifier} | ${enableTelemetry} | ${win32AppId} | ${win32x64AppId} | ${win32arm64AppId} | ${win32UserAppId} | ${win32arm64UserAppId}/' prepare_vscode.sh
 
 gsed -i -E $'s/mv product\.json product\.json\.bak/if [ ! -f "product.json.bak" ]; then\\\n  mv product.json product.json.bak\\\nfi/g' prepare_vscode.sh
 
