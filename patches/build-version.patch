@@ -1,9 +1,9 @@
 diff --git a/build/gulpfile.vscode.linux.js b/build/gulpfile.vscode.linux.js
-index 3423e86..596283e 100644
+index 3c6a7b3..476f15f 100644
 --- a/build/gulpfile.vscode.linux.js
 +++ b/build/gulpfile.vscode.linux.js
 @@ -18,9 +18,6 @@ const product = require('../product.json');
- const rpmDependencies = require('../resources/linux/rpm/dependencies.json');
+ const rpmDependenciesGenerator = require('./linux/rpm/dependencies-generator');
  const path = require('path');
  const root = path.dirname(__dirname);
 -const commit = util.getVersion(root);
@@ -21,7 +21,7 @@ index 3423e86..596283e 100644
  					.pipe(replace('@@ARCHITECTURE@@', debArch))
  					.pipe(replace('@@INSTALLEDSIZE@@', Math.ceil(size / 1024)))
  					.pipe(rename('DEBIAN/control'))
-@@ -168,8 +165,7 @@ function prepareRpmPackage(arch) {
+@@ -181,8 +178,7 @@ function prepareRpmPackage(arch) {
  			.pipe(replace('@@NAME@@', product.applicationName))
  			.pipe(replace('@@NAME_LONG@@', product.nameLong))
  			.pipe(replace('@@ICON@@', product.linuxIconName))
@@ -31,7 +31,7 @@ index 3423e86..596283e 100644
  			.pipe(replace('@@ARCHITECTURE@@', rpmArch))
  			.pipe(replace('@@LICENSE@@', product.licenseName))
  			.pipe(replace('@@QUALITY@@', product.quality || '@@QUALITY@@'))
-@@ -233,7 +229,7 @@ function prepareSnapPackage(arch) {
+@@ -255,7 +251,7 @@ function prepareSnapPackage(arch) {
  
  		const snapcraft = gulp.src('resources/linux/snap/snapcraft.yaml', { base: '.' })
  			.pipe(replace('@@NAME@@', product.applicationName))
@@ -41,10 +41,10 @@ index 3423e86..596283e 100644
  			.pipe(replace('@@ARCHITECTURE@@', arch === 'x64' ? 'amd64' : arch))
  			.pipe(rename('snap/snapcraft.yaml'));
 diff --git a/build/gulpfile.vscode.win32.js b/build/gulpfile.vscode.win32.js
-index 1a73ae9..137b8e6 100644
+index 81ba509..a445749 100644
 --- a/build/gulpfile.vscode.win32.js
 +++ b/build/gulpfile.vscode.win32.js
-@@ -87,8 +87,8 @@ function buildWin32Setup(arch, target) {
+@@ -91,8 +91,8 @@ function buildWin32Setup(arch, target) {
  			NameLong: product.nameLong,
  			NameShort: product.nameShort,
  			DirName: product.win32DirName,
@@ -68,7 +68,7 @@ index 5b7eadb..b24dc0b 100644
  Group:    Development/Tools
  Vendor:   Microsoft Corporation
 diff --git a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
-index 0edc274..3ce1738 100644
+index b83b399..0bd7201 100644
 --- a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
 +++ b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
 @@ -24,7 +24,7 @@ import { IFileService } from 'vs/platform/files/common/files';
@@ -91,18 +91,18 @@ index 0edc274..3ce1738 100644
  
  		const commonHeaders = await this.commonHeadersPromise;
 diff --git a/src/vs/platform/extensions/common/extensionValidator.ts b/src/vs/platform/extensions/common/extensionValidator.ts
-index 89d668c..56b4d0d 100644
+index dfeea91..985c2e9 100644
 --- a/src/vs/platform/extensions/common/extensionValidator.ts
 +++ b/src/vs/platform/extensions/common/extensionValidator.ts
-@@ -4,6 +4,7 @@
+@@ -3,6 +3,7 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
   *--------------------------------------------------------------------------------------------*/
  
- import * as nls from 'vs/nls';
 +import * as semver from 'semver';
+ import * as nls from 'vs/nls';
+ import { IExtensionManifest } from 'vs/platform/extensions/common/extensions';
  
- export interface IParsedVersion {
- 	hasCaret: boolean;
-@@ -282,7 +283,7 @@ function isVersionValid(currentVersion: string, date: ProductDate, requestedVers
+@@ -275,7 +276,7 @@ function isVersionValid(currentVersion: string, date: ProductDate, requestedVers
  		}
  	}
  
