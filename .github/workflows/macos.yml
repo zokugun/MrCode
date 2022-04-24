@@ -16,7 +16,7 @@ jobs:
         include:
           - runner: macOS-10.15
             vscode_arch: x64
-          - runner: [self-hosted, macOS, ARM64]
+          - runner: self-hosted
             vscode_arch: arm64
 
     env:
