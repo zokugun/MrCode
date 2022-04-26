@@ -8,24 +8,20 @@ on:
 
 jobs:
   build:
-    # runs-on: ${{ matrix.runner }}
+    runs-on: ${{ matrix.runner }}
 
-    # strategy:
-    #   fail-fast: false
-    #   matrix:
-    #     include:
-    #       - runner: macOS-10.15
-    #         vscode_arch: x64
-    #       - runner: [self-hosted, macOS, ARM64]
-    #         vscode_arch: arm64
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macOS-10.15
+            vscode_arch: x64
+          - runner: [self-hosted, macOS, ARM64]
+            vscode_arch: arm64
 
-    # env:
-    #   OS_NAME: "osx"
-    #   VSCODE_ARCH: ${{ matrix.vscode_arch }}
-    runs-on: [self-hosted, macOS, ARM64]
     env:
       OS_NAME: "osx"
-      VSCODE_ARCH: "arm64"
+      VSCODE_ARCH: ${{ matrix.vscode_arch }}
 
     steps:
       - uses: actions/checkout@v3
