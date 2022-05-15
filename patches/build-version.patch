@@ -1,5 +1,5 @@
 diff --git a/build/gulpfile.vscode.linux.js b/build/gulpfile.vscode.linux.js
-index 3c6a7b3..476f15f 100644
+index 7d0f70f..1350e93 100644
 --- a/build/gulpfile.vscode.linux.js
 +++ b/build/gulpfile.vscode.linux.js
 @@ -18,9 +18,6 @@ const product = require('../product.json');
@@ -68,19 +68,19 @@ index 5b7eadb..b24dc0b 100644
  Group:    Development/Tools
  Vendor:   Microsoft Corporation
 diff --git a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
-index b83b399..0bd7201 100644
+index a3a7c9b..2556950 100644
 --- a/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
 +++ b/src/vs/platform/extensionManagement/common/extensionGalleryService.ts
 @@ -24,7 +24,7 @@ import { IFileService } from 'vs/platform/files/common/files';
  import { ILogService } from 'vs/platform/log/common/log';
  import { IProductService } from 'vs/platform/product/common/productService';
- import { asJson, asText, IRequestService, isSuccess } from 'vs/platform/request/common/request';
+ import { asJson, asTextOrError, IRequestService, isSuccess } from 'vs/platform/request/common/request';
 -import { resolveMarketplaceHeaders } from 'vs/platform/externalServices/common/marketplace';
 +import { getCoreVersion, resolveMarketplaceHeaders } from 'vs/platform/externalServices/common/marketplace';
  import { IStorageService } from 'vs/platform/storage/common/storage';
  import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
  
-@@ -938,7 +938,8 @@ abstract class AbstractExtensionGalleryService implements IExtensionGalleryServi
+@@ -953,7 +953,8 @@ abstract class AbstractExtensionGalleryService implements IExtensionGalleryServi
  			return undefined;
  		}
  
@@ -91,18 +91,10 @@ index b83b399..0bd7201 100644
  
  		const commonHeaders = await this.commonHeadersPromise;
 diff --git a/src/vs/platform/extensions/common/extensionValidator.ts b/src/vs/platform/extensions/common/extensionValidator.ts
-index dfeea91..985c2e9 100644
+index c36ca61..600ef45 100644
 --- a/src/vs/platform/extensions/common/extensionValidator.ts
 +++ b/src/vs/platform/extensions/common/extensionValidator.ts
-@@ -3,6 +3,7 @@
-  *  Licensed under the MIT License. See License.txt in the project root for license information.
-  *--------------------------------------------------------------------------------------------*/
- 
-+import * as semver from 'semver';
- import * as nls from 'vs/nls';
- import { IExtensionManifest } from 'vs/platform/extensions/common/extensions';
- 
-@@ -275,7 +276,7 @@ function isVersionValid(currentVersion: string, date: ProductDate, requestedVers
+@@ -371,7 +371,7 @@ function isVersionValid(currentVersion: string, date: ProductDate, requestedVers
  		}
  	}
  
