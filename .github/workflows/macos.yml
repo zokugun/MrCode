@@ -124,6 +124,8 @@ jobs:
         run: |
           KEYCHAIN_PATH=$RUNNER_TEMP/app.keychain-db
 
+          security default-keychain -s ~/Library/Keychains/login.keychain-db
+
           if [ -f "$KEYCHAIN_PATH" ];
           then
             security delete-keychain $KEYCHAIN_PATH
