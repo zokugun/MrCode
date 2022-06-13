@@ -19,6 +19,8 @@ Download
 
 What's the difference?
 ----------------------
+A ton of stuff has been patched and added to MrCode.
+Here is the list of them.
 
 ### Patched Settings
 
