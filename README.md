@@ -63,7 +63,7 @@ FAQ
 
 **Q:** How do I open MrCode from the terminal?
 
-**A:** Please the documentation: [Install `mrcode` command](./docs/terminal.md)
+**A:** Please read the documentation: [Install `mrcode` command](./docs/terminal.md)
 
 News
 ----
