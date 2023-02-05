@@ -12,11 +12,20 @@ else
 fi
 
 if [[ -z "${RELEASE_VERSION}" ]]; then
-    MS_TAG=$( git tag -l --sort=-version:refname | head -1 )
-    date=$( date +%Y%j )
-    export RELEASE_VERSION="$MS_TAG+${date: -5}"
+    VSCODIUM_RELEASE=$( git tag -l --sort=-version:refname | head -1 )
+
+    if [[ "${VSCODIUM_RELEASE}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+$ ]];
+    then
+        MS_TAG="${BASH_REMATCH[1]}"
+    else
+        echo "Bad VSCODIUM_RELEASE: $VSCODIUM_RELEASE"
+        exit 1
+    fi
+
+    DATE=$( date +%Y%j )
+    export RELEASE_VERSION="$MS_TAG.${DATE: -5}"
 else
-    if [[ "${RELEASE_VERSION}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\+[0-9]+$ ]];
+    if [[ "${RELEASE_VERSION}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+$ ]];
     then
         MS_TAG="${BASH_REMATCH[1]}"
     else
@@ -45,9 +54,13 @@ if [[ ! -z "${VSCODIUM_LATEST}" ]]; then
 fi
 
 if [[ -z "${VSCODIUM_COMMIT}" ]]; then
-    echo "Using VSCodium tag: ${MS_TAG}"
+    echo "Using VSCode tag: ${MS_TAG}"
 
-    git checkout $MS_TAG
+    VSCODIUM_RELEASE=$( git tag -l --sort=-version:refname | grep "${MS_TAG}" | head -1 )
+
+    echo "Found VSCodium tag: ${VSCODIUM_RELEASE}"
+
+    git checkout $VSCODIUM_RELEASE
 else
     echo "Using VSCodium commit: ${VSCODIUM_COMMIT}"
 

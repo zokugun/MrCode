@@ -1,19 +1,13 @@
 diff --git a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
-index 0d0c23c..8645fcb 100644
+index 66ab203..b09fb0f 100644
 --- a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
 +++ b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
-@@ -8,7 +8,7 @@ import { KeyMod, KeyCode } from 'vs/base/common/keyCodes';
- import { Registry } from 'vs/platform/registry/common/platform';
- import { MenuRegistry, MenuId, registerAction2, Action2, ISubmenuItem, IMenuItem, IAction2Options } from 'vs/platform/actions/common/actions';
- import { registerSingleton } from 'vs/platform/instantiation/common/extensions';
--import { ExtensionsLabel, ExtensionsLocalizedLabel, ExtensionsChannelId, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, InstallOperation, InstallOptions } from 'vs/platform/extensionManagement/common/extensionManagement';
-+import { ExtensionsLabel, ExtensionsLocalizedLabel, ExtensionsChannelId, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, InstallOperation, InstallOptions, IGlobalExtensionEnablementService } from 'vs/platform/extensionManagement/common/extensionManagement';
+@@ -10,3 +10,3 @@ import { MenuRegistry, MenuId, registerAction2, Action2, ISubmenuItem, IMenuItem
+ import { InstantiationType, registerSingleton } from 'vs/platform/instantiation/common/extensions';
+-import { ExtensionsLocalizedLabel, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, InstallOperation, InstallOptions } from 'vs/platform/extensionManagement/common/extensionManagement';
++import { ExtensionsLocalizedLabel, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, InstallOperation, InstallOptions, IGlobalExtensionEnablementService } from 'vs/platform/extensionManagement/common/extensionManagement';
  import { EnablementState, IExtensionManagementServerService, IWorkbenchExtensionEnablementService, IWorkbenchExtensionManagementService } from 'vs/workbench/services/extensionManagement/common/extensionManagement';
- import { IExtensionIgnoredRecommendationsService, IExtensionRecommendationsService } from 'vs/workbench/services/extensionRecommendations/common/extensionRecommendations';
- import { IWorkbenchContributionsRegistry, Extensions as WorkbenchExtensions, IWorkbenchContribution } from 'vs/workbench/common/contributions';
-@@ -398,6 +398,50 @@ CommandsRegistry.registerCommand({
- 	}
- });
+@@ -418,2 +418,46 @@ CommandsRegistry.registerCommand({
  
 +CommandsRegistry.registerCommand({
 +	id: 'workbench.extensions.disableExtension',
@@ -60,5 +54,3 @@ index 0d0c23c..8645fcb 100644
 +});
 +
  function overrideActionForActiveExtensionEditorWebview(command: MultiCommand | undefined, f: (webview: IWebview) => void) {
- 	command?.addImplementation(105, 'extensions-editor', (accessor) => {
- 		const editorService = accessor.get(IEditorService);

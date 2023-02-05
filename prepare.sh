@@ -2,14 +2,6 @@
 
 set -e
 
-exists() { type -t "$1" > /dev/null 2>&1; }
-
-if ! exists gsed; then
-	function gsed() {
-		sed "$@"
-	}
-fi
-
 function backup() {
 	if [ -f "$1.bak" ]; then
 		cp $1.bak $1
@@ -22,108 +14,73 @@ cp -rp src/* vscodium/
 
 cd vscodium || exit
 
-# build.sh
-backup 'build.sh'
-
-if [[ "$CI_BUILD" == "no" ]]; then
-	gsed -i -E 's/keep_alive &/date/g' build.sh
-	gsed -i -E 's/keep_alive_small &/date/g' build.sh
-	gsed -i -E 's/yarn gulp compile-build/yarn gulp compile-build || exit/g' build.sh
-fi
-
-gsed -i -z -E 's/\s+yarn gulp vscode-reh-darwin-min-ci\n\s+yarn gulp vscode-reh-web-darwin-min-ci//g' build.sh
-
-# update-cache-path.patch
-backup 'patches/update-cache-path.patch'
-gsed -i -E 's/vscodium/mrcode/g' patches/update-cache-path.patch
+. ./utils.sh
 
 # prepare_vscode.sh {{{
 backup 'prepare_vscode.sh'
 
-gsed -i -E 's/Microsoft\.VSCodium/Zokugun.MrCode/g' prepare_vscode.sh
-gsed -i -E 's/VSCodium/MrCode/g' prepare_vscode.sh
-gsed -i -E 's/vscodium/mrcode/g' prepare_vscode.sh
-gsed -i -E 's/codium/mrcode/g' prepare_vscode.sh
-gsed -i -E 's/vscode-server-oss/mrcode-server/g' prepare_vscode.sh
+gsed -i -E 's|"updateUrl".*|"updateUrl" "https://mrcode.vercel.app"|' prepare_vscode.sh
+gsed -i -E 's|"licenseUrl".*|"licenseUrl" "https://github.com/zokugun/MrCode/blob/master/LICENSE"|' prepare_vscode.sh
+gsed -i -E 's|"reportIssueUrl".*|"reportIssueUrl" "https://github.com/zokugun/MrCode/issues/new"|' prepare_vscode.sh
 
-gsed -i -E 's|updateUrl=.*|updateUrl='\''setpath(["updateUrl"]; "https://mrcode.vercel.app")'\''|' prepare_vscode.sh
-gsed -i -E 's|win32x64UserAppId=.*|win32x64UserAppId='\''setpath(["win32x64UserAppId"]; "{{7678C6A4-C40E-4B93-AA07-D50A6DF862F1}}")'\''|' prepare_vscode.sh
-gsed -i -E 's|licenseUrl=.*|licenseUrl='\''setpath(["licenseUrl"]; "https://github.com/zokugun/MrCode/blob/master/LICENSE")'\''|' prepare_vscode.sh
-gsed -i -E 's|reportIssueUrl=.*|reportIssueUrl='\''setpath(["reportIssueUrl"]; "https://github.com/zokugun/MrCode/issues/new")'\''|' prepare_vscode.sh
-gsed -i -E '/licenseUrl=.*/a\
-dataFolderName='\''setpath(["dataFolderName"]; ".mrcode")'\''\
-darwinBundleIdentifier='\''setpath(["darwinBundleIdentifier"]; "org.zokugun.mrcode")'\''\
-enableTelemetry='\''setpath(["enableTelemetry"]; false)'\''\
-win32AppId='\''setpath(["win32AppId"]; "{{0BD0DE9B-0738-49CE-97C6-75CED083CE4E}}")'\''\
-win32x64AppId='\''setpath(["win32x64AppId"]; "{{09FF1437-F543-4CF3-9204-C4BB886DF9BE}}")'\''\
-win32arm64AppId='\''setpath(["win32arm64AppId"]; "{{035AE7E2-AD42-4139-A9A3-FD9DFC56BDE5}}")'\''\
-win32UserAppId='\''setpath(["win32UserAppId"]; "{{7D1F645C-DF50-42D7-8054-9BFAF60CEDF3}}")'\''\
-win32arm64UserAppId='\''setpath(["win32arm64UserAppId"]; "{{E25CEB79-4621-482A-ACAE-8FCB57FD29BD}}")'\''
+gsed -i -E 's|"nameShort" "VSCodium|"nameShort" "MrCode|' prepare_vscode.sh
+gsed -i -E 's|"nameLong" "VSCodium|"nameLong" "MrCode|' prepare_vscode.sh
+gsed -i -E 's|"applicationName" "codium|"applicationName" "mrcode|' prepare_vscode.sh
+gsed -i -E 's|"dataFolderName" ".vscodium-insiders|"dataFolderName" ".mrcode-insiders|' prepare_vscode.sh
+gsed -i -E 's|"linuxIconName" "vscodium|"linuxIconName" "mrcode|' prepare_vscode.sh
+gsed -i -E 's|"urlProtocol" "vscodium|"urlProtocol" "mrcode|' prepare_vscode.sh
+gsed -i -E 's|"serverApplicationName" "codium-server|"serverApplicationName" "mrcode-server|' prepare_vscode.sh
+gsed -i -E 's|"serverDataFolderName" ".vscodium-server|"serverDataFolderName" ".mrcode-server|' prepare_vscode.sh
+gsed -i -E 's|"darwinBundleIdentifier" "com.vscodium.VSCodiumInsiders|"darwinBundleIdentifier" "org.zokugun.mrcodeinsiders|' prepare_vscode.sh
+gsed -i -E 's|"darwinBundleIdentifier" "com.vscodium|"darwinBundleIdentifier" "org.zokugun.mrcode|' prepare_vscode.sh
+gsed -i -E 's|"win32AppUserModelId" "VSCodium.VSCodium|"win32AppUserModelId" "Zokugun.MrCode|' prepare_vscode.sh
+gsed -i -E 's|"win32DirName" "VSCodium|"win32DirName" "MrCode|' prepare_vscode.sh
+gsed -i -E 's|"win32MutexName" "vscodium|"win32MutexName" "mrcode|' prepare_vscode.sh
+gsed -i -E 's|"win32NameVersion" "VSCodium|"win32NameVersion" "MrCode|' prepare_vscode.sh
+gsed -i -E 's|"win32RegValueName" "VSCodium|"win32RegValueName" "MrCode|' prepare_vscode.sh
+gsed -i -E 's|"win32ShellNameShort" "VSCodium|"win32ShellNameShort" "MrCode|' prepare_vscode.sh
+
+
+gsed -i -E 's|"win32AppId" "\{\{763CBF88-25C6-4B10-952F-326AE657F16B\}"|"win32AppId" "{{0BD0DE9B-0738-49CE-97C6-75CED083CE4E}"|' prepare_vscode.sh
+gsed -i -E 's|"win32x64AppId" "\{\{88DA3577-054F-4CA1-8122-7D820494CFFB\}"|"win32x64AppId" "{{09FF1437-F543-4CF3-9204-C4BB886DF9BE}"|' prepare_vscode.sh
+gsed -i -E 's|"win32arm64AppId" "\{\{67DEE444-3D04-4258-B92A-BC1F0FF2CAE4\}"|"win32arm64AppId" "{{035AE7E2-AD42-4139-A9A3-FD9DFC56BDE5}"|' prepare_vscode.sh
+gsed -i -E 's|"win32UserAppId" "\{\{0FD05EB4-651E-4E78-A062-515204B47A3A\}"|"win32UserAppId" "{{7D1F645C-DF50-42D7-8054-9BFAF60CEDF3}"|' prepare_vscode.sh
+gsed -i -E 's|"win32x64UserAppId" "\{\{2E1F05D1-C245-4562-81EE-28188DB6FD17\}"|"win32x64UserAppId" "{{7678C6A4-C40E-4B93-AA07-D50A6DF862F1}"|' prepare_vscode.sh
+gsed -i -E 's|"win32arm64UserAppId" "\{\{57FD70A5-1B8D-4875-9F40-C5553F094828\}"|"win32arm64UserAppId" "{{E25CEB79-4621-482A-ACAE-8FCB57FD29BD}"|' prepare_vscode.sh
+
+gsed -i -E 's=code-oss/codium=code-oss/mrcode=g' prepare_vscode.sh
+
+gsed -i -E 's/Microsoft Corporation\|VSCodium Team/Microsoft Corporation|Zokugun/g' prepare_vscode.sh
+gsed -i -E 's/Microsoft Corporation\|VSCodium/Microsoft Corporation|Zokugun/g' prepare_vscode.sh
+gsed -i -E 's=\(\[0-9\]\) Microsoft\|\\1 VSCodium=([0-9]) Microsoft|\\1 Zokugun=g' prepare_vscode.sh
+gsed -i -E 's/Visual Studio Code\|VSCodium/Visual Studio Code|MrCode/g' prepare_vscode.sh
+gsed -i -E 's=https://code\.visualstudio\.com/docs/setup/linux\|https://github\.com/VSCodium/vscodium#download-install=https://code.visualstudio.com/docs/setup/linux|https://github.com/zokugun/MrCode=g' prepare_vscode.sh
+gsed -i -E 's=https://code.visualstudio.com\|https://vscodium.com=https://code.visualstudio.com|https://github.com/zokugun/MrCode=g' prepare_vscode.sh
+gsed -i -E 's|VSCodium Team https://github.com/VSCodium/vscodium/graphs/contributors|Zokugun https://github.com/zokugun/MrCode/graphs/contributors|g' prepare_vscode.sh
+
+gsed -i -E '/"applicationName" "mrcode".*/a\
+  setpath "product" "dataFolderName" ".mrcode"\
 ' prepare_vscode.sh
-gsed -i -E 's|extensionsGallery=.*|extensionsGallery='\''setpath(["extensionsGallery"]; {"serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery", "cacheUrl": "https://vscode.blob.core.windows.net/gallery/index", "itemUrl": "https://marketplace.visualstudio.com/items"})'\''|g' prepare_vscode.sh
-gsed -i -z -E 's/linkProtectionTrustedDomains=[^\n]*\n//g' prepare_vscode.sh
-
-gsed -i -E 's/\$\{linkProtectionTrustedDomains\} \| //' prepare_vscode.sh
-gsed -i -E 's/\$\{licenseUrl\}/${licenseUrl} | ${dataFolderName} | ${darwinBundleIdentifier} | ${enableTelemetry} | ${win32AppId} | ${win32x64AppId} | ${win32arm64AppId} | ${win32UserAppId} | ${win32arm64UserAppId}/' prepare_vscode.sh
-
-gsed -i -E $'s/mv product\.json product\.json\.bak/if [ ! -f "product.json.bak" ]; then\\\n  mv product.json product.json.bak\\\nfi/g' prepare_vscode.sh
-
-gsed -i -E 's/patch -u/patch -t -u/g' prepare_vscode.sh
-
-gsed -i -E 's/yarn --frozen-lockfile/yarn/g' prepare_vscode.sh
-# }}}
-
-# prepare_artifacts.sh
-backup 'prepare_artifacts.sh'
-gsed -i -E 's/VSCodium/MrCode/g' prepare_artifacts.sh
-gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' prepare_artifacts.sh
-gsed -i 's|MrCode-${VSCODE_ARCH}-${RELEASE_VERSION}.msi artifacts/|MrCode-${VSCODE_ARCH}-${MS_TAG}.msi artifacts\\\\MrCode-${VSCODE_ARCH}-${RELEASE_VERSION}.msi|' prepare_artifacts.sh
-gsed -i 's|MrCode-${VSCODE_ARCH}-updates-disabled-${RELEASE_VERSION}.msi artifacts/|MrCode-${VSCODE_ARCH}-updates-disabled-${MS_TAG}.msi artifacts\\\\MrCode-${VSCODE_ARCH}-updates-disabled-${RELEASE_VERSION}.msi|' prepare_artifacts.sh
-gsed -i -E 's|([.-])\$\{RELEASE\_VERSION\}|\1${RELEASE_VERSION/+/.}|g' prepare_artifacts.sh
-
-# check_tags.sh
-backup 'check_tags.sh'
-gsed -i -E 's|VSCodium/vscodium|zokugun/MrCode|g' check_tags.sh
-gsed -i -E 's/VSCodium/MrCode/g' check_tags.sh
-gsed -i -E 's/darwin-\$MS_TAG/darwin-$VSCODE_ARCH-$RELEASE_VERSION/g' check_tags.sh
-gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' check_tags.sh
-gsed -i -E 's|([.-])\$\{RELEASE\_VERSION\}|\1${RELEASE_VERSION/+/.}|g' check_tags.sh
-
-# update_version.sh
-backup 'update_version.sh'
-gsed -i -E 's|VSCodium/vscodium|zokugun/MrCode|g' update_version.sh
-gsed -i -E 's/vscodium/mrcode/g' update_version.sh
-gsed -i -E 's/VSCodium/MrCode/g' update_version.sh
-gsed -i -E 's|VERSIONS_REPO=.*|VERSIONS_REPO='\''zokugun/MrCode-versions'\''|' update_version.sh
-gsed -i -E 's/cd versions/cd MrCode-versions/g' update_version.sh
-gsed -i -E 's/ASSET_NAME=MrCode-darwin-\$\{MS_TAG\}\.zip/ASSET_NAME=MrCode-darwin-${VSCODE_ARCH}-${RELEASE_VERSION}.zip/g' update_version.sh
-gsed -i -E 's|VERSION_PATH="darwin"|VERSION_PATH="darwin/${VSCODE_ARCH}"|g' update_version.sh
-gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' update_version.sh
-gsed -i -E 's/MS_COMMIT/BUILD_SOURCEVERSION/g' update_version.sh
-gsed -i -E 's|\-\$\{RELEASE\_VERSION\}|-${RELEASE_VERSION/+/.}|g' update_version.sh
-
-# release.sh
-backup 'release.sh'
-gsed -i -E 's/MS_TAG/RELEASE_VERSION/g' release.sh
-gsed -i -E 's|gh release view|gh release view --repo zokugun/MrCode|' release.sh
-gsed -i -E 's|gh release upload|gh release upload --repo zokugun/MrCode|' release.sh
-gsed -i 's|gh release create "${RELEASE_VERSION}"|gh release --repo zokugun/MrCode create "${RELEASE_VERSION}" --notes "update to [${MS_TAG}](https://code.visualstudio.com/updates/v$( echo ${MS_TAG//./_} \| cut -d'_' -f 1,2 ))"|' release.sh
-gsed -i -E 's/VSCodium/zokugun/g' release.sh
-gsed -i -E 's/vscodium/MrCode/g' release.sh
 
 # build/linux/appimage/recipe.yml
 backup 'build/linux/appimage/recipe.yml'
 gsed -i -E 's/VSCodium/MrCode/g' build/linux/appimage/recipe.yml
-gsed -i -E 's/vscodium/mrcode/g' build/linux/appimage/recipe.yml
-gsed -i -E 's/codium/mrcode/g' build/linux/appimage/recipe.yml
 
 # build/linux/appimage/build.sh
 backup 'build/linux/appimage/build.sh'
 gsed -i -E 's/VSCodium\|vscodium/zokugun|MrCode/' build/linux/appimage/build.sh
+gsed -i -E 's/VSCodium/MrCode/g' build/linux/appimage/recipe.yml
+gsed -i -E 's/vscodium/mrcode/g' build/linux/appimage/recipe.yml
+gsed -i -E 's/codium/mrcode/g' build/linux/appimage/recipe.yml
 
 # build/windows/msi/build.sh
 backup 'build/windows/msi/build.sh'
-gsed -i -E 's/PRODUCT_NAME="VSCodium"/PRODUCT_NAME="MrCode"/' build/windows/msi/build.sh
+gsed -i -E 's/PRODUCT_NAME="VSCodium/PRODUCT_NAME="MrCode/' build/windows/msi/build.sh
+gsed -i -E 's/PRODUCT_SKU="vscodium/PRODUCT_SKU="mrcode/' build/windows/msi/build.sh
+gsed -i -E 's/PRODUCT_CODE="VSCodium/PRODUCT_CODE="MrCode/' build/windows/msi/build.sh
+gsed -i -E 's/PRODUCT_UPGRADE_CODE="965370CD-253C-4720-82FC-2E6B02A53808"/PRODUCT_UPGRADE_CODE="DB7C32FE-9AB3-422E-9A98-47B2361E24A6"/' build/windows/msi/build.sh
+gsed -i -E 's/PRODUCT_UPGRADE_CODE="1C9B7195-5A9A-43B3-B4BD-583E20498467"/PRODUCT_UPGRADE_CODE="C3A419D9-B4DF-489A-84CF-4AF763E08965"/' build/windows/msi/build.sh
+gsed -i -E 's/OUTPUT_BASE_FILENAME="VSCodium/OUTPUT_BASE_FILENAME="MrCode/' build/windows/msi/build.sh
 
 # build/windows/msi/vscodium.wxs
 backup 'build/windows/msi/vscodium.wxs'
@@ -135,9 +92,10 @@ backup 'build/windows/msi/vscodium.xsl'
 gsed -i -E 's/VSCodium/MrCode/g' build/windows/msi/vscodium.xsl
 gsed -i -E 's/VSCODIUM/MRCODE/g' build/windows/msi/vscodium.xsl
 
-# build/windows/msi/includes/vscodium-variables.wxi
-backup 'build/windows/msi/includes/vscodium-variables.wxi'
-gsed -i -E 's/965370CD-253C-4720-82FC-2E6B02A53808/DB7C32FE-9AB3-422E-9A98-47B2361E24A6/' build/windows/msi/includes/vscodium-variables.wxi
+# LICENSE
+backup 'LICENSE'
+gsed -i -E 's/.*The VSCodium contributors/Copyright (c) 2020-present Zokugun\
+Copyright (c) 2018-present The VSCodium contributors/' LICENSE
 
 for file in build/windows/msi/i18n/*.wxl; do
     if [ -f "$file" ]; then
@@ -163,40 +121,11 @@ for file in ../../patches/*.patch; do
     fi
 done
 
-# package.json
-backup 'package.json'
-gsed -i -E "s/\"version\": \".*\"/\"version\": \"${RELEASE_VERSION}\"/" package.json
-
-# build/gulpfile.vscode.js
-backup 'build/gulpfile.vscode.js'
-gsed -i -E 's/, opts: \{ stats: true \}//g' build/gulpfile.vscode.js
-
-# build/lib/electron.ts
-backup 'build/lib/electron.ts'
-gsed -i -E 's|'\''Microsoft Corporation'\''|'\''Zokugun'\''|g' build/lib/electron.ts
-gsed -i -E 's|Copyright \(C\) 2019 Microsoft\. All rights reserved|Copyright (C) 2020-present Zokugun.|g' build/lib/electron.ts
-
-# LICENSE.txt
-backup 'LICENSE.txt'
-gsed -i -E '/Corporation.*/a\
-Copyright (c) 2020-present Zokugun
-' LICENSE.txt
-
 # resources/linux/code.appdata.xml
 backup 'resources/linux/code.appdata.xml'
 gsed -i -E 's|<url type="homepage">https://code.visualstudio.com</url>|<url type="homepage">https://github.com/zokugun/MrCode</url>|g' resources/linux/code.appdata.xml
 gsed -i -E 's|<summary>.*</summary>|<summary>MrCode. Code editing.</summary>|g' resources/linux/code.appdata.xml
 gsed -i -E '{N; N; N; N; N; s|<description>.*</description>|<description><p>MrCode is an editor based on Visual Studio Code.</p></description>|g; }' resources/linux/code.appdata.xml
-
-# resources/linux/rpm/code.spec.template
-backup 'resources/linux/rpm/code.spec.template'
-gsed -i -E 's|Summary:  .*|Summary:  Code editing.|g' resources/linux/rpm/code.spec.template
-gsed -i -E 's|Vendor:   Microsoft Corporation|Vendor:   Zokugun|g' resources/linux/rpm/code.spec.template
-gsed -i -E 's|Packager: Visual Studio Code Team <vscode-linux@microsoft\.com>|Packager: Baptiste Augrain <daiyam@zokugun.org>|g' resources/linux/rpm/code.spec.template
-gsed -i -E 's|URL:      https://code\.visualstudio\.com/|URL:      https://github.com/zokugun/MrCode|g' resources/linux/rpm/code.spec.template
-gsed -i -E 's|Visual Studio Code is a new choice.*$|MrCode is an editor based on Visual Studio Code.|g' resources/linux/rpm/code.spec.template
-gsed -i -E 's|"code"|"mrcode"|g' resources/linux/rpm/code.spec.template
-gsed -i -E 's|/code|/mrcode|g' resources/linux/rpm/code.spec.template
 
 # resources/linux/debian/control.template
 backup 'resources/linux/debian/control.template'

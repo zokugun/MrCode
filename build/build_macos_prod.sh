@@ -20,7 +20,9 @@ echo "-- VSCODE_ARCH: ${VSCODE_ARCH}"
 
 CI_BUILD=no . prepare.sh
 
-. version.sh
+# . version.sh
+
+cd vscodium || exit
 
 SHOULD_BUILD=yes CI_BUILD=no OS_NAME=osx . build.sh
 
