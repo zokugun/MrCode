@@ -76,14 +76,14 @@ jobs:
           CERTIFICATE_OSX_ID: ${{ secrets.MACOS_IDENTITY }}
         working-directory: ./vscodium
         run: ./prepare_assets.sh
-        if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./vscodium
         run: ./release.sh
-        if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Update versions repo
         env:
@@ -92,7 +92,7 @@ jobs:
           GITHUB_USERNAME: ${{ github.repository_owner }}
         working-directory: ./vscodium
         run: ./update_version.sh
-        if: env.SHOULD_DEPLOY == 'yes'
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Clean up keychain
         if: always()
