@@ -38,7 +38,7 @@ Preview
 
 ### Patched Features
 
-- <del>render and copy tab characters in the terminal</del> (WIP)
+- render and copy tab characters in the terminal
 
 Breaking Changes
 ----------------
