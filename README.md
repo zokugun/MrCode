@@ -1,5 +1,5 @@
 <div align="center">
-<img src="./src/src/resources/linux/code.png" width="200"/>
+<img src="./src/src/stable/resources/linux/code.png" width="200"/>
 <h1><a href="https://github.com/zokugun/MrCode">MrCode</a></h1>
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/zokugun/MrCode/blob/master/LICENSE)
@@ -22,12 +22,14 @@ What's the difference?
 
 ### Patched Settings
 
-- [editor.foldingStrategy](./docs/settings/editor.foldingStrategy.md)
-- [editor.showFoldingLastLine](./docs/settings/editor.showFoldingLastLine.md)
-- [keyboard.platform](./docs/settings/keyboard.platform.md)
-- terminal.integrated.enableUriLinks
-- terminal.integrated.enableWordLinks
-- [workbench.editor.openPositioning](./docs/settings/workbench.editor.openPositioning.md)
+- <del>[editor.foldingStrategy](./docs/settings/editor.foldingStrategy.md)</del> replaced with builtin setting `editor.defaultFoldingRangeProvider`
+- <del>[editor.showFoldingLastLine](./docs/settings/editor.showFoldingLastLine.md)</del>
+- <del>[keyboard.platform](./docs/settings/keyboard.platform.md)</del> (WIP)
+- <del>terminal.integrated.enableUriLinks</del> (WIP)
+- <del>terminal.integrated.enableWordLinks</del> (WIP)
+- <del>workbench.editor.openPositioning</del> replaced with extension [Automatic Editor Sorter
+Preview
+](https://open-vsx.org/extension/zokugun/automatic-editor-sorter)
 
 ### Patched Commands
 
@@ -36,11 +38,14 @@ What's the difference?
 
 ### Patched Features
 
-- render and copy tab characters in the terminal
+- <del>render and copy tab characters in the terminal</del> (WIP)
 
-### split JSON settings editor
+Breaking Changes
+----------------
 
-I will try to add back the split JSON settings editor via an extension.
+Since `1.75.0`, MrCode uses [OpenVSX](https://open-vsx.org/).
+
+You can use the extension [VSIX Manager](https://open-vsx.org/extension/zokugun/vsix-manager) to install extensions for others sources.
 
 Supported OS
 ------------

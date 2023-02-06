@@ -1,5 +1,5 @@
 diff --git a/src/vs/workbench/contrib/remote/browser/remote.contribution.ts b/src/vs/workbench/contrib/remote/browser/remote.contribution.ts
-index 63e7f2d..e9a6b7d 100644
+index 63e7f2d..a7d935e 100644
 --- a/src/vs/workbench/contrib/remote/browser/remote.contribution.ts
 +++ b/src/vs/workbench/contrib/remote/browser/remote.contribution.ts
 @@ -13,2 +13,4 @@ import { RemoteStatusIndicator } from 'vs/workbench/contrib/remote/browser/remot
