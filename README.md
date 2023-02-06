@@ -22,8 +22,8 @@ What's the difference?
 
 ### Patched Settings
 
-- <del>[editor.foldingStrategy](./docs/settings/editor.foldingStrategy.md)</del> replaced with builtin setting `editor.defaultFoldingRangeProvider`
-- <del>[editor.showFoldingLastLine](./docs/settings/editor.showFoldingLastLine.md)</del>
+- <del>editor.foldingStrategy</del> replaced with builtin setting `editor.defaultFoldingRangeProvider`
+- <del>editor.showFoldingLastLine</del>
 - <del>[keyboard.platform](./docs/settings/keyboard.platform.md)</del> (WIP)
 - <del>terminal.integrated.enableUriLinks</del> (WIP)
 - <del>terminal.integrated.enableWordLinks</del> (WIP)
