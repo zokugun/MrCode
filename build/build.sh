@@ -4,7 +4,7 @@
 # to run with Bash: "C:\Program Files\Git\bin\bash.exe" ./build/build.sh
 ###
 
-export APP_NAME="VSCodium"
+export APP_NAME="MrCode"
 export CI_BUILD="no"
 export SHOULD_BUILD="yes"
 export SKIP_ASSETS="yes"
@@ -62,10 +62,10 @@ echo "VSCODE_LATEST=\"${VSCODE_LATEST}\""
 echo "VSCODE_QUALITY=\"${VSCODE_QUALITY}\""
 
 if [[ "${SKIP_SOURCE}" == "no" ]]; then
-  rm -rf vscode* VSCode*
+  rm -rf vscodium*
 
   . get_repo.sh
-  . version.sh
+  . prepare.sh
 
   # save variables for later
   echo "MS_TAG=\"${MS_TAG}\"" > build.env
@@ -74,7 +74,7 @@ if [[ "${SKIP_SOURCE}" == "no" ]]; then
   echo "BUILD_SOURCEVERSION=\"${BUILD_SOURCEVERSION}\"" >> build.env
 else
   if [[ "${SKIP_ASSETS}" != "no" ]]; then
-    rm -rf VSCode*
+    rm -rf vscodium/VSCode*
   fi
 
   . build.env
@@ -86,16 +86,22 @@ else
 fi
 
 if [[ "${SKIP_BUILD}" == "no" ]]; then
-  if [[ "${SKIP_SOURCE}" != "no" ]]; then
-    cd vscode || { echo "'vscode' dir not found"; exit 1; }
+  cd vscodium
 
+  if [[ "${SKIP_SOURCE}" != "no" ]]; then
     git add .
     git reset -q --hard HEAD
 
     cd ..
+
+    . prepare.sh
+
+    cd vscodium
   fi
 
   . build.sh
+
+  cd ..
 
   if [[ "${VSCODE_QUALITY}" == "insider" && "${VSCODE_LATEST}" == "yes" ]]; then
     echo "$( cat "insider.json" | jq --arg 'tag' "${MS_TAG/\-insider/}" --arg 'commit' "${MS_COMMIT}" '. | .tag=$tag | .commit=$commit' )" > "insider.json"
@@ -103,6 +109,8 @@ if [[ "${SKIP_BUILD}" == "no" ]]; then
 fi
 
 if [[ "${SKIP_ASSETS}" == "no" ]]; then
+  cd vscodium
+
   if [[ "${OS_NAME}" == "windows" ]]; then
     rm -rf build/windows/msi/releasedir
   fi

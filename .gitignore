@@ -1,4 +1,4 @@
 temp
-.env
+*.env
 logo.sketch
 .DS_Store

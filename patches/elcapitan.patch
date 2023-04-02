@@ -1,8 +1,8 @@
 diff --git a/src/vs/workbench/electron-sandbox/window.ts b/src/vs/workbench/electron-sandbox/window.ts
-index ff9e9a9..2d5f2a2 100644
+index cf6af9d..f06d107 100644
 --- a/src/vs/workbench/electron-sandbox/window.ts
 +++ b/src/vs/workbench/electron-sandbox/window.ts
-@@ -721,39 +721,2 @@ export class NativeWindow extends Disposable {
+@@ -744,41 +744,2 @@ export class NativeWindow extends Disposable {
  
 -		// MacOS 10.11 and 10.12 warning
 -		if (isMacintosh) {
@@ -35,7 +35,9 @@ index ff9e9a9..2d5f2a2 100644
 -						run: () => this.openerService.open(URI.parse('https://aka.ms/vscode-faq-old-macOS'))
 -					}],
 -					{
--						neverShowAgain: { id: 'macoseol', isSecondary: true, scope: NeverShowAgainScope.APPLICATION }
+-						neverShowAgain: { id: 'macoseol', isSecondary: true, scope: NeverShowAgainScope.APPLICATION },
+-						priority: NotificationPriority.URGENT,
+-						sticky: true
 -					}
 -				);
 -			}

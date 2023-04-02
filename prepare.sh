@@ -20,6 +20,7 @@ cd vscodium || exit
 backup 'prepare_vscode.sh'
 
 gsed -i -E 's|"updateUrl".*|"updateUrl" "https://mrcode.vercel.app"|' prepare_vscode.sh
+gsed -i -E 's|"downloadUrl".*|"downloadUrl" "https://github.com/zokugun/MrCode"|' prepare_vscode.sh
 gsed -i -E 's|"licenseUrl".*|"licenseUrl" "https://github.com/zokugun/MrCode/blob/master/LICENSE"|' prepare_vscode.sh
 gsed -i -E 's|"reportIssueUrl".*|"reportIssueUrl" "https://github.com/zokugun/MrCode/issues/new"|' prepare_vscode.sh
 
@@ -105,21 +106,11 @@ for file in build/windows/msi/i18n/*.wxl; do
     fi
 done
 
+cp ../patches/*.patch ./patches/user/
+
 . get_repo.sh
 
 cd vscode || exit
-
-for file in ../../patches/*.patch; do
-    if [ -f "$file" ]; then
-        echo "applying $(basename -- $file)"
-
-        git apply --ignore-whitespace "$file"
-
-        if [ $? -ne 0 ]; then
-            echo "failed to apply $(basename -- $file)" 1>&2
-        fi
-    fi
-done
 
 # resources/linux/code.appdata.xml
 backup 'resources/linux/code.appdata.xml'
