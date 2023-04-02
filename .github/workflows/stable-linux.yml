@@ -26,10 +26,6 @@ env:
 jobs:
   dependencies:
     runs-on: ubuntu-latest
-    env:
-      MS_COMMIT: ${{ needs.check.outputs.MS_COMMIT }}
-      MS_TAG: ${{ needs.check.outputs.MS_TAG }}
-      RELEASE_VERSION: ${{ needs.check.outputs.RELEASE_VERSION }}
     strategy:
       fail-fast: false
       matrix:
@@ -40,7 +36,6 @@ jobs:
         #   image: vscodium/vscodium-linux-build-agent:bionic-x64
     container:
       image: ${{ matrix.image }}
-    if: needs.check.outputs.SHOULD_BUILD == 'yes'
 
     steps:
       - uses: actions/checkout@v3
@@ -90,11 +85,6 @@ jobs:
     needs:
       - dependencies
     runs-on: ubuntu-latest
-    env:
-      MS_COMMIT: ${{ needs.check.outputs.MS_COMMIT }}
-      MS_TAG: ${{ needs.check.outputs.MS_TAG }}
-      RELEASE_VERSION: ${{ needs.check.outputs.RELEASE_VERSION }}
-      SHOULD_BUILD: ${{ needs.check.outputs.SHOULD_BUILD }}
     strategy:
       fail-fast: false
       matrix:
@@ -115,13 +105,17 @@ jobs:
     outputs:
       RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
       SHOULD_BUILD: ${{ env.SHOULD_BUILD }}
-    if: needs.check.outputs.SHOULD_BUILD == 'yes'
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Clone VSCode repo
+      - name: Clone VSCodium repo
+        env:
+          VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
         run: ./get_repo.sh
+
+      - name: Prepare VSCodium
+        run: ./prepare.sh
 
       - name: Install GH
         run: ./install_gh.sh
