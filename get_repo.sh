@@ -68,3 +68,10 @@ else
 fi
 
 cd ..
+
+# for GH actions
+if [[ "${GITHUB_ENV}" ]]; then
+  echo "MS_TAG=${MS_TAG}" >> "${GITHUB_ENV}"
+  echo "VSCODIUM_COMMIT=${VSCODIUM_COMMIT}" >> "${GITHUB_ENV}"
+  echo "RELEASE_VERSION=${RELEASE_VERSION}" >> "${GITHUB_ENV}"
+fi

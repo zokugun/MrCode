@@ -24,8 +24,33 @@ env:
   VSCODE_QUALITY: stable
 
 jobs:
-  dependencies:
+  check:
     runs-on: ubuntu-latest
+    container:
+      image: vscodium/vscodium-linux-build-agent:bionic-x64
+    outputs:
+      VSCODIUM_COMMIT: ${{ env.VSCODIUM_COMMIT }}
+      MS_TAG: ${{ env.MS_TAG }}
+      RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ env.GITHUB_BRANCH }}
+
+      - name: Clone VSCodium repo
+        env:
+          VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
+        run: ./get_repo.sh
+
+  dependencies:
+    needs:
+      - check
+    runs-on: ubuntu-latest
+    env:
+      VSCODIUM_COMMIT: ${{ needs.check.outputs.VSCODIUM_COMMIT }}
+      MS_TAG: ${{ needs.check.outputs.MS_TAG }}
+      RELEASE_VERSION: ${{ needs.check.outputs.RELEASE_VERSION }}
     strategy:
       fail-fast: false
       matrix:
@@ -83,8 +108,13 @@ jobs:
 
   build:
     needs:
+      - check
       - dependencies
     runs-on: ubuntu-latest
+    env:
+      VSCODIUM_COMMIT: ${{ needs.check.outputs.VSCODIUM_COMMIT }}
+      MS_TAG: ${{ needs.check.outputs.MS_TAG }}
+      RELEASE_VERSION: ${{ needs.check.outputs.RELEASE_VERSION }}
     strategy:
       fail-fast: false
       matrix:
