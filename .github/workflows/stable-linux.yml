@@ -68,12 +68,7 @@ jobs:
           ref: ${{ env.GITHUB_BRANCH }}
 
       - name: Clone VSCodium repo
-        env:
-          VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
         run: ./get_repo.sh
-
-      - name: Prepare VSCodium
-        run: ./prepare.sh
 
       - uses: docker/setup-qemu-action@v2
         if: matrix.vscode_arch == 'arm64'
@@ -140,8 +135,6 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Clone VSCodium repo
-        env:
-          VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
         run: ./get_repo.sh
 
       - name: Prepare VSCodium
