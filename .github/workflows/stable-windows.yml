@@ -1,24 +1,46 @@
-name: windows
+name: stable-windows
 
 on:
   workflow_dispatch:
+    inputs:
+      new_release:
+        type: boolean
+        description: Force new Release
+      force_version:
+        type: boolean
+        description: Force update version
+      vscodium_latest:
+        type: boolean
+        description: Use latest VSCodium
   push:
     tags:
       - "*"
 
+env:
+  APP_NAME: MrCode
+  ASSETS_REPOSITORY: ${{ github.repository }}
+  OS_NAME: windows
+  VERSIONS_REPOSITORY: ${{ github.repository_owner }}/MrCode-versions
+  VSCODE_QUALITY: stable
+
 jobs:
-  windows:
+  build:
     runs-on: windows-2019
     defaults:
       run:
         shell: bash
     env:
       VSCODE_ARCH: ${{ matrix.vscode_arch }}
-      OS_NAME: 'windows'
     strategy:
       fail-fast: false
       matrix:
-        vscode_arch: [x64, ia32, arm64]
+        vscode_arch:
+          - x64
+          - ia32
+          - arm64
+    outputs:
+      RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+      SHOULD_DEPLOY: ${{ env.SHOULD_DEPLOY }}
 
     steps:
       - uses: actions/checkout@v3
@@ -31,15 +53,14 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
 
-      - name: Setup Python 2
-        uses: actions/setup-python@v3
+      - name: Setup Python 3
+        uses: actions/setup-python@v4
         with:
-          python-version: '2.x'
+          python-version: '3.x'
 
       - name: Clone VSCodium repo
         env:
-          RELEASE_VERSION: ${{ secrets.RELEASE_VERSION }}
-          VSCODIUM_LATEST: ${{ secrets.VSCODIUM_LATEST }}
+          VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
         run: ./get_repo.sh
 
       - name: Prepare VSCodium
@@ -48,12 +69,10 @@ jobs:
       - name: Check existing VSCodium tags/releases
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_RELEASE: ${{ github.event.inputs.new_release }}
         working-directory: ./vscodium
         run: ./check_tags.sh
-
-      - name: Get Source Version
-        run: ./version.sh
-        if: env.SHOULD_BUILD == 'yes'
+        if: env.SHOULD_DEPLOY == 'yes'
 
       - name: Build
         env:
@@ -64,23 +83,23 @@ jobs:
         run: ./build.sh
         if: env.SHOULD_BUILD == 'yes'
 
-      - name: Prepare artifacts
+      - name: Prepare assets
         working-directory: ./vscodium
-        run: ./prepare_artifacts.sh
-        if: env.SHOULD_BUILD == 'yes'
+        run: ./prepare_assets.sh
+        if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
 
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./vscodium
         run: ./release.sh
-        if: env.SHOULD_BUILD == 'yes'
+        if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
 
       - name: Update versions repo
-        working-directory: ./vscodium
-        if: env.SHOULD_BUILD == 'yes'
-        run: ./update_version.sh
         env:
+          FORCE_UPDATE: ${{ github.event.inputs.force_version }}
           GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
-
+        working-directory: ./vscodium
+        run: ./update_version.sh
+        if: env.SHOULD_DEPLOY == 'yes'

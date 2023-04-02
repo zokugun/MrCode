@@ -48,12 +48,10 @@ jobs:
       - name: Clone VSCodium repo
         env:
           VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
-        run: |
-          . get_repo.sh
+        run: . get_repo.sh
 
       - name: Prepare VSCodium
-        run: |
-          . prepare.sh
+        run: . prepare.sh
 
       - name: Check existing MrCode tags/releases
         env:
