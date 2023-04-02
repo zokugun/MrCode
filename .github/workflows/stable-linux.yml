@@ -108,7 +108,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: remote-dependencies-${{ matrix.vscode_arch }}
-          path: ./remote-dependencies.tar
+          path: ./vscodium/remote-dependencies.tar
           retention-days: 30
 
   build:
@@ -173,6 +173,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: remote-dependencies-${{ matrix.vscode_arch }}
+          path: ./vscodium
         if: env.SHOULD_BUILD == 'yes' && matrix.vscode_arch == 'x64'
 
       - name: Build
