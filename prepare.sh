@@ -70,9 +70,9 @@ gsed -i -E 's/VSCodium/MrCode/g' build/linux/appimage/recipe.yml
 # build/linux/appimage/build.sh
 backup 'build/linux/appimage/build.sh'
 gsed -i -E 's/VSCodium\|vscodium/zokugun|MrCode/' build/linux/appimage/build.sh
-gsed -i -E 's/VSCodium/MrCode/g' build/linux/appimage/recipe.yml
-gsed -i -E 's/vscodium/mrcode/g' build/linux/appimage/recipe.yml
-gsed -i -E 's/codium/mrcode/g' build/linux/appimage/recipe.yml
+gsed -i -E 's/VSCodium/MrCode/g' build/linux/appimage/build.sh
+gsed -i -E 's/vscodium/mrcode/g' build/linux/appimage/build.sh
+gsed -i -E 's/codium/mrcode/g' build/linux/appimage/build.sh
 
 # build/windows/msi/build.sh
 backup 'build/windows/msi/build.sh'
