@@ -72,7 +72,6 @@ jobs:
           NEW_RELEASE: ${{ github.event.inputs.new_release }}
         working-directory: ./vscodium
         run: ./check_tags.sh
-        if: env.SHOULD_DEPLOY == 'yes'
 
       - name: Build
         env:
@@ -86,14 +85,14 @@ jobs:
       - name: Prepare assets
         working-directory: ./vscodium
         run: ./prepare_assets.sh
-        if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./vscodium
         run: ./release.sh
-        if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Update versions repo
         env:
@@ -102,4 +101,3 @@ jobs:
           GITHUB_USERNAME: ${{ github.repository_owner }}
         working-directory: ./vscodium
         run: ./update_version.sh
-        if: env.SHOULD_DEPLOY == 'yes'

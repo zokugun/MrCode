@@ -40,7 +40,7 @@ jobs:
         #   image: vscodium/vscodium-linux-build-agent:bionic-x64
     container:
       image: ${{ matrix.image }}
-    if: needs.check.outputs.SHOULD_BUILD == 'yes' || needs.check.outputs.SHOULD_DEPLOY == 'yes'
+    if: needs.check.outputs.SHOULD_BUILD == 'yes'
 
     steps:
       - uses: actions/checkout@v3
@@ -84,7 +84,7 @@ jobs:
         with:
           name: remote-dependencies-${{ matrix.vscode_arch }}
           path: ./remote-dependencies.tar
-          retention-days: ${{ needs.check.outputs.SHOULD_DEPLOY == 'yes' && 30 || 1 }}
+          retention-days: 30
 
   build:
     needs:
@@ -95,7 +95,6 @@ jobs:
       MS_TAG: ${{ needs.check.outputs.MS_TAG }}
       RELEASE_VERSION: ${{ needs.check.outputs.RELEASE_VERSION }}
       SHOULD_BUILD: ${{ needs.check.outputs.SHOULD_BUILD }}
-      SHOULD_DEPLOY: ${{ needs.check.outputs.SHOULD_DEPLOY }}
     strategy:
       fail-fast: false
       matrix:
@@ -116,8 +115,7 @@ jobs:
     outputs:
       RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
       SHOULD_BUILD: ${{ env.SHOULD_BUILD }}
-      SHOULD_DEPLOY: ${{ env.SHOULD_DEPLOY }}
-    if: needs.check.outputs.SHOULD_BUILD == 'yes' || needs.check.outputs.SHOULD_DEPLOY == 'yes'
+    if: needs.check.outputs.SHOULD_BUILD == 'yes'
 
     steps:
       - uses: actions/checkout@v3
@@ -142,7 +140,6 @@ jobs:
           NEW_RELEASE: ${{ github.event.inputs.new_release }}
         working-directory: ./vscodium
         run: ./check_tags.sh
-        if: env.SHOULD_DEPLOY == 'yes'
 
       - name: Restore remote dependencies
         uses: actions/download-artifact@v3
@@ -161,14 +158,14 @@ jobs:
       - name: Prepare assets
         working-directory: ./vscodium
         run: ./prepare_assets.sh
-        if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: ./vscodium
         run: ./release.sh
-        if: env.SHOULD_BUILD == 'yes' && env.SHOULD_DEPLOY == 'yes'
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Update versions repo
         env:
@@ -177,7 +174,6 @@ jobs:
           GITHUB_USERNAME: ${{ github.repository_owner }}
         working-directory: ./vscodium
         run: ./update_version.sh
-        if: env.SHOULD_DEPLOY == 'yes'
 
   # aur:
   #   needs:
@@ -193,7 +189,6 @@ jobs:
   #         package_type: stable
   #       - package_name: mrcode-git
   #         package_type: rolling
-  #   if: needs.build.outputs.SHOULD_DEPLOY == 'yes'
 
   #   steps:
   #     - name: Publish ${{ matrix.package_name }}
