@@ -29,8 +29,9 @@ jobs:
     container:
       image: vscodium/vscodium-linux-build-agent:bionic-x64
     outputs:
-      VSCODIUM_COMMIT: ${{ env.VSCODIUM_COMMIT }}
       MS_TAG: ${{ env.MS_TAG }}
+      MS_COMMIT: ${{ env.MS_COMMIT }}
+      VSCODIUM_COMMIT: ${{ env.VSCODIUM_COMMIT }}
       RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
 
     steps:
@@ -43,13 +44,18 @@ jobs:
           VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
         run: ./get_repo.sh
 
+      - name: Clone VSCode repo
+        working-directory: ./vscodium
+        run: ./get_repo.sh
+
   dependencies:
     needs:
       - check
     runs-on: ubuntu-latest
     env:
-      VSCODIUM_COMMIT: ${{ needs.check.outputs.VSCODIUM_COMMIT }}
       MS_TAG: ${{ needs.check.outputs.MS_TAG }}
+      MS_COMMIT: ${{ needs.check.outputs.MS_COMMIT }}
+      VSCODIUM_COMMIT: ${{ needs.check.outputs.VSCODIUM_COMMIT }}
       RELEASE_VERSION: ${{ needs.check.outputs.RELEASE_VERSION }}
     strategy:
       fail-fast: false
@@ -68,6 +74,10 @@ jobs:
           ref: ${{ env.GITHUB_BRANCH }}
 
       - name: Clone VSCodium repo
+        run: ./get_repo.sh
+
+      - name: Clone VSCode repo
+        working-directory: ./vscodium
         run: ./get_repo.sh
 
       - uses: docker/setup-qemu-action@v2
@@ -107,8 +117,9 @@ jobs:
       - dependencies
     runs-on: ubuntu-latest
     env:
-      VSCODIUM_COMMIT: ${{ needs.check.outputs.VSCODIUM_COMMIT }}
       MS_TAG: ${{ needs.check.outputs.MS_TAG }}
+      MS_COMMIT: ${{ needs.check.outputs.MS_COMMIT }}
+      VSCODIUM_COMMIT: ${{ needs.check.outputs.VSCODIUM_COMMIT }}
       RELEASE_VERSION: ${{ needs.check.outputs.RELEASE_VERSION }}
     strategy:
       fail-fast: false
