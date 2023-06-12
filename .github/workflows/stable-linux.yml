@@ -86,7 +86,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: '16.17'
 
       - name: Install Yarn
         run: npm install -g yarn
@@ -130,10 +130,13 @@ jobs:
           image: vscodium/vscodium-linux-build-agent:bionic-x64
         - vscode_arch: arm64
           npm_arch: arm64
-          image: vscodium/vscodium-linux-build-agent:stretch-arm64
+          image: vscodium/vscodium-linux-build-agent:buster-arm64
         - vscode_arch: armhf
-          npm_arch: armv7l
-          image: vscodium/vscodium-linux-build-agent:stretch-armhf
+          npm_arch: arm
+          image: vscodium/vscodium-linux-build-agent:buster-armhf
+        - vscode_arch: ppc64le
+          npm_arch: ppcc64le
+          image: vscodium/vscodium-linux-build-agent:bionic-ppc64le
     container:
       image: ${{ matrix.image }}
       env:
@@ -157,7 +160,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: '16.17'
 
       - name: Install Yarn
         run: npm install -g yarn
@@ -204,27 +207,27 @@ jobs:
         working-directory: ./vscodium
         run: ./update_version.sh
 
-  # aur:
-  #   needs:
-  #     - build
-  #   runs-on: ubuntu-latest
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       include:
-  #       - package_name: mrcode-bin
-  #         package_type: stable
-  #       - package_name: mrcode
-  #         package_type: stable
-  #       - package_name: mrcode-git
-  #         package_type: rolling
+  aur:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - package_name: mrcode-bin
+          package_type: stable
+        - package_name: mrcode
+          package_type: stable
+        - package_name: mrcode-git
+          package_type: rolling
 
-  #   steps:
-  #     - name: Publish ${{ matrix.package_name }}
-  #       uses: zokugun/github-actions-aur-releaser@v1
-  #       with:
-  #         package_name: ${{ matrix.package_name }}
-  #         package_type: ${{ matrix.package_type }}
-  #         aur_private_key: ${{ secrets.AUR_PRIVATE_KEY }}
-  #         aur_username: ${{ secrets.AUR_USERNAME }}
-  #         aur_email: ${{ secrets.AUR_EMAIL }}
+    steps:
+      - name: Publish ${{ matrix.package_name }}
+        uses: zokugun/github-actions-aur-releaser@v1
+        with:
+          package_name: ${{ matrix.package_name }}
+          package_type: ${{ matrix.package_type }}
+          aur_private_key: ${{ secrets.AUR_PRIVATE_KEY }}
+          aur_username: ${{ secrets.AUR_USERNAME }}
+          aur_email: ${{ secrets.AUR_EMAIL }}
