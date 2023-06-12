@@ -25,8 +25,8 @@ What's the difference?
 - <del>editor.foldingStrategy</del> replaced with builtin setting `editor.defaultFoldingRangeProvider`
 - <del>editor.showFoldingLastLine</del>
 - <del>[keyboard.platform](./docs/settings/keyboard.platform.md)</del> (WIP)
-- <del>terminal.integrated.enableUriLinks</del> (WIP)
-- <del>terminal.integrated.enableWordLinks</del> (WIP)
+- <del>terminal.integrated.enableUriLinks</del>
+- <del>terminal.integrated.enableWordLinks</del>
 - <del>workbench.editor.openPositioning</del> replaced with extension [Automatic Editor Sorter
 Preview
 ](https://open-vsx.org/extension/zokugun/automatic-editor-sorter)
@@ -38,7 +38,7 @@ Preview
 
 ### Patched Features
 
-- render and copy tab characters in the terminal
+- render and copy tab characters in the terminal (https://github.com/daiyam/xterm-tab)
 
 Breaking Changes
 ----------------
