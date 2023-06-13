@@ -331,24 +331,24 @@ index e74fb45..442696c 100644
 +			if (moduleName === '@daiyam/xterm-tab-addon-canvas') {
  				versions = versions.filter(e => ![
 diff --git a/src/bootstrap-window.js b/src/bootstrap-window.js
-index 778f1de..0f6f756 100644
+index 778f1de..4fa0297 100644
 --- a/src/bootstrap-window.js
 +++ b/src/bootstrap-window.js
 @@ -117,9 +117,9 @@
  			'vsda': `${baseNodeModulesPath}/vsda/index.js`,
 -			'xterm': `${baseNodeModulesPath}/xterm/lib/xterm.js`,
 -			'xterm-addon-canvas': `${baseNodeModulesPath}/xterm-addon-canvas/lib/xterm-addon-canvas.js`,
-+			'@daiyam/xterm-tab': `${baseNodeModulesPath}/xterm/lib/xterm.js`,
-+			'@daiyam/xterm-tab-addon-canvas': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-canvas/lib/@daiyam/xterm-tab-addon-canvas.js`,
++			'@daiyam/xterm-tab': `${baseNodeModulesPath}/@daiyam/xterm-tab/lib/xterm.js`,
++			'@daiyam/xterm-tab-addon-canvas': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-canvas/lib/xterm-tab-addon-canvas.js`,
  			'xterm-addon-image': `${baseNodeModulesPath}/xterm-addon-image/lib/xterm-addon-image.js`,
 -			'xterm-addon-search': `${baseNodeModulesPath}/xterm-addon-search/lib/xterm-addon-search.js`,
 -			'xterm-addon-serialize': `${baseNodeModulesPath}/xterm-addon-serialize/lib/xterm-addon-serialize.js`,
 -			'xterm-addon-unicode11': `${baseNodeModulesPath}/xterm-addon-unicode11/lib/xterm-addon-unicode11.js`,
 -			'xterm-addon-webgl': `${baseNodeModulesPath}/xterm-addon-webgl/lib/xterm-addon-webgl.js`,
-+			'@daiyam/xterm-tab-addon-search': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-search/lib/@daiyam/xterm-tab-addon-search.js`,
-+			'@daiyam/xterm-tab-addon-serialize': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-serialize/lib/@daiyam/xterm-tab-addon-serialize.js`,
-+			'@daiyam/xterm-tab-addon-unicode11': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-unicode11/lib/@daiyam/xterm-tab-addon-unicode11.js`,
-+			'@daiyam/xterm-tab-addon-webgl': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-webgl/lib/@daiyam/xterm-tab-addon-webgl.js`,
++			'@daiyam/xterm-tab-addon-search': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-search/lib/xterm-tab-addon-search.js`,
++			'@daiyam/xterm-tab-addon-serialize': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-serialize/lib/xterm-tab-addon-serialize.js`,
++			'@daiyam/xterm-tab-addon-unicode11': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-unicode11/lib/xterm-tab-addon-unicode11.js`,
++			'@daiyam/xterm-tab-addon-webgl': `${baseNodeModulesPath}/@daiyam/xterm-tab-addon-webgl/lib/xterm-tab-addon-webgl.js`,
  			'@vscode/iconv-lite-umd': `${baseNodeModulesPath}/@vscode/iconv-lite-umd/lib/iconv-lite-umd.js`,
 diff --git a/src/vs/platform/externalTerminal/node/externalTerminalService.ts b/src/vs/platform/externalTerminal/node/externalTerminalService.ts
 index 9b0b2ba..b8b2721 100644
