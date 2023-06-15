@@ -117,6 +117,7 @@ jobs:
       - dependencies
     runs-on: ubuntu-latest
     env:
+      DISABLE_UPDATE: 'yes'
       MS_TAG: ${{ needs.check.outputs.MS_TAG }}
       MS_COMMIT: ${{ needs.check.outputs.MS_COMMIT }}
       VSCODIUM_COMMIT: ${{ needs.check.outputs.VSCODIUM_COMMIT }}
