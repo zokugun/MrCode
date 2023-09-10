@@ -45,6 +45,9 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Install Yarn
+        run: npm install -g yarn
+
       - name: Clone VSCodium repo
         env:
           VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
