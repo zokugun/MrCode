@@ -1,3 +1,0 @@
-Host aur.archlinux.org
-  IdentityFile ~/.ssh/aur
-  User aur
