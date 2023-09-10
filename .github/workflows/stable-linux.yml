@@ -83,14 +83,6 @@ jobs:
       - uses: docker/setup-qemu-action@v2
         if: matrix.vscode_arch == 'arm64'
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.17'
-
-      - name: Install Yarn
-        run: npm install -g yarn
-
       - name: Install remote dependencies (x64)
         env:
           npm_config_arch: x64
