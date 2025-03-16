@@ -1,17 +1,17 @@
 diff --git a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
-index 66ab203..b09fb0f 100644
+index e301639..e1c74f5 100644
 --- a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
 +++ b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
-@@ -10,3 +10,3 @@ import { MenuRegistry, MenuId, registerAction2, Action2, ISubmenuItem, IMenuItem
- import { InstantiationType, registerSingleton } from 'vs/platform/instantiation/common/extensions';
--import { ExtensionsLocalizedLabel, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, InstallOperation, InstallOptions } from 'vs/platform/extensionManagement/common/extensionManagement';
-+import { ExtensionsLocalizedLabel, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, InstallOperation, InstallOptions, IGlobalExtensionEnablementService } from 'vs/platform/extensionManagement/common/extensionManagement';
- import { EnablementState, IExtensionManagementServerService, IWorkbenchExtensionEnablementService, IWorkbenchExtensionManagementService } from 'vs/workbench/services/extensionManagement/common/extensionManagement';
-@@ -418,2 +418,46 @@ CommandsRegistry.registerCommand({
+@@ -10,3 +10,3 @@ import { MenuRegistry, MenuId, registerAction2, Action2, IMenuItem, IAction2Opti
+ import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
+-import { ExtensionsLocalizedLabel, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, EXTENSION_INSTALL_SOURCE_CONTEXT, ExtensionInstallSource, UseUnpkgResourceApiConfigKey, AllowedExtensionsConfigKey } from '../../../../platform/extensionManagement/common/extensionManagement.js';
++import { ExtensionsLocalizedLabel, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, EXTENSION_INSTALL_SOURCE_CONTEXT, ExtensionInstallSource, UseUnpkgResourceApiConfigKey, AllowedExtensionsConfigKey, IGlobalExtensionEnablementService } from '../../../../platform/extensionManagement/common/extensionManagement.js';
+ import { EnablementState, IExtensionManagementServerService, IPublisherInfo, IWorkbenchExtensionEnablementService, IWorkbenchExtensionManagementService } from '../../../services/extensionManagement/common/extensionManagement.js';
+@@ -526,2 +526,46 @@ CommandsRegistry.registerCommand({
  
 +CommandsRegistry.registerCommand({
 +	id: 'workbench.extensions.disableExtension',
-+	description: {
++	metadata: {
 +		description: localize('workbench.extensions.disableExtension.description', "Disable the given extension"),
 +		args: [
 +			{
@@ -33,7 +33,7 @@ index 66ab203..b09fb0f 100644
 +
 +CommandsRegistry.registerCommand({
 +	id: 'workbench.extensions.enableExtension',
-+	description: {
++	metadata: {
 +		description: localize('workbench.extensions.enableExtension.description', "Enable the given extension"),
 +		args: [
 +			{

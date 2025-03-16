@@ -19,59 +19,191 @@ on:
 env:
   APP_NAME: MrCode
   ASSETS_REPOSITORY: ${{ github.repository }}
+  BINARY_NAME: mrcode
+  GH_REPO_PATH: ${{ github.repository_owner }}/${{ github.repository }}
+  ORG_NAME: ${{ github.repository_owner }}
   OS_NAME: windows
   VERSIONS_REPOSITORY: ${{ github.repository_owner }}/MrCode-versions
   VSCODE_QUALITY: stable
 
 jobs:
-  build:
-    runs-on: windows-2019
-    defaults:
-      run:
-        shell: bash
-    env:
-      VSCODE_ARCH: ${{ matrix.vscode_arch }}
-    strategy:
-      fail-fast: false
-      matrix:
-        vscode_arch:
-          - x64
-          - ia32
-          - arm64
+  check:
+    runs-on: ubuntu-latest
     outputs:
+      MS_COMMIT: ${{ env.MS_COMMIT }}
+      MS_TAG: ${{ env.MS_TAG }}
       RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
-      SHOULD_DEPLOY: ${{ env.SHOULD_DEPLOY }}
+      SHOULD_BUILD: ${{ env.SHOULD_BUILD }}
+      VSCODIUM_COMMIT: ${{ env.VSCODIUM_COMMIT }}
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
         with:
-          node-version: '18'
-
-      - name: Install Yarn
-        run: npm install -g yarn
-
-      - name: Setup Python 3
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
+          ref: ${{ env.GITHUB_BRANCH }}
 
       - name: Clone VSCodium repo
         env:
           VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
         run: ./get_repo.sh
 
-      - name: Prepare VSCodium
-        run: ./prepare.sh
+      - name: Clone VSCode repo
+        working-directory: ./vscodium
+        run: ./get_repo.sh
 
       - name: Check existing VSCodium tags/releases
         env:
+          CHECK_ALL: 'yes'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEW_RELEASE: ${{ github.event.inputs.new_release }}
         working-directory: ./vscodium
         run: ./check_tags.sh
+
+  compile:
+    needs:
+      - check
+    runs-on: ubuntu-20.04
+    env:
+      MS_COMMIT: ${{ needs.check.outputs.MS_COMMIT }}
+      MS_TAG: ${{ needs.check.outputs.MS_TAG }}
+      RELEASE_VERSION: ${{ needs.check.outputs.RELEASE_VERSION }}
+      SHOULD_BUILD: ${{ needs.check.outputs.SHOULD_BUILD }}
+      VSCODE_ARCH: 'x64'
+      VSCODIUM_COMMIT: ${{ needs.check.outputs.VSCODIUM_COMMIT }}
+    outputs:
+      BUILD_SOURCEVERSION: ${{ env.BUILD_SOURCEVERSION }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.GITHUB_BRANCH }}
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Setup GCC
+        uses: egor-tensin/setup-gcc@v1
+        with:
+          version: 10
+          platform: x64
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.2'
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Setup Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Install libkrb5-dev
+        run: sudo apt-get update -y && sudo apt-get install -y libkrb5-dev
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Clone VSCodium repo
+        run: ./get_repo.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Clone VSCode repo
+        working-directory: ./vscodium
+        run: ./get_repo.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Build
+        env:
+          SHOULD_BUILD_REH: 'no'
+          SHOULD_BUILD_REH_WEB: 'no'
+        working-directory: ./vscodium
+        run: ./build.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Compress vscode artifact
+        working-directory: ./vscodium
+        run: |
+          find vscode -type f -not -path "*/node_modules/*" -not -path "vscode/.build/node/*" -not -path "vscode/.git/*" > vscode.txt
+          echo "vscode/.build/extensions/node_modules" >> vscode.txt
+          echo "vscode/.git" >> vscode.txt
+          tar -czf vscode.tar.gz -T vscode.txt
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Upload vscode artifact
+        working-directory: ./vscodium
+        uses: actions/upload-artifact@v4
+        with:
+          name: vscode
+          path: ./vscode.tar.gz
+          retention-days: 30
+        if: env.SHOULD_BUILD == 'yes'
+
+  build:
+    needs:
+      - check
+      - compile
+    runs-on: windows-2019
+    strategy:
+      fail-fast: false
+      matrix:
+        vscode_arch:
+          - x64
+          - arm64
+    defaults:
+      run:
+        shell: bash
+    env:
+      BUILD_SOURCEVERSION: ${{ needs.compile.outputs.BUILD_SOURCEVERSION }}
+      MS_COMMIT: ${{ needs.check.outputs.MS_COMMIT }}
+      MS_TAG: ${{ needs.check.outputs.MS_TAG }}
+      RELEASE_VERSION: ${{ needs.check.outputs.RELEASE_VERSION }}
+      SHOULD_BUILD: ${{ needs.check.outputs.SHOULD_BUILD }}
+      VSCODE_ARCH: ${{ matrix.vscode_arch }}
+      VSCODIUM_COMMIT: ${{ needs.check.outputs.VSCODIUM_COMMIT }}
+    outputs:
+      RELEASE_VERSION: ${{ env.RELEASE_VERSION }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.GITHUB_BRANCH }}
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.2'
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Setup Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Clone VSCodium repo
+        run: ./get_repo.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Check existing VSCodium tags/releases
+        env:
+          DISABLE_MSI: ${{ vars.DISABLE_STABLE_MSI }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ./vscodium
+        run: ./check_tags.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Download vscode artifact
+        working-directory: ./vscodium
+        uses: actions/download-artifact@v4
+        with:
+          name: vscode
+        if: env.SHOULD_BUILD == 'yes'
 
       - name: Build
         env:
@@ -79,12 +211,17 @@ jobs:
           npm_config_arch: ${{ matrix.vscode_arch }}
           npm_config_target_arch: ${{ matrix.vscode_arch }}
         working-directory: ./vscodium
-        run: ./build.sh
+        run: ./build/windows/package.sh
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Prepare assets
         working-directory: ./vscodium
         run: ./prepare_assets.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Prepare checksums
+        working-directory: ./vscodium
+        run: ./prepare_checksums.sh
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Release
@@ -101,3 +238,13 @@ jobs:
           GITHUB_USERNAME: ${{ github.repository_owner }}
         working-directory: ./vscodium
         run: ./update_version.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Upload assets
+        working-directory: ./vscodium
+        uses: actions/upload-artifact@v4
+        with:
+          name: bin-${{ matrix.vscode_arch }}
+          path: assets/
+          retention-days: 3
+        if: env.SHOULD_BUILD == 'yes'

@@ -1,18 +1,18 @@
 diff --git a/build/gulpfile.reh.js b/build/gulpfile.reh.js
-index ae33cc9..06c2a67 100644
+index e0df76f..a0d4889 100644
 --- a/build/gulpfile.reh.js
 +++ b/build/gulpfile.reh.js
-@@ -251,3 +251,3 @@ function packageTask(type, platform, arch, sourceFolderName, destinationFolderNa
+@@ -321,3 +321,3 @@ function packageTask(type, platform, arch, sourceFolderName, destinationFolderNa
  		const productJsonStream = gulp.src(['product.json'], { base: '.' })
--			.pipe(json({ commit, date, version, release }));
-+			.pipe(json({ commit, date, version, release, serverDownloadUrlTemplate: 'https://github.com/zokugun/MrCode/releases/download/${version}.${release}/MrCode-reh-${os}-${arch}-${version}.${release}.tar.gz' }));
- 
+-			.pipe(json({ commit, date: readISODate('out-build'), version, release }))
++			.pipe(json({ commit, date: readISODate('out-build'), version, release, serverDownloadUrlTemplate: 'https://github.com/zokugun/MrCode/releases/download/${version}.${release}/MrCode-reh-${os}-${arch}-${version}.${release}.tar.gz' }))
+ 			.pipe(es.through(function (file) {
 diff --git a/build/gulpfile.vscode.js b/build/gulpfile.vscode.js
-index 938943d..2d84a15 100644
+index a63f693..c0eb236 100644
 --- a/build/gulpfile.vscode.js
 +++ b/build/gulpfile.vscode.js
-@@ -245,3 +245,3 @@ function packageTask(platform, arch, sourceFolderName, destinationFolderName, op
- 		const date = new Date().toISOString();
--		const productJsonUpdate = { commit, date, checksums, version, release };
-+		const productJsonUpdate = { commit, date, checksums, version, release, serverDownloadUrlTemplate: 'https://github.com/zokugun/MrCode/releases/download/${version}.${release}/MrCode-reh-${os}-${arch}-${version}.${release}.tar.gz' };
- 
+@@ -285,3 +285,3 @@ function packageTask(platform, arch, sourceFolderName, destinationFolderName, op
+ 		const productJsonStream = gulp.src(['product.json'], { base: '.' })
+-			.pipe(json({ commit, date: readISODate('out-build'), checksums, version, release }))
++			.pipe(json({ commit, date: readISODate('out-build'), checksums, version, release, serverDownloadUrlTemplate: 'https://github.com/zokugun/MrCode/releases/download/${version}.${release}/MrCode-reh-${os}-${arch}-${version}.${release}.tar.gz' }))
+ 			.pipe(es.through(function (file) {

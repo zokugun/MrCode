@@ -5,21 +5,29 @@
 ###
 
 export APP_NAME="MrCode"
+export BINARY_NAME="mrcode"
 export CI_BUILD="no"
+export GH_REPO_PATH="zokugun/MrCode"
+export ORG_NAME="zokugun"
 export SHOULD_BUILD="yes"
 export SKIP_ASSETS="yes"
 export SKIP_BUILD="no"
 export SKIP_SOURCE="no"
 export VSCODE_LATEST="no"
 export VSCODE_QUALITY="stable"
+export VSCODIUM_LATEST="no"
 
-while getopts ":ilop" opt; do
+while getopts ":ilmops" opt; do
   case "$opt" in
     i)
+      export BINARY_NAME="mrcode-insiders"
       export VSCODE_QUALITY="insider"
       ;;
     l)
       export VSCODE_LATEST="yes"
+      ;;
+    m)
+      export VSCODIUM_LATEST="yes"
       ;;
     o)
       export SKIP_BUILD="yes"
@@ -29,6 +37,8 @@ while getopts ":ilop" opt; do
       ;;
     s)
       export SKIP_SOURCE="yes"
+      ;;
+    *)
       ;;
   esac
 done
