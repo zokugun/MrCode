@@ -1,0 +1,98 @@
+name: stable-spearhead
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_release:
+        type: boolean
+        description: Force new Release
+      force_dispatch:
+        type: boolean
+        description: Force dispatch
+      dont_update:
+        type: boolean
+        description: Don't update VSCode
+  schedule:
+    - cron: '0 20 * * *'
+
+jobs:
+  build:
+    runs-on: macos-14
+    env:
+      APP_NAME: MrCode
+      ASSETS_REPOSITORY: ${{ github.repository }}
+      BINARY_NAME: mrcode
+      GH_REPO_PATH: ${{ github.repository_owner }}/${{ github.repository }}
+      ORG_NAME: ${{ github.repository_owner }}
+      OS_NAME: osx
+      VERSIONS_REPOSITORY: ${{ github.repository_owner }}/versions
+      VSCODE_ARCH: arm64
+      VSCODE_LATEST: ${{ github.event.inputs.dont_update == 'true' && 'no' || 'yes' }}
+      VSCODE_QUALITY: stable
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.18.2'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Clone VSCodium repo
+        env:
+          VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
+        run: . get_repo.sh
+
+      - name: Prepare VSCodium
+        run: . prepare.sh
+
+      - name: Check existing VSCodium tags/releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_RELEASE: ${{ github.event.inputs.new_release }}
+          IS_SPEARHEAD: 'yes'
+        working-directory: ./vscodium
+        run: . check_tags.sh
+
+      - name: Build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ./vscodium
+        run: ./build.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+        if: env.SHOULD_BUILD == 'yes' && github.event.inputs.dont_update != 'true'
+
+      - name: Update upstream version
+        working-directory: ./vscodium
+        run: ./update_upstream.sh
+        if: env.SHOULD_BUILD == 'yes' && github.event.inputs.dont_update != 'true'
+
+      - name: Prepare source
+        working-directory: ./vscodium
+        run: ./prepare_src.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Release source
+        env:
+          GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }}
+          GITHUB_USERNAME: ${{ github.repository_owner }}
+        working-directory: ./vscodium
+        run: ./release.sh
+        if: env.SHOULD_BUILD == 'yes'
+
+      - name: Dispatch builds
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: 'stable'
+        if: env.SHOULD_BUILD == 'yes' || github.event.inputs.force_dispatch == 'true'

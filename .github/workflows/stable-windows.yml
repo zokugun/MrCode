@@ -12,9 +12,8 @@ on:
       vscodium_latest:
         type: boolean
         description: Use latest VSCodium
-  push:
-    tags:
-      - "*"
+  repository_dispatch:
+    types: [stable]
 
 env:
   APP_NAME: MrCode
@@ -131,11 +130,10 @@ jobs:
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Upload vscode artifact
-        working-directory: ./vscodium
         uses: actions/upload-artifact@v4
         with:
           name: vscode
-          path: ./vscode.tar.gz
+          path: ./vscodium/vscode.tar.gz
           retention-days: 30
         if: env.SHOULD_BUILD == 'yes'
 
@@ -199,10 +197,10 @@ jobs:
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Download vscode artifact
-        working-directory: ./vscodium
         uses: actions/download-artifact@v4
         with:
           name: vscode
+          path: vscodium/
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Build
@@ -241,10 +239,9 @@ jobs:
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Upload assets
-        working-directory: ./vscodium
         uses: actions/upload-artifact@v4
         with:
           name: bin-${{ matrix.vscode_arch }}
-          path: assets/
+          path: vscodium/assets/
           retention-days: 3
         if: env.SHOULD_BUILD == 'yes'

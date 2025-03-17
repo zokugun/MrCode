@@ -12,9 +12,8 @@ on:
       vscodium_latest:
         type: boolean
         description: Use latest VSCodium
-  push:
-    tags:
-      - "*"
+  repository_dispatch:
+    types: [stable]
 
 env:
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
@@ -134,11 +133,10 @@ jobs:
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Upload vscode artifact
-        working-directory: ./vscodium
         uses: actions/upload-artifact@v4
         with:
           name: vscode
-          path: ./vscode.tar.gz
+          path: ./vscodium/vscode.tar.gz
           retention-days: 30
         if: env.SHOULD_BUILD == 'yes'
 
@@ -217,10 +215,10 @@ jobs:
         if: env.DISABLED != 'yes'
 
       - name: Download vscode artifact
-        working-directory: ./vscodium
         uses: actions/download-artifact@v4
         with:
           name: vscode
+          path: vscodium/
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
       - name: Build
@@ -257,11 +255,10 @@ jobs:
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
       - name: Upload assets
-        working-directory: ./vscodium
         uses: actions/upload-artifact@v4
         with:
           name: bin-${{ matrix.vscode_arch }}
-          path: assets/
+          path: vscodium/assets/
           retention-days: 3
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
@@ -353,10 +350,10 @@ jobs:
         if: env.DISABLED != 'yes'
 
       - name: Download vscode artifact
-        working-directory: ./vscodium
         uses: actions/download-artifact@v4
         with:
           name: vscode
+          path: vscodium/
         if: env.DISABLED != 'yes' && (env.SHOULD_BUILD_REH != 'no' || env.SHOULD_BUILD_REH_WEB != 'no')
 
       - name: Build
@@ -437,10 +434,10 @@ jobs:
         if: env.DISABLED != 'yes'
 
       - name: Download vscode artifact
-        working-directory: ./vscodium
         uses: actions/download-artifact@v4
         with:
           name: vscode
+          path: vscodium/
         if: env.DISABLED != 'yes' && (env.SHOULD_BUILD_REH != 'no' || env.SHOULD_BUILD_REH_WEB != 'no')
 
       - name: Build
