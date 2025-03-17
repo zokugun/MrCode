@@ -13,20 +13,16 @@ export SHOULD_BUILD="yes"
 export SKIP_ASSETS="yes"
 export SKIP_BUILD="no"
 export SKIP_SOURCE="no"
-export VSCODE_LATEST="no"
 export VSCODE_QUALITY="stable"
 export VSCODIUM_LATEST="no"
 
-while getopts ":ilmops" opt; do
+while getopts ":ilops" opt; do
   case "$opt" in
     i)
       export BINARY_NAME="mrcode-insiders"
       export VSCODE_QUALITY="insider"
       ;;
     l)
-      export VSCODE_LATEST="yes"
-      ;;
-    m)
       export VSCODIUM_LATEST="yes"
       ;;
     o)
@@ -78,8 +74,8 @@ echo "SKIP_SOURCE=\"${SKIP_SOURCE}\""
 echo "SKIP_BUILD=\"${SKIP_BUILD}\""
 echo "SKIP_ASSETS=\"${SKIP_ASSETS}\""
 echo "VSCODE_ARCH=\"${VSCODE_ARCH}\""
-echo "VSCODE_LATEST=\"${VSCODE_LATEST}\""
 echo "VSCODE_QUALITY=\"${VSCODE_QUALITY}\""
+echo "VSCODIUM_LATEST=\"${VSCODIUM_LATEST}\""
 
 if [[ "${SKIP_SOURCE}" == "no" ]]; then
   rm -rf vscodium*

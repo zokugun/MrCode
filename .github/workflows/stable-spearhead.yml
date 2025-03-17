@@ -9,9 +9,9 @@ on:
       force_dispatch:
         type: boolean
         description: Force dispatch
-      dont_update:
+      lastest_vscodium:
         type: boolean
-        description: Don't update VSCode
+        description: Use latest VSCodium
   schedule:
     - cron: '0 20 * * *'
 
@@ -27,7 +27,6 @@ jobs:
       OS_NAME: osx
       VERSIONS_REPOSITORY: ${{ github.repository_owner }}/versions
       VSCODE_ARCH: arm64
-      VSCODE_LATEST: ${{ github.event.inputs.dont_update == 'true' && 'no' || 'yes' }}
       VSCODE_QUALITY: stable
 
     steps:
@@ -43,7 +42,7 @@ jobs:
 
       - name: Clone VSCodium repo
         env:
-          VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
+          VSCODIUM_LATEST: ${{ github.event.inputs.lastest_vscodium == 'true' && 'yes' || 'no' }}
         run: . get_repo.sh
 
       - name: Prepare VSCodium
