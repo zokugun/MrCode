@@ -1,4 +1,5 @@
-temp
 *.env
-logo.sketch
 .DS_Store
+logo.sketch
+temp
+vscodium/*
