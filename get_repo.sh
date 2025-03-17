@@ -45,7 +45,7 @@ echo "Release version: ${RELEASE_VERSION}"
 if [[ ! -z "${VSCODIUM_LATEST}" ]]; then
     git pull origin master
 
-    VSCODIUM_COMMIT=$( git log --format="%H" -n 1 )
+    VSCODIUM_COMMIT=$( git log --no-show-signature --format="%H" -n 1 )
 
     # for GH actions
     if [[ $GITHUB_ENV ]]; then
