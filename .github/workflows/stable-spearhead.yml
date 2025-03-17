@@ -90,6 +90,7 @@ jobs:
           cp vscodium/release_notes.txt .
           sed -i -E "s|VSCodium/vscodium|zokugun/MrCode|" release_notes.txt
           cp vscodium/release.sh .
+          sed -i -E "s|./utils.sh|./vscodium/utils.sh|" release.sh
           ./release.sh
         if: env.SHOULD_BUILD == 'yes'
 
