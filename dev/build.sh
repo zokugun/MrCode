@@ -134,7 +134,7 @@ if [[ "${SKIP_BUILD}" == "no" ]]; then
   cd ..
 
   if [[ "${VSCODIUM_LATEST}" == "yes" ]]; then
-    jsonTmp=$( cat "./upstream/${VSCODE_QUALITY}.json" | jq --arg 'tag' "${VSCODIUM_RELEASE/\-insider/}" --arg 'commit' "${VSCODIUM_COMMIT}" '. | .tag=$tag | .commit=$commit' )
+    jsonTmp=$( cat "./upstream/${VSCODE_QUALITY}.json" | jq --arg 'tag' "${RELEASE_VERSION/\-insider/}" --arg 'commit' "${VSCODIUM_COMMIT}" '. | .tag=$tag | .commit=$commit' )
     echo "${jsonTmp}" > "./upstream/${VSCODE_QUALITY}.json" && unset jsonTmp
   fi
 fi

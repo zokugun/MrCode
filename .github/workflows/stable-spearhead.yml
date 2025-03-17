@@ -86,9 +86,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.STRONGER_GITHUB_TOKEN }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
-        working-directory: ./vscodium
         run: |
+          cp vscodium/release_notes.txt .
           sed -i -E "s|VSCodium/vscodium|zokugun/MrCode|" release_notes.txt
+          cp vscodium/release.sh .
           ./release.sh
         if: env.SHOULD_BUILD == 'yes'
 

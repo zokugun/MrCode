@@ -8,7 +8,7 @@ if [[ "${SHOULD_BUILD}" != "yes" ]]; then
   exit 0
 fi
 
-jsonTmp=$( cat "./upstream/${VSCODE_QUALITY}.json" | jq --arg 'tag' "${VSCODIUM_RELEASE/\-insider/}" --arg 'commit' "${VSCODIUM_COMMIT}" '. | .tag=$tag | .commit=$commit' )
+jsonTmp=$( cat "./upstream/${VSCODE_QUALITY}.json" | jq --arg 'tag' "${RELEASE_VERSION/\-insider/}" --arg 'commit' "${VSCODIUM_COMMIT}" '. | .tag=$tag | .commit=$commit' )
 echo "${jsonTmp}" > "./upstream/${VSCODE_QUALITY}.json" && unset jsonTmp
 
 git add .
