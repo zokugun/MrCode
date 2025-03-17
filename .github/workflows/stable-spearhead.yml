@@ -89,7 +89,7 @@ jobs:
           GITHUB_USERNAME: ${{ github.repository_owner }}
         working-directory: ./vscodium
         run: |
-          replace "s|VSCodium/vscodium|zokugun/MrCode|" release_notes.txt
+          sed -i -E "s|VSCodium/vscodium|zokugun/MrCode|" release_notes.txt
           ./release.sh
         if: env.SHOULD_BUILD == 'yes'
 
