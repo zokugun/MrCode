@@ -86,6 +86,8 @@ if [[ "${SKIP_SOURCE}" == "no" ]]; then
   # save variables for later
   echo "MS_TAG=\"${MS_TAG}\"" > build.env
   echo "MS_COMMIT=\"${MS_COMMIT}\"" >> build.env
+  echo "VSCODIUM_TAG=\"${VSCODIUM_TAG}\"" > build.env
+  echo "VSCODIUM_COMMIT=\"${VSCODIUM_COMMIT}\"" >> build.env
   echo "RELEASE_VERSION=\"${RELEASE_VERSION}\"" >> build.env
   echo "BUILD_SOURCEVERSION=\"${BUILD_SOURCEVERSION}\"" >> build.env
 else
@@ -97,6 +99,8 @@ else
 
   echo "MS_TAG=\"${MS_TAG}\""
   echo "MS_COMMIT=\"${MS_COMMIT}\""
+  echo "VSCODIUM_TAG=\"${VSCODIUM_TAG}\""
+  echo "VSCODIUM_COMMIT=\"${VSCODIUM_COMMIT}\""
   echo "RELEASE_VERSION=\"${RELEASE_VERSION}\""
   echo "BUILD_SOURCEVERSION=\"${BUILD_SOURCEVERSION}\""
 fi
@@ -134,7 +138,7 @@ if [[ "${SKIP_BUILD}" == "no" ]]; then
   cd ..
 
   if [[ "${VSCODIUM_LATEST}" == "yes" ]]; then
-    jsonTmp=$( cat "./upstream/${VSCODE_QUALITY}.json" | jq --arg 'tag' "${RELEASE_VERSION/\-insider/}" --arg 'commit' "${VSCODIUM_COMMIT}" '. | .tag=$tag | .commit=$commit' )
+    jsonTmp=$( cat "./upstream/${VSCODE_QUALITY}.json" | jq --arg 'tag' "${VSCODIUM_TAG}" --arg 'commit' "${VSCODIUM_COMMIT}" '. | .tag=$tag | .commit=$commit' )
     echo "${jsonTmp}" > "./upstream/${VSCODE_QUALITY}.json" && unset jsonTmp
   fi
 fi

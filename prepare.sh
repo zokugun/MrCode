@@ -2,6 +2,18 @@
 
 set -e
 
+DOWNLOAD_VSCODE="yes"
+
+while getopts ":r" opt; do
+  case "$opt" in
+    r)
+      DOWNLOAD_VSCODE="no"
+      ;;
+    *)
+      ;;
+  esac
+done
+
 function backup() {
 	if [ -f "$1.bak" ]; then
 		cp $1.bak $1
@@ -108,33 +120,37 @@ done
 
 cp ../patches/*.patch ./patches/user/
 
-. get_repo.sh
+if [[ "${DOWNLOAD_VSCODE}" == "yes" ]]; then
+  . get_repo.sh
 
-cd vscode || exit
+  cd vscode || exit
 
-# resources/linux/code.appdata.xml
-backup 'resources/linux/code.appdata.xml'
-gsed -i -E 's|<url type="homepage">https://code.visualstudio.com</url>|<url type="homepage">https://github.com/zokugun/MrCode</url>|g' resources/linux/code.appdata.xml
-gsed -i -E 's|<summary>.*</summary>|<summary>MrCode. Code editing.</summary>|g' resources/linux/code.appdata.xml
-gsed -i -E '{N; N; N; N; N; s|<description>.*</description>|<description><p>MrCode is an editor based on Visual Studio Code.</p></description>|g; }' resources/linux/code.appdata.xml
+  # resources/linux/code.appdata.xml
+  backup 'resources/linux/code.appdata.xml'
+  gsed -i -E 's|<url type="homepage">https://code.visualstudio.com</url>|<url type="homepage">https://github.com/zokugun/MrCode</url>|g' resources/linux/code.appdata.xml
+  gsed -i -E 's|<summary>.*</summary>|<summary>MrCode. Code editing.</summary>|g' resources/linux/code.appdata.xml
+  gsed -i -E '{N; N; N; N; N; s|<description>.*</description>|<description><p>MrCode is an editor based on Visual Studio Code.</p></description>|g; }' resources/linux/code.appdata.xml
 
-# resources/linux/debian/control.template
-backup 'resources/linux/debian/control.template'
-gsed -i -E 's|Maintainer: Microsoft Corporation <vscode-linux@microsoft\.com>|Maintainer: Baptiste Augrain <daiyam@zokugun.org>|g' resources/linux/debian/control.template
-gsed -i -E 's|Homepage: https://code\.visualstudio\.com/|Homepage: https://github.com/zokugun/MrCode|g' resources/linux/debian/control.template
-gsed -i -E 's|visual-studio-||g' resources/linux/debian/control.template
-gsed -i -E 's|Description: .*|Description: Code editing.|g' resources/linux/debian/control.template
-gsed -i -E 's|Visual Studio Code is a new choice.*$|MrCode is an editor based on Visual Studio Code.|g' resources/linux/debian/control.template
+  # resources/linux/debian/control.template
+  backup 'resources/linux/debian/control.template'
+  gsed -i -E 's|Maintainer: Microsoft Corporation <vscode-linux@microsoft\.com>|Maintainer: Baptiste Augrain <daiyam@zokugun.org>|g' resources/linux/debian/control.template
+  gsed -i -E 's|Homepage: https://code\.visualstudio\.com/|Homepage: https://github.com/zokugun/MrCode|g' resources/linux/debian/control.template
+  gsed -i -E 's|visual-studio-||g' resources/linux/debian/control.template
+  gsed -i -E 's|Description: .*|Description: Code editing.|g' resources/linux/debian/control.template
+  gsed -i -E 's|Visual Studio Code is a new choice.*$|MrCode is an editor based on Visual Studio Code.|g' resources/linux/debian/control.template
 
-# resources/linux/debian/postinst.template
-backup 'resources/linux/debian/postinst.template'
-gsed -i -E 's|"code"|"mrcode"|g' resources/linux/debian/postinst.template
-gsed -i -E 's|/code|/mrcode|g' resources/linux/debian/postinst.template
-gsed -i -E 's|vscode|mrcode|g' resources/linux/debian/postinst.template
+  # resources/linux/debian/postinst.template
+  backup 'resources/linux/debian/postinst.template'
+  gsed -i -E 's|"code"|"mrcode"|g' resources/linux/debian/postinst.template
+  gsed -i -E 's|/code|/mrcode|g' resources/linux/debian/postinst.template
+  gsed -i -E 's|vscode|mrcode|g' resources/linux/debian/postinst.template
 
-# resources/linux/snap/snapcraft.yaml
-backup 'resources/linux/snap/snapcraft.yaml'
-gsed -i -E 's|summary: .*|summary: MrCode. Code editing.|g' resources/linux/snap/snapcraft.yaml
-gsed -i -E '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based on Visual Studio Code.\n|g;}' resources/linux/snap/snapcraft.yaml
+  # resources/linux/snap/snapcraft.yaml
+  backup 'resources/linux/snap/snapcraft.yaml'
+  gsed -i -E 's|summary: .*|summary: MrCode. Code editing.|g' resources/linux/snap/snapcraft.yaml
+  gsed -i -E '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based on Visual Studio Code.\n|g;}' resources/linux/snap/snapcraft.yaml
 
-cd ../..
+  cd ..
+fi
+
+cd ..

@@ -238,10 +238,10 @@ jobs:
         run: ./update_version.sh
         if: env.SHOULD_BUILD == 'yes'
 
-      - name: Upload assets
-        uses: actions/upload-artifact@v4
-        with:
-          name: bin-${{ matrix.vscode_arch }}
-          path: vscodium/assets/
-          retention-days: 3
-        if: env.SHOULD_BUILD == 'yes'
+      # - name: Upload assets
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: bin-${{ matrix.vscode_arch }}
+      #     path: vscodium/assets/
+      #     retention-days: 3
+      #   if: env.SHOULD_BUILD == 'yes'

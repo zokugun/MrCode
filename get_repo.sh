@@ -12,66 +12,70 @@ else
 fi
 
 if [[ -z "${RELEASE_VERSION}" ]]; then
-    VSCODIUM_RELEASE=$( git tag -l --sort=-version:refname | head -1 )
+  if [[ "${VSCODE_LATEST}" == "yes" ]] || [[ ! -f "../upstream/${VSCODE_QUALITY}.json" ]]; then
+    echo "Retrieve lastest version"
 
-    if [[ "${VSCODIUM_RELEASE}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+$ ]];
-    then
-        MS_TAG="${BASH_REMATCH[1]}"
-    else
-        echo "Bad VSCODIUM_RELEASE: $VSCODIUM_RELEASE"
-        exit 1
-    fi
+    git pull origin master
 
-    DATE=$( date +%Y%j )
-    export RELEASE_VERSION="$MS_TAG.${DATE: -5}"
+    VSCODIUM_COMMIT=$( git log --no-show-signature --format="%H" -n 1 )
+    VSCODIUM_TAG=$( git tag -l --sort=-version:refname | head -1 )
+  else
+    echo "Get version from ${VSCODE_QUALITY}.json"
+    VSCODIUM_COMMIT=$( jq -r '.commit' "../upstream/${VSCODE_QUALITY}.json" )
+    VSCODIUM_TAG=$( jq -r '.tag' "../upstream/${VSCODE_QUALITY}.json" )
+  fi
+
+  if [[ "${VSCODIUM_TAG}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+$ ]];
+  then
+      MS_TAG="${BASH_REMATCH[1]}"
+  else
+      echo "Bad VSCodium tag: $VSCODIUM_TAG"
+      exit 1
+  fi
+
+  DATE=$( date +%Y%j )
+  RELEASE_VERSION="${MS_TAG}.${DATE: -5}"
+
+  git checkout $VSCODIUM_COMMIT
 else
     if [[ "${RELEASE_VERSION}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+$ ]];
     then
         MS_TAG="${BASH_REMATCH[1]}"
     else
-        echo "Bad RELEASE_VERSION: $RELEASE_VERSION"
+        echo "Bad Release version: $RELEASE_VERSION"
         exit 1
     fi
-fi
 
-# for GH actions
-if [[ $GITHUB_ENV ]]; then
-    echo "MS_TAG=$MS_TAG" >> $GITHUB_ENV
-    echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_ENV
-fi
+    if [[ "${MS_TAG}" == "$( jq -r '.tag' "../upstream/${VSCODE_QUALITY}.json" )" ]]; then
+      VSCODIUM_COMMIT=$( jq -r '.commit' "../upstream/${VSCODE_QUALITY}.json" )
+      VSCODIUM_TAG=$( jq -r '.tag' "../upstream/${VSCODE_QUALITY}.json" )
 
-echo "Release version: ${RELEASE_VERSION}"
+      git checkout $VSCODIUM_COMMIT
+    else
+      VSCODIUM_TAG=$( git tag -l --sort=-version:refname | grep "${MS_TAG}" | head -1 )
 
-if [[ ! -z "${VSCODIUM_LATEST}" ]]; then
-    git pull origin master
+      echo "Found VSCodium tag: ${VSCODIUM_TAG}"
 
-    VSCODIUM_COMMIT=$( git log --no-show-signature --format="%H" -n 1 )
+      git checkout $VSCODIUM_TAG
 
-    # for GH actions
-    if [[ $GITHUB_ENV ]]; then
-        echo "VSCODIUM_COMMIT=$VSCODIUM_COMMIT" >> $GITHUB_ENV
+      VSCODIUM_COMMIT=$( git log --no-show-signature --format="%H" -n 1 )
     fi
 fi
 
-if [[ -z "${VSCODIUM_COMMIT}" ]]; then
-    echo "Using VSCode tag: ${MS_TAG}"
-
-    VSCODIUM_RELEASE=$( git tag -l --sort=-version:refname | grep "${MS_TAG}" | head -1 )
-
-    echo "Found VSCodium tag: ${VSCODIUM_RELEASE}"
-
-    git checkout $VSCODIUM_RELEASE
-else
-    echo "Using VSCodium commit: ${VSCODIUM_COMMIT}"
-
-    git checkout $VSCODIUM_COMMIT
-fi
+echo "VSCODIUM_TAG=\"${VSCODIUM_TAG}\""
+echo "VSCODIUM_COMMIT=\"${VSCODIUM_COMMIT}\""
 
 cd ..
 
 # for GH actions
 if [[ "${GITHUB_ENV}" ]]; then
   echo "MS_TAG=${MS_TAG}" >> "${GITHUB_ENV}"
+  echo "VSCODIUM_TAG=${VSCODIUM_TAG}" >> "${GITHUB_ENV}"
   echo "VSCODIUM_COMMIT=${VSCODIUM_COMMIT}" >> "${GITHUB_ENV}"
   echo "RELEASE_VERSION=${RELEASE_VERSION}" >> "${GITHUB_ENV}"
 fi
+
+export MS_TAG
+export VSCODIUM_TAG
+export VSCODIUM_COMMIT
+export RELEASE_VERSION

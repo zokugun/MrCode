@@ -47,10 +47,6 @@ jobs:
           VSCODIUM_LATEST: ${{ github.event.inputs.vscodium_latest }}
         run: ./get_repo.sh
 
-      - name: Clone VSCode repo
-        working-directory: ./vscodium
-        run: ./get_repo.sh
-
       - name: Check existing VSCodium tags/releases
         env:
           CHECK_ALL: 'yes'
@@ -110,9 +106,8 @@ jobs:
         run: ./get_repo.sh
         if: env.SHOULD_BUILD == 'yes'
 
-      - name: Clone VSCode repo
-        working-directory: ./vscodium
-        run: ./get_repo.sh
+      - name: Prepare VSCodium
+        run: ./prepare.sh
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Build
@@ -194,8 +189,12 @@ jobs:
           ref: ${{ env.GITHUB_BRANCH }}
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
-      - name: Install GH
-        run: ./install_gh.sh
+      - name: Install libkrb5-dev
+        run: sudo apt-get update -y && sudo apt-get install -y libkrb5-dev
+        if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
+
+      - name: Clone VSCodium repo
+        run: ./get_repo.sh
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
       - name: Check existing VSCodium tags/releases
@@ -203,16 +202,18 @@ jobs:
           CHECK_REH: 'no'
           DISABLE_APPIMAGE: ${{ vars.DISABLE_STABLE_APPIMAGE }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ./vscodium
         run: ./check_tags.sh
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
-      - name: Install libkrb5-dev
-        run: sudo apt-get update -y && sudo apt-get install -y libkrb5-dev
+      - name: Install GH
+        working-directory: ./vscodium
+        run: ./install_gh.sh
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
-      - name: Clone VSCodium repo
-        run: ./get_repo.sh
-        if: env.DISABLED != 'yes'
+      - name: Prepare VSCodium
+        run: ./prepare.sh -r
+        if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
       - name: Download vscode artifact
         uses: actions/download-artifact@v4
@@ -254,13 +255,13 @@ jobs:
         run: ./update_version.sh
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
-      - name: Upload assets
-        uses: actions/upload-artifact@v4
-        with:
-          name: bin-${{ matrix.vscode_arch }}
-          path: vscodium/assets/
-          retention-days: 3
-        if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
+      # - name: Upload assets
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: bin-${{ matrix.vscode_arch }}
+      #     path: vscodium/assets/
+      #     retention-days: 3
+      #   if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
   reh_linux:
     needs:
@@ -336,18 +337,22 @@ jobs:
         run: ./get_repo.sh
         if: env.DISABLED != 'yes'
 
-      - name: Install GH
-        working-directory: ./vscodium
-        run: ./install_gh.sh
-        if: env.DISABLED != 'yes'
-
       - name: Check existing VSCodium tags/releases
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CHECK_ONLY_REH: 'yes'
-          working-directory: ./vscodium
+        working-directory: ./vscodium
         run: ./check_tags.sh
         if: env.DISABLED != 'yes'
+
+      - name: Install GH
+        working-directory: ./vscodium
+        run: ./install_gh.sh
+        if: env.DISABLED != 'yes' && (env.SHOULD_BUILD_REH != 'no' || env.SHOULD_BUILD_REH_WEB != 'no')
+
+      - name: Prepare VSCodium
+        run: ./prepare.sh -r
+        if: env.DISABLED != 'yes' && (env.SHOULD_BUILD_REH != 'no' || env.SHOULD_BUILD_REH_WEB != 'no')
 
       - name: Download vscode artifact
         uses: actions/download-artifact@v4
@@ -414,16 +419,11 @@ jobs:
 
       - name: Install libkrb5-dev
         run: sudo apt-get update -y && sudo apt-get install -y libkrb5-dev
-        if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
+        if: env.DISABLED != 'yes'
 
       - name: Clone VSCodium repo
         run: ./get_repo.sh
-        if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
-
-      - name: Install GH
-        working-directory: ./vscodium
-        run: ./install_gh.sh
-        if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
+        if: env.DISABLED != 'yes'
 
       - name: Check existing VSCodium tags/releases
         env:
@@ -432,6 +432,15 @@ jobs:
         working-directory: ./vscodium
         run: ./check_tags.sh
         if: env.DISABLED != 'yes'
+
+      - name: Install GH
+        working-directory: ./vscodium
+        run: ./install_gh.sh
+        if: env.DISABLED != 'yes' && (env.SHOULD_BUILD_REH != 'no' || env.SHOULD_BUILD_REH_WEB != 'no')
+
+      - name: Prepare VSCodium
+        run: ./prepare.sh -r
+        if: env.DISABLED != 'yes' && (env.SHOULD_BUILD_REH != 'no' || env.SHOULD_BUILD_REH_WEB != 'no')
 
       - name: Download vscode artifact
         uses: actions/download-artifact@v4
