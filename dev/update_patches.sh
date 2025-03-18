@@ -69,21 +69,31 @@ check_file() {
   done
 
   if [[ -f "${1}" ]]; then
-    echo applying patch: "${1}"
-    if ! git apply --ignore-whitespace "${1}"; then
-      echo failed to apply patch "${1}"
+    path=$(echo ${1%/*})
+    file=$(echo ${1##*/})
+
+    if [[ -f "${path}/${OS_NAME}/${file}" ]]; then
+      TARGET_FILE="${path}/${OS_NAME}/${file}"
+    else
+      TARGET_FILE="$1"
+    fi
+
+    echo "applying patch: ${TARGET_FILE}"
+
+    if ! git apply --ignore-whitespace "${TARGET_FILE}"; then
+      echo "failed to apply patch ${TARGET_FILE}"
 
       git apply --reject "../patches/helper/settings.patch"
 
       git add .
       git commit --no-verify -q -m "VSCODIUM HELPER"
 
-      git apply --reject "${1}"
+      git apply --reject "${TARGET_FILE}"
 
       read -rp "Press any key when the conflict have been resolved..." -n1 -s
 
       git add .
-      git diff --staged -U1 > "${1}"
+      git diff --staged -U1 > "${TARGET_FILE}"
 
       git reset -q --hard HEAD~
     fi
@@ -98,6 +108,10 @@ cd vscode || { echo "'vscode' dir not found"; exit 1; }
 
 git add .
 git reset -q --hard HEAD
+
+while [[ -n "$( git log -1 | grep "VSCODIUM HELPER" )" ]]; do
+  git reset -q --hard HEAD~
+done
 
 for FILE in ../../patches/*.patch; do
   check_file "${FILE}"

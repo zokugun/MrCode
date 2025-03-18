@@ -122,6 +122,10 @@ done
 if [[ "${DOWNLOAD_VSCODE}" == "yes" ]]; then
   cp ../patches/*.patch ./patches/user/
 
+  if [[ -d "../patches/${OS_NAME}/" ]]; then
+    cp "../patches/${OS_NAME}/"*.patch ./patches/user/
+  fi
+
   . get_repo.sh
 
   cd vscode || exit

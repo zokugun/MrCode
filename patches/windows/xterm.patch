@@ -129,7 +129,7 @@ index 1fa7cc3..ac428ad 100644
 +						'@daiyam/xterm-tab-headless' // node module allowed even in /common/ and /browser/
  					]
 diff --git a/package-lock.json b/package-lock.json
-index d8bddc4..90c3ff9 100644
+index d8bddc4..999523a 100644
 --- a/package-lock.json
 +++ b/package-lock.json
 @@ -12,2 +12,12 @@
@@ -145,7 +145,20 @@ index d8bddc4..90c3ff9 100644
 +        "@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.98.0",
 +        "@daiyam/xterm-tab-headless": "^5.6.0-beta.98.0",
          "@microsoft/1ds-core-js": "^3.2.13",
-@@ -987,2 +997,96 @@
+@@ -29,12 +39,2 @@
+         "@vscodium/policy-watcher": "^1.1.10-2503041159",
+-        "@xterm/addon-clipboard": "^0.2.0-beta.81",
+-        "@xterm/addon-image": "^0.9.0-beta.98",
+-        "@xterm/addon-ligatures": "^0.10.0-beta.98",
+-        "@xterm/addon-progress": "^0.2.0-beta.4",
+-        "@xterm/addon-search": "^0.16.0-beta.98",
+-        "@xterm/addon-serialize": "^0.14.0-beta.98",
+-        "@xterm/addon-unicode11": "^0.9.0-beta.98",
+-        "@xterm/addon-webgl": "^0.19.0-beta.98",
+-        "@xterm/headless": "^5.6.0-beta.98",
+-        "@xterm/xterm": "^5.6.0-beta.98",
+         "http-proxy-agent": "^7.0.0",
+@@ -987,2 +987,96 @@
      },
 +    "node_modules/@daiyam/xterm-tab": {
 +      "version": "5.6.0-beta.98.0",
@@ -242,7 +255,7 @@ index d8bddc4..90c3ff9 100644
 +      "license": "MIT"
 +    },
      "node_modules/@discoveryjs/json-ext": {
-@@ -3443,96 +3547,2 @@
+@@ -3443,96 +3537,2 @@
      },
 -    "node_modules/@xterm/addon-clipboard": {
 -      "version": "0.2.0-beta.81",
@@ -339,26 +352,6 @@ index d8bddc4..90c3ff9 100644
 -      "license": "MIT"
 -    },
      "node_modules/@xtuc/ieee754": {
-diff --git a/package-lock.json.rej b/package-lock.json.rej
-new file mode 100644
-index 0000000..2315932
---- /dev/null
-+++ b/package-lock.json.rej
-@@ -0,0 +1,14 @@
-+diff a/package-lock.json b/package-lock.json	(rejected hunks)
-+@@ -29,12 +39,2 @@
-+         "@vscode/windows-registry": "^1.1.0",
-+-        "@xterm/addon-clipboard": "^0.2.0-beta.81",
-+-        "@xterm/addon-image": "^0.9.0-beta.98",
-+-        "@xterm/addon-ligatures": "^0.10.0-beta.98",
-+-        "@xterm/addon-progress": "^0.2.0-beta.4",
-+-        "@xterm/addon-search": "^0.16.0-beta.98",
-+-        "@xterm/addon-serialize": "^0.14.0-beta.98",
-+-        "@xterm/addon-unicode11": "^0.9.0-beta.98",
-+-        "@xterm/addon-webgl": "^0.19.0-beta.98",
-+-        "@xterm/headless": "^5.6.0-beta.98",
-+-        "@xterm/xterm": "^5.6.0-beta.98",
-+         "http-proxy-agent": "^7.0.0",
 diff --git a/package.json b/package.json
 index b829ce9..3bc9fef 100644
 --- a/package.json
