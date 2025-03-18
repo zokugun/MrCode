@@ -94,7 +94,7 @@ gsed -i -E 's/PRODUCT_CODE="VSCodium/PRODUCT_CODE="MrCode/' build/windows/msi/bu
 gsed -i -E 's/PRODUCT_UPGRADE_CODE="965370CD-253C-4720-82FC-2E6B02A53808"/PRODUCT_UPGRADE_CODE="DB7C32FE-9AB3-422E-9A98-47B2361E24A6"/' build/windows/msi/build.sh
 gsed -i -E 's/PRODUCT_UPGRADE_CODE="1C9B7195-5A9A-43B3-B4BD-583E20498467"/PRODUCT_UPGRADE_CODE="C3A419D9-B4DF-489A-84CF-4AF763E08965"/' build/windows/msi/build.sh
 gsed -i -E 's/OUTPUT_BASE_FILENAME="VSCodium/OUTPUT_BASE_FILENAME="MrCode/' build/windows/msi/build.sh
-replace 's|dManufacturerName="VSCodium"|dManufacturerName="zokugun"|s' build/windows/msi/build.sh
+replace 's|dManufacturerName="VSCodium"|dManufacturerName="zokugun"|' build/windows/msi/build.sh
 
 # build/windows/msi/vscodium.wxs
 # backup 'build/windows/msi/vscodium.wxs'
