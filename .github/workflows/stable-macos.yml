@@ -86,9 +86,7 @@ jobs:
           CERTIFICATE_OSX_P12_PASSWORD: ${{ secrets.CERTIFICATE_OSX_P12_PASSWORD }}
           CERTIFICATE_OSX_TEAM_ID: ${{ secrets.CERTIFICATE_OSX_TEAM_ID }}
         working-directory: ./vscodium
-        run: |
-          sed -i -E "s|# security |security |" prepare_assets.sh
-          ./prepare_assets.sh
+        run: ./prepare_assets.sh
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Release
