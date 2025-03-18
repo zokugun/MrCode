@@ -94,14 +94,15 @@ gsed -i -E 's/PRODUCT_CODE="VSCodium/PRODUCT_CODE="MrCode/' build/windows/msi/bu
 gsed -i -E 's/PRODUCT_UPGRADE_CODE="965370CD-253C-4720-82FC-2E6B02A53808"/PRODUCT_UPGRADE_CODE="DB7C32FE-9AB3-422E-9A98-47B2361E24A6"/' build/windows/msi/build.sh
 gsed -i -E 's/PRODUCT_UPGRADE_CODE="1C9B7195-5A9A-43B3-B4BD-583E20498467"/PRODUCT_UPGRADE_CODE="C3A419D9-B4DF-489A-84CF-4AF763E08965"/' build/windows/msi/build.sh
 gsed -i -E 's/OUTPUT_BASE_FILENAME="VSCodium/OUTPUT_BASE_FILENAME="MrCode/' build/windows/msi/build.sh
+replace 's|dManufacturerName="VSCodium"|dManufacturerName="zokugun"|s' build/windows/msi/build.sh
 
 # build/windows/msi/vscodium.wxs
-backup 'build/windows/msi/vscodium.wxs'
+# backup 'build/windows/msi/vscodium.wxs'
 gsed -i -E 's/VSCodium/MrCode/g' build/windows/msi/vscodium.wxs
 gsed -i -E 's/VSCODIUM/MRCODE/g' build/windows/msi/vscodium.wxs
 
 # build/windows/msi/vscodium.xsl
-backup 'build/windows/msi/vscodium.xsl'
+# backup 'build/windows/msi/vscodium.xsl'
 gsed -i -E 's/VSCodium/MrCode/g' build/windows/msi/vscodium.xsl
 gsed -i -E 's/VSCODIUM/MRCODE/g' build/windows/msi/vscodium.xsl
 
@@ -112,15 +113,15 @@ Copyright (c) 2018-present The VSCodium contributors/' LICENSE
 
 for file in build/windows/msi/i18n/*.wxl; do
     if [ -f "$file" ]; then
-        backup "$file"
+        # backup "$file"
         gsed -i -E 's|https://github.com/VSCodium/vscodium|https://github.com/zokugun/MrCode|g' "$file"
         gsed -i -E 's/VSCodium/MrCode/g' "$file"
     fi
 done
 
-cp ../patches/*.patch ./patches/user/
-
 if [[ "${DOWNLOAD_VSCODE}" == "yes" ]]; then
+  cp ../patches/*.patch ./patches/user/
+
   . get_repo.sh
 
   cd vscode || exit
