@@ -90,6 +90,11 @@ if [[ "${SKIP_SOURCE}" == "no" ]]; then
   echo "VSCODIUM_COMMIT=\"${VSCODIUM_COMMIT}\"" >> build.env
   echo "RELEASE_VERSION=\"${RELEASE_VERSION}\"" >> build.env
   echo "BUILD_SOURCEVERSION=\"${BUILD_SOURCEVERSION}\"" >> build.env
+  echo "APP_NAME=\"${APP_NAME}\"" >> build.env
+  echo "APP_NAME_LC=\"${APP_NAME_LC}\"" >> build.env
+  echo "BINARY_NAME=\"${BINARY_NAME}\"" >> build.env
+  echo "GH_REPO_PATH=\"${GH_REPO_PATH}\"" >> build.env
+  echo "ORG_NAME=\"${ORG_NAME}\"" >> build.env
 else
   if [[ "${SKIP_ASSETS}" != "no" ]]; then
     rm -rf vscodium/VSCode*
@@ -138,7 +143,7 @@ if [[ "${SKIP_BUILD}" == "no" ]]; then
   cd ..
 
   if [[ "${VSCODIUM_LATEST}" == "yes" ]]; then
-    jsonTmp=$( cat "./upstream/${VSCODE_QUALITY}.json" | jq --arg 'tag' "${VSCODIUM_TAG}" --arg 'commit' "${VSCODIUM_COMMIT}" '. | .tag=$tag | .commit=$commit' )
+    jsonTmp=$( cat "./upstream/${VSCODE_QUALITY}.json" | jq --arg 'release' "${RELEASE_VERSION}" --arg 'tag' "${VSCODIUM_TAG}" --arg 'commit' "${VSCODIUM_COMMIT}" '. | .release=$release | .tag=$tag | .commit=$commit' )
     echo "${jsonTmp}" > "./upstream/${VSCODE_QUALITY}.json" && unset jsonTmp
   fi
 fi

@@ -31,8 +31,8 @@ cd vscodium || exit
 # prepare_vscode.sh {{{
 backup 'prepare_vscode.sh'
 
-replace 's|"updateUrl".*|"updateUrl" "https://mrcode.vercel.app"|' prepare_vscode.sh
-replace 's|"downloadUrl".*|"downloadUrl" "https://github.com/zokugun/MrCode"|' prepare_vscode.sh
+replace 's|"updateUrl".*|"updateUrl" "https://raw.githubusercontent.com/zokugun/MrCode-versions/refs/heads/master"|' prepare_vscode.sh
+replace 's|"downloadUrl".*|"downloadUrl" "https://github.com/zokugun/MrCode/releases"|' prepare_vscode.sh
 replace 's|"licenseUrl".*|"licenseUrl" "https://github.com/zokugun/MrCode/blob/master/LICENSE"|' prepare_vscode.sh
 replace 's|"reportIssueUrl".*|"reportIssueUrl" "https://github.com/zokugun/MrCode/issues/new"|' prepare_vscode.sh
 

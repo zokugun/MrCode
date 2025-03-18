@@ -88,9 +88,10 @@ jobs:
           GITHUB_USERNAME: ${{ github.repository_owner }}
         run: |
           cp vscodium/release_notes.txt .
-          sed -i -E "s|VSCodium/vscodium|zokugun/MrCode|" release_notes.txt
-          sed -i -E "s|VSCodium|MrCode|" release_notes.txt
-          sed -i -E "s|vscodium|mrcode|" release_notes.txt
+          sed -i -E "s|VSCodium/vscodium|zokugun/MrCode|g" release_notes.txt
+          sed -i -E "s|VSCodium|MrCode|g" release_notes.txt
+          sed -i -E "s|vscodium|mrcode|g" release_notes.txt
+          sed -i -E "s|codium|mrcode|g" release_notes.txt
           cp vscodium/release.sh .
           sed -i -E "s|./utils.sh|./vscodium/utils.sh|" release.sh
           ./release.sh

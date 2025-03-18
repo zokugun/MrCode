@@ -37,6 +37,18 @@ if [[ -z "${RELEASE_VERSION}" ]]; then
   RELEASE_VERSION="${MS_TAG}.${DATE: -5}"
 
   git checkout $VSCODIUM_COMMIT
+elif [[ "${RELEASE_VERSION}" == "$( jq -r '.release' "./upstream/${VSCODE_QUALITY}.json" )" ]]; then
+  echo "Get version from ${VSCODE_QUALITY}.json"
+  VSCODIUM_COMMIT=$( jq -r '.commit' "../upstream/${VSCODE_QUALITY}.json" )
+  VSCODIUM_TAG=$( jq -r '.tag' "../upstream/${VSCODE_QUALITY}.json" )
+
+  if [[ "${VSCODIUM_TAG}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+$ ]];
+  then
+      MS_TAG="${BASH_REMATCH[1]}"
+  else
+      echo "Bad VSCodium tag: $VSCODIUM_TAG"
+      exit 1
+  fi
 else
     if [[ "${RELEASE_VERSION}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+$ ]];
     then
