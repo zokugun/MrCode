@@ -130,12 +130,6 @@ if [[ "${DOWNLOAD_VSCODE}" == "yes" ]]; then
 
   cd vscode || exit
 
-  # resources/linux/code.appdata.xml
-  backup 'resources/linux/code.appdata.xml'
-  replace 's|<url type="homepage">https://code.visualstudio.com</url>|<url type="homepage">https://github.com/zokugun/MrCode</url>|g' resources/linux/code.appdata.xml
-  replace 's|<summary>.*</summary>|<summary>MrCode. Code editing.</summary>|g' resources/linux/code.appdata.xml
-  replace '{N; N; N; N; N; s|<description>.*</description>|<description><p>MrCode is an editor based on Visual Studio Code.</p></description>|g; }' resources/linux/code.appdata.xml
-
   # resources/linux/debian/control.template
   backup 'resources/linux/debian/control.template'
   replace 's|Maintainer: Microsoft Corporation <vscode-linux@microsoft\.com>|Maintainer: Baptiste Augrain <daiyam@zokugun.org>|g' resources/linux/debian/control.template
