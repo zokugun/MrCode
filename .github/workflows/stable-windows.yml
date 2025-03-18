@@ -107,9 +107,8 @@ jobs:
         run: ./get_repo.sh
         if: env.SHOULD_BUILD == 'yes'
 
-      - name: Clone VSCode repo
-        working-directory: ./vscodium
-        run: ./get_repo.sh
+      - name: Prepare VSCodium
+        run: ./prepare.sh
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Build
