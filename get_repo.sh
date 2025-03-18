@@ -37,7 +37,7 @@ if [[ -z "${RELEASE_VERSION}" ]]; then
   RELEASE_VERSION="${MS_TAG}.${DATE: -5}"
 
   git checkout $VSCODIUM_COMMIT
-elif [[ "${RELEASE_VERSION}" == "$( jq -r '.release' "./upstream/${VSCODE_QUALITY}.json" )" ]]; then
+elif [[ "${RELEASE_VERSION}" == "$( jq -r '.release' "../upstream/${VSCODE_QUALITY}.json" )" ]]; then
   echo "Get version from ${VSCODE_QUALITY}.json"
   VSCODIUM_COMMIT=$( jq -r '.commit' "../upstream/${VSCODE_QUALITY}.json" )
   VSCODIUM_TAG=$( jq -r '.tag' "../upstream/${VSCODE_QUALITY}.json" )
@@ -58,20 +58,13 @@ else
         exit 1
     fi
 
-    if [[ "${MS_TAG}" == "$( jq -r '.tag' "../upstream/${VSCODE_QUALITY}.json" )" ]]; then
-      VSCODIUM_COMMIT=$( jq -r '.commit' "../upstream/${VSCODE_QUALITY}.json" )
-      VSCODIUM_TAG=$( jq -r '.tag' "../upstream/${VSCODE_QUALITY}.json" )
+    VSCODIUM_TAG=$( git tag -l --sort=-version:refname | grep "${MS_TAG}" | head -1 )
 
-      git checkout $VSCODIUM_COMMIT
-    else
-      VSCODIUM_TAG=$( git tag -l --sort=-version:refname | grep "${MS_TAG}" | head -1 )
+    echo "Found VSCodium tag: ${VSCODIUM_TAG}"
 
-      echo "Found VSCodium tag: ${VSCODIUM_TAG}"
+    git checkout $VSCODIUM_TAG
 
-      git checkout $VSCODIUM_TAG
-
-      VSCODIUM_COMMIT=$( git log --no-show-signature --format="%H" -n 1 )
-    fi
+    VSCODIUM_COMMIT=$( git log --no-show-signature --format="%H" -n 1 )
 fi
 
 echo "VSCODIUM_TAG=\"${VSCODIUM_TAG}\""
