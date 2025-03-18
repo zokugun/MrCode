@@ -12,7 +12,7 @@ else
 fi
 
 if [[ -z "${RELEASE_VERSION}" ]]; then
-  if [[ "${VSCODE_LATEST}" == "yes" ]] || [[ ! -f "../upstream/${VSCODE_QUALITY}.json" ]]; then
+  if [[ "${VSCODIUM_LATEST}" == "yes" ]] || [[ ! -f "../upstream/${VSCODE_QUALITY}.json" ]]; then
     echo "Retrieve lastest version"
 
     git pull origin master
