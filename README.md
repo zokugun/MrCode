@@ -38,19 +38,19 @@ What's the difference?
 
 - render and copy tab characters in the terminal (https://github.com/daiyam/xterm-tab)
 
-Breaking Changes
-----------------
+Supported Platforms
+-------------------
 
-Since `1.75.0`, MrCode uses [OpenVSX](https://open-vsx.org/).
-
-You can use the extension [VSIX Manager](https://open-vsx.org/extension/zokugun/vsix-manager) to install extensions for others sources.
-
-Supported OS
-------------
-
-- [x] Windows 7, 8, 10 (`x64`, `x86`, `arm64`)
-- [x] macOS 10.10+ (`x64`)
-- [x] Linux (`AppImage`, `deb`, `rpm`, `tar.gz`) (`x64`, `arm64`, `armhf`)
+- [x] macOS (`zip`, `dmg`) macOS 10.15 or newer x64
+- [x] macOS (`zip`, `dmg`) macOS 11.0 or newer arm64
+- [x] GNU/Linux x64 (`deb`, `rpm`, `AppImage`, `snap`, `tar.gz`)
+- [x] GNU/Linux arm64 (`deb`, `rpm`, `snap`, `tar.gz`)
+- [x] GNU/Linux armhf (`deb`, `rpm`, `tar.gz`)
+- [x] GNU/Linux riscv64 (`tar.gz`)
+- [x] GNU/Linux loong64 (`tar.gz`)
+- [x] GNU/Linux ppc64le (`tar.gz`)
+- [x] Windows 10 / Server 2012 R2 or newer x64
+- [x] Windows 10 / Server 2012 R2 or newer arm64
 
 Supported App/Package Managers
 ------------------------------
