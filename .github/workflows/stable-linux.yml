@@ -465,6 +465,21 @@ jobs:
         run: ./release.sh
         if: env.DISABLED != 'yes' && (env.SHOULD_BUILD_REH != 'no' || env.SHOULD_BUILD_REH_WEB != 'no')
 
+  deploy-repo-dev:
+    needs:
+      - check
+      - build
+    runs-on: ubuntu-latest
+    if: needs.check.outputs.SHOULD_BUILD == 'yes'
+
+    steps:
+      - name: Trigger repository rebuild
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.STRONGER_GITHUB_TOKEN }}
+          repository: zokugun/MrCode-repo-linux
+          event-type: deploy
+
   # aur:
   #   needs:
   #     - build

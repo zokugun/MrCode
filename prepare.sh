@@ -32,7 +32,11 @@ cd vscodium || exit
 backup 'prepare_vscode.sh'
 
 replace 's|"updateUrl".*|"updateUrl" "https://raw.githubusercontent.com/zokugun/MrCode-versions/refs/heads/master"|' prepare_vscode.sh
-replace 's|"downloadUrl".*|"downloadUrl" "https://github.com/zokugun/MrCode/releases"|' prepare_vscode.sh
+if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
+  replace 's|"downloadUrl".*|"downloadUrl" "https://github.com/zokugun/MrCode-Insiders/releases"|' prepare_vscode.sh
+else
+  replace 's|"downloadUrl".*|"downloadUrl" "https://github.com/zokugun/MrCode/releases"|' prepare_vscode.sh
+fi
 replace 's|"licenseUrl".*|"licenseUrl" "https://github.com/zokugun/MrCode/blob/master/LICENSE"|' prepare_vscode.sh
 replace 's|"reportIssueUrl".*|"reportIssueUrl" "https://github.com/zokugun/MrCode/issues/new"|' prepare_vscode.sh
 
@@ -52,7 +56,9 @@ replace 's|"win32MutexName" "vscodium|"win32MutexName" "mrcode|' prepare_vscode.
 replace 's|"win32NameVersion" "VSCodium|"win32NameVersion" "MrCode|' prepare_vscode.sh
 replace 's|"win32RegValueName" "VSCodium|"win32RegValueName" "MrCode|' prepare_vscode.sh
 replace 's|"win32ShellNameShort" "VSCodium|"win32ShellNameShort" "MrCode|' prepare_vscode.sh
-
+replace 's|"tunnelApplicationName" "codium-tunnel(-insiders)?|"tunnelApplicationName" "mrcode-tunnel\1|' prepare_vscode.sh
+replace 's|"win32TunnelServiceMutex" "vscodium(insiders)?-tunnelservice|"win32TunnelServiceMutex" "mrcode\1-tunnelservice|' prepare_vscode.sh
+replace 's|"win32TunnelMutex" "vscodium(insiders)?-tunnel|"win32TunnelMutex" "mrcode\1-tunnel|' prepare_vscode.sh
 
 replace 's|"win32AppId" "\{\{763CBF88-25C6-4B10-952F-326AE657F16B\}"|"win32AppId" "{{0BD0DE9B-0738-49CE-97C6-75CED083CE4E}"|' prepare_vscode.sh
 replace 's|"win32x64AppId" "\{\{88DA3577-054F-4CA1-8122-7D820494CFFB\}"|"win32x64AppId" "{{09FF1437-F543-4CF3-9204-C4BB886DF9BE}"|' prepare_vscode.sh
@@ -74,6 +80,19 @@ replace 's|VSCodium Team https://github.com/VSCodium/vscodium/graphs/contributor
 replace '/"applicationName" "mrcode".*/a\
   setpath "product" "dataFolderName" ".mrcode"\
 ' prepare_vscode.sh
+
+replace 's|"resources/server/manifest" "name" "VSCodium|"resources/server/manifest" "name" "MrCode|' prepare_vscode.sh
+replace 's|"resources/server/manifest" "short_name" "VSCodium|"resources/server/manifest" "short_name" "MrCode|' prepare_vscode.sh
+
+# build_cli.sh
+backup 'build_cli.sh'
+
+replace 's|VSCODE_CLI_UPDATE_ENDPOINT=.*|VSCODE_CLI_UPDATE_ENDPOINT="https://raw.githubusercontent.com/zokugun/MrCode-versions/refs/heads/master"|' build_cli.sh
+if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
+  replace 's|VSCODE_CLI_DOWNLOAD_ENDPOINT=.*|VSCODE_CLI_DOWNLOAD_ENDPOINT="https://github.com/zokugun/MrCode-Insiders/releases"|' build_cli.sh
+else
+  replace 's|VSCODE_CLI_DOWNLOAD_ENDPOINT=.*|VSCODE_CLI_DOWNLOAD_ENDPOINT="https://github.com/zokugun/MrCode/releases"|' build_cli.sh
+fi
 
 # build/linux/appimage/recipe.yml
 backup 'build/linux/appimage/recipe.yml'

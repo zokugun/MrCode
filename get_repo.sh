@@ -25,7 +25,7 @@ if [[ -z "${RELEASE_VERSION}" ]]; then
     VSCODIUM_TAG=$( jq -r '.tag' "../upstream/${VSCODE_QUALITY}.json" )
   fi
 
-  if [[ "${VSCODIUM_TAG}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+$ ]];
+  if [[ "${VSCODIUM_TAG}" =~ ^([0-9]+\.[0-9]+\.[0-5])[0-9]+$ ]];
   then
       MS_TAG="${BASH_REMATCH[1]}"
   else
@@ -33,8 +33,13 @@ if [[ -z "${RELEASE_VERSION}" ]]; then
       exit 1
   fi
 
-  DATE=$( date +%Y%j )
-  RELEASE_VERSION="${MS_TAG}.${DATE: -5}"
+  TIME_PATCH=$( printf "%04d" $(($(date +%-j) * 24 + $(date +%-H))) )
+
+  if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
+    RELEASE_VERSION="${MS_TAG}${TIME_PATCH}-insider"
+  else
+    RELEASE_VERSION="${MS_TAG}${TIME_PATCH}"
+  fi
 
   git checkout $VSCODIUM_COMMIT
 elif [[ "${RELEASE_VERSION}" == "$( jq -r '.release' "../upstream/${VSCODE_QUALITY}.json" )" ]]; then
@@ -42,7 +47,7 @@ elif [[ "${RELEASE_VERSION}" == "$( jq -r '.release' "../upstream/${VSCODE_QUALI
   VSCODIUM_COMMIT=$( jq -r '.commit' "../upstream/${VSCODE_QUALITY}.json" )
   VSCODIUM_TAG=$( jq -r '.tag' "../upstream/${VSCODE_QUALITY}.json" )
 
-  if [[ "${VSCODIUM_TAG}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+$ ]];
+  if [[ "${VSCODIUM_TAG}" =~ ^([0-9]+\.[0-9]+\.[0-5])[0-9]+$ ]];
   then
       MS_TAG="${BASH_REMATCH[1]}"
   else
@@ -50,7 +55,7 @@ elif [[ "${RELEASE_VERSION}" == "$( jq -r '.release' "../upstream/${VSCODE_QUALI
       exit 1
   fi
 else
-    if [[ "${RELEASE_VERSION}" =~ ^([0-9]+\.[0-9]+\.[0-9]+)\.[0-9]+$ ]];
+    if [[ "${RELEASE_VERSION}" =~ ^([0-9]+\.[0-9]+\.[0-5])[0-9]+$ ]];
     then
         MS_TAG="${BASH_REMATCH[1]}"
     else
