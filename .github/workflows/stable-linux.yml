@@ -189,10 +189,6 @@ jobs:
           ref: ${{ env.GITHUB_BRANCH }}
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
-      - name: Install libkrb5-dev
-        run: sudo apt-get update -y && sudo apt-get install -y libkrb5-dev
-        if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
-
       - name: Clone VSCodium repo
         run: ./get_repo.sh
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
@@ -213,6 +209,14 @@ jobs:
 
       - name: Prepare VSCodium
         run: ./prepare.sh -r
+        if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
+
+      - name: Install dependencies
+        run: ./build/linux/deps.sh
+        working-directory: ./vscodium
+        if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
       - name: Download vscode artifact
