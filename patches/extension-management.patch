@@ -1,13 +1,13 @@
 diff --git a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
-index 749429a..8ef0ffa 100644
+index 61dd7ed..3a6beb4 100644
 --- a/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
 +++ b/src/vs/workbench/contrib/extensions/browser/extensions.contribution.ts
-@@ -10,3 +10,3 @@ import { MenuRegistry, MenuId, registerAction2, Action2, IMenuItem, IAction2Opti
+@@ -11,3 +11,3 @@ import { MenuRegistry, MenuId, registerAction2, Action2, IMenuItem, IAction2Opti
  import { InstantiationType, registerSingleton } from '../../../../platform/instantiation/common/extensions.js';
--import { ExtensionsLocalizedLabel, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, EXTENSION_INSTALL_SOURCE_CONTEXT, ExtensionInstallSource, UseUnpkgResourceApiConfigKey, AllowedExtensionsConfigKey, SortBy, FilterType } from '../../../../platform/extensionManagement/common/extensionManagement.js';
-+import { ExtensionsLocalizedLabel, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, EXTENSION_INSTALL_SOURCE_CONTEXT, ExtensionInstallSource, UseUnpkgResourceApiConfigKey, AllowedExtensionsConfigKey, SortBy, FilterType, IGlobalExtensionEnablementService } from '../../../../platform/extensionManagement/common/extensionManagement.js';
+-import { ExtensionsLocalizedLabel, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, EXTENSION_INSTALL_SOURCE_CONTEXT, ExtensionInstallSource, SortBy, FilterType, VerifyExtensionSignatureConfigKey } from '../../../../platform/extensionManagement/common/extensionManagement.js';
++import { ExtensionsLocalizedLabel, IExtensionManagementService, IExtensionGalleryService, PreferencesLocalizedLabel, EXTENSION_INSTALL_SOURCE_CONTEXT, ExtensionInstallSource, SortBy, FilterType, VerifyExtensionSignatureConfigKey, IGlobalExtensionEnablementService } from '../../../../platform/extensionManagement/common/extensionManagement.js';
  import { EnablementState, IExtensionManagementServerService, IPublisherInfo, IWorkbenchExtensionEnablementService, IWorkbenchExtensionManagementService } from '../../../services/extensionManagement/common/extensionManagement.js';
-@@ -540,2 +540,46 @@ CommandsRegistry.registerCommand({
+@@ -485,2 +485,46 @@ CommandsRegistry.registerCommand({
  
 +CommandsRegistry.registerCommand({
 +	id: 'workbench.extensions.disableExtension',

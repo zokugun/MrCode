@@ -60,7 +60,7 @@ jobs:
   compile:
     needs:
       - check
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       MS_COMMIT: ${{ needs.check.outputs.MS_COMMIT }}
       MS_TAG: ${{ needs.check.outputs.MS_TAG }}
@@ -86,7 +86,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
-          node-version: '20.18.2'
+          node-version-file: '.nvmrc'
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Install Yarn
@@ -140,7 +140,7 @@ jobs:
     needs:
       - check
       - compile
-    runs-on: windows-2019
+    runs-on: windows-2022
     strategy:
       fail-fast: false
       matrix:
@@ -170,7 +170,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v4
         with:
-          node-version: '20.18.2'
+          node-version-file: '.nvmrc'
         if: env.SHOULD_BUILD == 'yes'
 
       - name: Install Yarn
