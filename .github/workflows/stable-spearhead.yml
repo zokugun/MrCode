@@ -37,9 +37,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Install Yarn
-        run: npm install -g yarn
-
       - name: Clone VSCodium repo
         env:
           VSCODIUM_LATEST: ${{ github.event.inputs.lastest_vscodium == 'true' && 'yes' || 'no' }}

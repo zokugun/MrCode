@@ -47,9 +47,6 @@ jobs:
         with:
           node-version-file: '.nvmrc'
 
-      - name: Install Yarn
-        run: npm install -g yarn
-
       - name: Setup Python 3
         uses: actions/setup-python@v5
         with:
