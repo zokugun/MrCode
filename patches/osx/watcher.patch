@@ -1,0 +1,47 @@
+diff --git a/src/vs/platform/files/node/watcher/nodejs/nodejsWatcherLib.ts b/src/vs/platform/files/node/watcher/nodejs/nodejsWatcherLib.ts
+index f7f4357..643200e 100644
+--- a/src/vs/platform/files/node/watcher/nodejs/nodejsWatcherLib.ts
++++ b/src/vs/platform/files/node/watcher/nodejs/nodejsWatcherLib.ts
+@@ -20,2 +20,4 @@ import { Lazy } from '../../../../../base/common/lazy.js';
+ import { ParsedPattern } from '../../../../../base/common/glob.js';
++import path from 'path';
++import { execSync } from 'child_process';
+ 
+@@ -195,3 +197,3 @@ export class NodeJSFileWatcherLibrary extends Disposable {
+ 		// fixed or mitigated upstream.
+-		if (isMacintosh && isEqualOrParent(realPath, '/Volumes/', true)) {
++		if (isMacintosh && isEqualOrParent(realPath, '/Volumes/', true) && !isLocalShare(realPath)) {
+ 			this.error(`Refusing to watch ${realPath} for changes using fs.watch() for possibly being a network share where watching is unreliable and unstable.`);
+@@ -636 +638,31 @@ export async function watchFileContents(path: string, onData: (chunk: Uint8Array
+ }
++
++const LOCAL_TYPES = ['apfs', 'hfs', 'ufs', 'exfat', 'msdos', 'ext4', 'ext3', 'ext2', 'btrfs', 'xfs', 'zfs'];
++
++function isLocalShare(folderPath: string): boolean {
++	try {
++		const match = /^(\/Volumes\/[^\/]+)\//.exec(path.resolve(folderPath));
++
++		if(!match) {
++			return false
++		}
++
++		const result = execSync(`df -ahY "${match[0]}"`).toString();
++		const lines = result.trim().split('\n');
++
++		if (lines.length < 2) {
++			return false;
++		}
++
++		const columns = lines[1].split(/\s+/);
++		const fsType = columns[1];
++
++		if (!fsType) {
++			return false;
++		}
++
++		return LOCAL_TYPES.includes(fsType.toLowerCase());
++	} catch (error) {
++		return false;
++	}
++}
+\ No newline at end of file
