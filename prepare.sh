@@ -125,6 +125,11 @@ backup 'build/windows/msi/vscodium.xsl'
 replace 's/VSCodium/MrCode/g' build/windows/msi/vscodium.xsl
 replace 's/VSCODIUM/MRCODE/g' build/windows/msi/vscodium.xsl
 
+# # stores/snapcraft/${VSCODE_QUALITY}/snap/snapcraft.yaml
+# backup "stores/snapcraft/${VSCODE_QUALITY}/snap/snapcraft.yaml"
+# replace 's|summary: .*|summary: MrCode. Code editing.|g' "stores/snapcraft/${VSCODE_QUALITY}/snap/snapcraft.yaml"
+# replace '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based on Visual Studio Code.\n|g;}' "stores/snapcraft/${VSCODE_QUALITY}/snap/snapcraft.yaml"
+
 # LICENSE
 backup 'LICENSE'
 replace 's/.*The VSCodium contributors/Copyright (c) 2020-present Zokugun\
@@ -162,11 +167,6 @@ if [[ "${DOWNLOAD_VSCODE}" == "yes" ]]; then
   replace 's|"code"|"mrcode"|g' resources/linux/debian/postinst.template
   replace 's|/code|/mrcode|g' resources/linux/debian/postinst.template
   replace 's|vscode|mrcode|g' resources/linux/debian/postinst.template
-
-  # resources/linux/snap/snapcraft.yaml
-  backup 'resources/linux/snap/snapcraft.yaml'
-  replace 's|summary: .*|summary: MrCode. Code editing.|g' resources/linux/snap/snapcraft.yaml
-  replace '{N; N; N; s|Visual Studio Code.*\n.*\n.*|MrCode is an editor based on Visual Studio Code.\n|g;}' resources/linux/snap/snapcraft.yaml
 
   cd ..
 fi
