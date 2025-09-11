@@ -9,9 +9,9 @@ on:
       force_dispatch:
         type: boolean
         description: Force dispatch
-      lastest_vscodium:
+      dont_update:
         type: boolean
-        description: Use latest VSCodium
+        description: Don't update VSCodium
   schedule:
     - cron: '0 20 * * *'
 
@@ -28,6 +28,7 @@ jobs:
       VERSIONS_REPOSITORY: ${{ github.repository_owner }}/versions
       VSCODE_ARCH: arm64
       VSCODE_QUALITY: stable
+      VSCODIUM_LATEST: ${{ github.event.inputs.dont_update == 'true' && 'no' || 'yes' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -38,8 +39,6 @@ jobs:
           node-version-file: '.nvmrc'
 
       - name: Clone VSCodium repo
-        env:
-          VSCODIUM_LATEST: ${{ github.event.inputs.lastest_vscodium == 'true' && 'yes' || 'no' }}
         run: . get_repo.sh
 
       - name: Prepare VSCodium
