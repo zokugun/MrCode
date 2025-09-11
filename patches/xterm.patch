@@ -1,8 +1,8 @@
 diff --git a/.vscode/settings.json b/.vscode/settings.json
-index aa5143f..385a023 100644
+index d905af4..0685c15 100644
 --- a/.vscode/settings.json
 +++ b/.vscode/settings.json
-@@ -105,4 +105,4 @@
+@@ -113,4 +113,4 @@
  	"typescript.preferences.autoImportFileExcludePatterns": [
 -		"@xterm/xterm",
 -		"@xterm/headless",
@@ -30,10 +30,10 @@ index d9ee9f5..e839393 100644
 +@daiyam/xterm-tab-addon-*/out/**
 +@daiyam/xterm-tab-addon-*/out-test/**
 diff --git a/build/.webignore b/build/.webignore
-index 31c366c..a5dab4d 100644
+index 68f8721..2e2c79a 100644
 --- a/build/.webignore
 +++ b/build/.webignore
-@@ -20,22 +20,22 @@ vscode-textmate/webpack.config.js
+@@ -22,25 +22,25 @@ vscode-textmate/webpack.config.js
  
 -@xterm/xterm/src/**
 +@daiyam/xterm-tab/src/**
@@ -53,6 +53,11 @@ index 31c366c..a5dab4d 100644
 +@daiyam/xterm-tab-addon-ligatures/src/**
 +@daiyam/xterm-tab-addon-ligatures/out/**
  
+-@xterm/addon-progress/src/**
+-@xterm/addon-progress/out/**
++@daiyam/xterm-tab-addon-progress/src/**
++@daiyam/xterm-tab-addon-progress/out/**
+ 
 -@xterm/addon-search/src/**
 -@xterm/addon-search/out/**
 -@xterm/addon-search/fixtures/**
@@ -71,10 +76,10 @@ index 31c366c..a5dab4d 100644
 +@daiyam/xterm-tab-addon-webgl/out/**
  
 diff --git a/eslint.config.js b/eslint.config.js
-index 81e7f75..e225553 100644
+index 1eb07aa..cdf8425 100644
 --- a/eslint.config.js
 +++ b/eslint.config.js
-@@ -824,11 +824,11 @@ export default tseslint.config(
+@@ -822,11 +822,11 @@ export default tseslint.config(
  						'worker_threads',
 -						'@xterm/addon-clipboard',
 -						'@xterm/addon-image',
@@ -95,83 +100,83 @@ index 81e7f75..e225553 100644
 +						'@daiyam/xterm-tab-headless',
 +						'@daiyam/xterm-tab',
  						'yauzl',
-@@ -906,3 +906,3 @@ export default tseslint.config(
+@@ -904,3 +904,3 @@ export default tseslint.config(
  						'@microsoft/1ds-post-js', // node module allowed even in /common/
 -						'@xterm/headless' // node module allowed even in /common/
 +						'@daiyam/xterm-tab-headless' // node module allowed even in /common/
  					]
-@@ -1027,3 +1027,3 @@ export default tseslint.config(
+@@ -1025,3 +1025,3 @@ export default tseslint.config(
  							'when': 'hasBrowser',
 -							'pattern': '@xterm/xterm'
 +							'pattern': '@daiyam/xterm-tab'
  						} // node module allowed even in /browser/
-@@ -1048,3 +1048,3 @@ export default tseslint.config(
+@@ -1046,3 +1046,3 @@ export default tseslint.config(
  							'when': 'hasBrowser',
 -							'pattern': '@xterm/xterm'
 +							'pattern': '@daiyam/xterm-tab'
  						}, // node module allowed even in /browser/
-@@ -1052,3 +1052,3 @@ export default tseslint.config(
+@@ -1050,3 +1050,3 @@ export default tseslint.config(
  							'when': 'hasBrowser',
 -							'pattern': '@xterm/addon-*'
 +							'pattern': '@daiyam/xterm-tab-addon-*'
  						}, // node module allowed even in /browser/
-@@ -1077,3 +1077,3 @@ export default tseslint.config(
+@@ -1075,3 +1075,3 @@ export default tseslint.config(
  							'when': 'hasBrowser',
 -							'pattern': '@xterm/xterm'
 +							'pattern': '@daiyam/xterm-tab'
  						}, // node module allowed even in /browser/
-@@ -1081,3 +1081,3 @@ export default tseslint.config(
+@@ -1079,3 +1079,3 @@ export default tseslint.config(
  							'when': 'hasBrowser',
 -							'pattern': '@xterm/addon-*'
 +							'pattern': '@daiyam/xterm-tab-addon-*'
  						}, // node module allowed even in /browser/
-@@ -1087,3 +1087,3 @@ export default tseslint.config(
+@@ -1085,3 +1085,3 @@ export default tseslint.config(
  						}, // node module allowed even in /browser/
 -						'@xterm/headless' // node module allowed even in /common/ and /browser/
 +						'@daiyam/xterm-tab-headless' // node module allowed even in /common/ and /browser/
  					]
 diff --git a/package-lock.json b/package-lock.json
-index c03aa4a..1452bdb 100644
+index 24a462c..90b4673 100644
 --- a/package-lock.json
 +++ b/package-lock.json
 @@ -12,2 +12,12 @@
        "dependencies": {
-+        "@daiyam/xterm-tab": "^5.6.0-beta.112",
-+        "@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.95",
-+        "@daiyam/xterm-tab-addon-image": "^0.9.0-beta.112",
-+        "@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.112",
-+        "@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.18",
-+        "@daiyam/xterm-tab-addon-search": "^0.16.0-beta.112",
-+        "@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.112",
-+        "@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.112",
-+        "@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.112",
-+        "@daiyam/xterm-tab-headless": "^5.6.0-beta.112",
++        "@daiyam/xterm-tab": "^5.6.0-beta.118",
++        "@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.101",
++        "@daiyam/xterm-tab-addon-image": "^0.9.0-beta.118",
++        "@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.118",
++        "@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.24",
++        "@daiyam/xterm-tab-addon-search": "^0.16.0-beta.118",
++        "@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.118",
++        "@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.118",
++        "@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.118",
++        "@daiyam/xterm-tab-headless": "^5.6.0-beta.118",
          "@microsoft/1ds-core-js": "^3.2.13",
 @@ -29,12 +39,2 @@
          "@vscodium/policy-watcher": "^1.3.2-252465",
--        "@xterm/addon-clipboard": "^0.2.0-beta.95",
--        "@xterm/addon-image": "^0.9.0-beta.112",
--        "@xterm/addon-ligatures": "^0.10.0-beta.112",
--        "@xterm/addon-progress": "^0.2.0-beta.18",
--        "@xterm/addon-search": "^0.16.0-beta.112",
--        "@xterm/addon-serialize": "^0.14.0-beta.112",
--        "@xterm/addon-unicode11": "^0.9.0-beta.112",
--        "@xterm/addon-webgl": "^0.19.0-beta.112",
--        "@xterm/headless": "^5.6.0-beta.112",
--        "@xterm/xterm": "^5.6.0-beta.112",
+-        "@xterm/addon-clipboard": "^0.2.0-beta.101",
+-        "@xterm/addon-image": "^0.9.0-beta.118",
+-        "@xterm/addon-ligatures": "^0.10.0-beta.118",
+-        "@xterm/addon-progress": "^0.2.0-beta.24",
+-        "@xterm/addon-search": "^0.16.0-beta.118",
+-        "@xterm/addon-serialize": "^0.14.0-beta.118",
+-        "@xterm/addon-unicode11": "^0.9.0-beta.118",
+-        "@xterm/addon-webgl": "^0.19.0-beta.118",
+-        "@xterm/headless": "^5.6.0-beta.118",
+-        "@xterm/xterm": "^5.6.0-beta.118",
          "http-proxy-agent": "^7.0.0",
-@@ -813,2 +813,96 @@
+@@ -814,2 +814,96 @@
      },
 +    "node_modules/@daiyam/xterm-tab": {
-+      "version": "5.6.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab/-/xterm-tab-5.6.0-beta.112.0.tgz",
-+      "integrity": "sha512-TIunKPNOJqxv1Mn6WsceoZkWee03mkGjo01hDiGPwIZZHxLIf2a1fwZK0yWOP9UZ+GEMAHSWt8x/24UWb4lmHA==",
++      "version": "5.6.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab/-/xterm-tab-5.6.0-beta.118.0.tgz",
++      "integrity": "sha512-5yd6WoavlACOGm6uGSP2euYZ3nbM4W2r2qy5DnkJ/RL/EgLTvdSt87369G6hm7K3RPAZXZmZ54iNGGc+IB6KBg==",
 +      "license": "MIT"
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-clipboard": {
-+      "version": "0.2.0-beta.95.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-clipboard/-/xterm-tab-addon-clipboard-0.2.0-beta.95.0.tgz",
-+      "integrity": "sha512-seXxa5aOMoBIqE/ramg3R8f4Ic3/hXQruICHp/oFZUXyu6LbTCpZrFgJNg1gV2+9qisq16y98MBp665dR7vpOQ==",
++      "version": "0.2.0-beta.101.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-clipboard/-/xterm-tab-addon-clipboard-0.2.0-beta.101.0.tgz",
++      "integrity": "sha512-I75NOHLU3fM5EIEEOtVDmzgX/cRsmlQtKli3MxIP0hUJfVq9Un3TJjVFH6vG6+3Q1iBuNQ5JUxouoklHdrT5Dw==",
 +      "license": "MIT",
 +      "dependencies": {
 +        "js-base64": "^3.7.5"
@@ -181,18 +186,18 @@ index c03aa4a..1452bdb 100644
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-image": {
-+      "version": "0.9.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-image/-/xterm-tab-addon-image-0.9.0-beta.112.0.tgz",
-+      "integrity": "sha512-NErMQFHQc4R3dKdHtoAGORNNJFUvBVtgiMCaYMGIINUmxrSoGp5j2h3lSMcz9LY8KZksvLGUv+UObrhlgsUIFw==",
++      "version": "0.9.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-image/-/xterm-tab-addon-image-0.9.0-beta.118.0.tgz",
++      "integrity": "sha512-U+adEnSPRGoMxAvv1ASWq2HE/uMN1O2QR/Gs+ABVi+e7ne1L6ci6UAgIo6yTxV30mLNGjRAxoOZjAQQG0Dgdew==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.2.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-ligatures": {
-+      "version": "0.10.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-ligatures/-/xterm-tab-addon-ligatures-0.10.0-beta.112.0.tgz",
-+      "integrity": "sha512-updAAYCX3a/cm0+RHNAkbDbJZcmpFbCDwnrASr6ZOb1rZGGInJVcGABVe9JVP+kVuO2ZXUO+WO5r1+GvO9EfMA==",
++      "version": "0.10.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-ligatures/-/xterm-tab-addon-ligatures-0.10.0-beta.118.0.tgz",
++      "integrity": "sha512-JSXf4YQsSGnDQ0oKl28OJFcO6uC/ZN/LOPrL+8Hak3FF6WihRGEeolZ7EKKXPHxhqQ9LXoGLAW5wWRZVP+UMQg==",
 +      "license": "MIT",
 +      "dependencies": {
 +        "font-finder": "^1.1.0",
@@ -206,84 +211,84 @@ index c03aa4a..1452bdb 100644
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-progress": {
-+      "version": "0.2.0-beta.18.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-progress/-/xterm-tab-addon-progress-0.2.0-beta.18.0.tgz",
-+      "integrity": "sha512-sA3XZQo7DNzk+MfsnEDHWo49N/M0uRTqgfguZWenrs6TkfnImVu5ytkaJMilfI4okVSr2+/4X8e9ps/zHhIebA==",
++      "version": "0.2.0-beta.24.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-progress/-/xterm-tab-addon-progress-0.2.0-beta.24.0.tgz",
++      "integrity": "sha512-mKY1hO6longXjxcEeIwnfgVfWIDlO19et1GuJbhHZimJZlxxWp4VtF1ro/ysHwtVMknxNuvzCGSmPHC+OPbyjg==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.0.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-search": {
-+      "version": "0.16.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.16.0-beta.112.0.tgz",
-+      "integrity": "sha512-+IJwFVIWSQ2VrTTEjNHDnYRlb+eELecqRZp0pfEiGexaUbEx4WxiCRpqtqSV4OA5+LCarvFRArHC1x6oeTX1yw==",
++      "version": "0.16.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.16.0-beta.118.0.tgz",
++      "integrity": "sha512-HiE2j40zxAXz/phsdFjhXAPJ1CGAW7lJGlXYg44wKEQKNoBEwBmwwEEjn5KjINErHkx0DnUJ26aTXUwFTFUtUg==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.0.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-serialize": {
-+      "version": "0.14.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.14.0-beta.112.0.tgz",
-+      "integrity": "sha512-8AY3V1VemE4yM9bix7G9v1r9p++75KjWwWHnsoHNmiOnotfLkRlDy1+h4BpXwu6OxG0kVe4msf6OWlIh55EUcw==",
++      "version": "0.14.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.14.0-beta.118.0.tgz",
++      "integrity": "sha512-Zp7Lrm5kH7zukXEFI/hhmNwaK6xpsHCIMrbpUv3FJMcPTNwnThvDQIC1ZS/L+JG3YranjMMSmj8A8/qfRtYgrQ==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.0.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-unicode11": {
-+      "version": "0.9.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.9.0-beta.112.0.tgz",
-+      "integrity": "sha512-is7ybOyAoPlBK9+FdEO4QvhY+6Ti67+YZAt+6sbXGCPdoeVNxJQXwzAEQz2/FyZE46mx5W5NPCHBlOE4OHWR5w==",
++      "version": "0.9.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.9.0-beta.118.0.tgz",
++      "integrity": "sha512-DRqqQosE2uINJ3uaH4MMuas4Er0ksqoT1ksRGL3JlvZcTslAWZm/gZ5uXC3eidHj4izobsl1iDMV1o0HwY+owg==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.0.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-webgl": {
-+      "version": "0.19.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.19.0-beta.112.0.tgz",
-+      "integrity": "sha512-rER2/I8SH/a8xxnkr65soUy/xQc23MymJHQFE8maLJgrCxNDN/tIJIN8vgvFHxLLFAZrQq3MbEvPtM322Ne5Iw==",
++      "version": "0.19.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.19.0-beta.118.0.tgz",
++      "integrity": "sha512-6+Ff4wr1Da4GtJ3CnrxTWCi+cp5ryGE1+rXUeXDP+gduc2zIvQzQRpOGSqBrfJY682IrB3LphjEySVPulD9osw==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.0.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-headless": {
-+      "version": "5.6.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-headless/-/xterm-tab-headless-5.6.0-beta.112.0.tgz",
-+      "integrity": "sha512-jS6tQUSscehQbsw+Jns7JZ2vOQifxJbMTc3oDDnzdbzPhmV6mYlHkRGajIj104VZhpzBh+PWdpTS9x5XrfjR1g==",
++      "version": "5.6.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-headless/-/xterm-tab-headless-5.6.0-beta.118.0.tgz",
++      "integrity": "sha512-kb9JSKPoDpS8d2Dj0sVQJOAe5OK7+tIWs8Gm9nh/whlKvyV71gwiQNwssg0xiRpTNPzcGVzk00VRU8dghOaNrw==",
 +      "license": "MIT"
 +    },
      "node_modules/@discoveryjs/json-ext": {
-@@ -3793,96 +3887,2 @@
+@@ -3893,96 +3987,2 @@
      },
 -    "node_modules/@xterm/addon-clipboard": {
--      "version": "0.2.0-beta.95",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-clipboard/-/addon-clipboard-0.2.0-beta.95.tgz",
--      "integrity": "sha512-9OknmXeK+AD6FxdTNDY6B2CpP6tNGF1e+vLds6AjTeRJMLjY0GIqn93XY3oMGJJwuakcsG+F0zTOJNQZSmE6JA==",
+-      "version": "0.2.0-beta.101",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-clipboard/-/addon-clipboard-0.2.0-beta.101.tgz",
+-      "integrity": "sha512-Q20+bySNgX9gGb8NYidHah/TzoCyOm/0+Orea9+jwCHADN/dnqb0vzT0UIvxZckFFW4twZnjNps19rszWoGC0A==",
 -      "license": "MIT",
 -      "dependencies": {
 -        "js-base64": "^3.7.5"
 -      },
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-image": {
--      "version": "0.9.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-image/-/addon-image-0.9.0-beta.112.tgz",
--      "integrity": "sha512-MzZ3bGTUNeDy5nf55Toz0UEXFS+rW7l35K/IQBZ4NggTa0cT1h2/mbbllvwyuy4a3jwB0Eyi2woOV8hATTQHwQ==",
+-      "version": "0.9.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-image/-/addon-image-0.9.0-beta.118.tgz",
+-      "integrity": "sha512-PsFEO3VsP2PdZ3TunvJuQfgPX/xdDxBzbUJD5Lh74piY1vNfpUb4R3kypRwgKxn/HYH0+/mIzwmrlMyz8i57vQ==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-ligatures": {
--      "version": "0.10.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-ligatures/-/addon-ligatures-0.10.0-beta.112.tgz",
--      "integrity": "sha512-cXrEiNrjqR4EmWRc3xV0kcvkpC830eX3JIygQJQ5cvLJopaxqrN9WBGuBvsVYznPuDLkT2wqgBwCRM/FetY8ag==",
+-      "version": "0.10.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-ligatures/-/addon-ligatures-0.10.0-beta.118.tgz",
+-      "integrity": "sha512-ry8jZoyTky0TRr9uayaHXhkwwin7HFjO/J5aB/77iZbs+ES0QuZZKRWJCyk/07/RNlj3NjfxDq4ImJgUD34oGQ==",
 -      "license": "MIT",
 -      "dependencies": {
 -        "font-finder": "^1.1.0",
@@ -293,136 +298,136 @@ index c03aa4a..1452bdb 100644
 -        "node": ">8.0.0"
 -      },
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-progress": {
--      "version": "0.2.0-beta.18",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-progress/-/addon-progress-0.2.0-beta.18.tgz",
--      "integrity": "sha512-pOJlTVP9t38w7yBWzcwh97UC1dqKVWgpZ5yBZXVP/tkzzQlSqZ1iVdcCdOuPE08i+F2C3nU4cvwgSQYaRNIkow==",
+-      "version": "0.2.0-beta.24",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-progress/-/addon-progress-0.2.0-beta.24.tgz",
+-      "integrity": "sha512-ZDrgQQOtNuDYIPIbQCmPu+MdIEx3aob3jSxHu7j/SMIvBezXMGINFVk0g8ph9ARXldAydld2dUXyr9KdDtTHSA==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-search": {
--      "version": "0.16.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-search/-/addon-search-0.16.0-beta.112.tgz",
--      "integrity": "sha512-ZK+QC01H3+r4Kv4D7bPw8ARE8+Sgu0xbgtwofBIGXy1fgEymILt7xLCRv6b7P+W0xJ84/iSCGrs2aPNLixA7NA==",
+-      "version": "0.16.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-search/-/addon-search-0.16.0-beta.118.tgz",
+-      "integrity": "sha512-xZqu+0ip8wEFyGqLglqrWgjywcoc6EHGoqF2o94Qpjn/qlWYDFdbwQNLwVqF/awAxfOIvyqz7w6Z68QIbPTxWA==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-serialize": {
--      "version": "0.14.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-serialize/-/addon-serialize-0.14.0-beta.112.tgz",
--      "integrity": "sha512-aeX31ie3PU04qrTWm8qpNa32DDCvuN+QVs3J3M7yX8qeYEFtVtAChthBuGroUc5bT06/nI1+TGv453HZHFhiaA==",
+-      "version": "0.14.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-serialize/-/addon-serialize-0.14.0-beta.118.tgz",
+-      "integrity": "sha512-gcyP1Vv6GAsNgE0QfXs73XyZn1V7xxETnzjBVqTevhea580CBeE6bueI+L1WBk/ztg7PLF3W30jtQoyDgqyB7A==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-unicode11": {
--      "version": "0.9.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-unicode11/-/addon-unicode11-0.9.0-beta.112.tgz",
--      "integrity": "sha512-gPTEoWJsC7ReAuZ9Mv77QUw7gM2zJ7w1zy5LPGsCYpRdTB0R5SINqyvK0NRmGvHTxmZ0LP3bLl9yStBkU0KCgQ==",
+-      "version": "0.9.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-unicode11/-/addon-unicode11-0.9.0-beta.118.tgz",
+-      "integrity": "sha512-IjGBKjiopPk6hrplrd4FkOvx/94DJ6tJOXQtAyUUhpSHvQmrqEz+pWyx+K3u91OyRlsqgpdVCUfI1T9fG6V2Pg==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-webgl": {
--      "version": "0.19.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-webgl/-/addon-webgl-0.19.0-beta.112.tgz",
--      "integrity": "sha512-nxLXeI2nKal4zwpZrdRau3zdStDgn9PVD3f+y5NyWkCcSkPO8HyR5DuEQ964wgP2PFVEfYisLmnwD+GTvi9MXw==",
+-      "version": "0.19.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-webgl/-/addon-webgl-0.19.0-beta.118.tgz",
+-      "integrity": "sha512-l68STep6P7dCapAuzJGLKjmkDtIo6eNxRE3K9CXn2ni5epVO2e4dR5Pu0CRuY1BDHARqmFq5lU/ImaCOIWAn2g==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/headless": {
--      "version": "5.6.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/headless/-/headless-5.6.0-beta.112.tgz",
--      "integrity": "sha512-Al0MnluYCTdMEGHK+VTuFt1pV4GEo43nspfewdJUyrL19d1BX9oxMjCRKwGG8zsjHOh0n9yFCH70MJTRazQBnA==",
+-      "version": "5.6.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/headless/-/headless-5.6.0-beta.118.tgz",
+-      "integrity": "sha512-VUIlj6NvEmhi4PISiPhBAhPhEPcoSBYG39E3nuVHp2wvo02Z+2lig8WppVuwBMDk1EfBSo/MYa1YqPxVSqYNUQ==",
 -      "license": "MIT"
 -    },
 -    "node_modules/@xterm/xterm": {
--      "version": "5.6.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/xterm/-/xterm-5.6.0-beta.112.tgz",
--      "integrity": "sha512-cDbt8o5kkdPcij0a4dcvDUfIPcvkHKLJHW5M6yhIOMG/+ZNmyg0Ux+zinMh/Lcf1K+vbcdw+qcPP3p5CXI7XFg==",
+-      "version": "5.6.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/xterm/-/xterm-5.6.0-beta.118.tgz",
+-      "integrity": "sha512-uwqiQP4VH1uFl99wey7gjPRHOHd/ovot/Dh6YJNQk95aT3UjWunb/yHNQpkMD6X4i5Ysv97rn0GrO5DR0eLPXw==",
 -      "license": "MIT"
 -    },
      "node_modules/@xtuc/ieee754": {
 diff --git a/package.json b/package.json
-index 1ba66c6..c5de4b9 100644
+index 512ddab..1f3456b 100644
 --- a/package.json
 +++ b/package.json
-@@ -88,12 +88,12 @@
+@@ -89,12 +89,12 @@
      "@vscode/windows-registry": "^1.1.0",
--    "@xterm/addon-clipboard": "^0.2.0-beta.95",
--    "@xterm/addon-image": "^0.9.0-beta.112",
--    "@xterm/addon-ligatures": "^0.10.0-beta.112",
--    "@xterm/addon-progress": "^0.2.0-beta.18",
--    "@xterm/addon-search": "^0.16.0-beta.112",
--    "@xterm/addon-serialize": "^0.14.0-beta.112",
--    "@xterm/addon-unicode11": "^0.9.0-beta.112",
--    "@xterm/addon-webgl": "^0.19.0-beta.112",
--    "@xterm/headless": "^5.6.0-beta.112",
--    "@xterm/xterm": "^5.6.0-beta.112",
-+    "@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.95",
-+    "@daiyam/xterm-tab-addon-image": "^0.9.0-beta.112",
-+    "@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.112",
-+    "@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.18",
-+    "@daiyam/xterm-tab-addon-search": "^0.16.0-beta.112",
-+    "@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.112",
-+    "@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.112",
-+    "@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.112",
-+    "@daiyam/xterm-tab-headless": "^5.6.0-beta.112",
-+    "@daiyam/xterm-tab": "^5.6.0-beta.112",
+-    "@xterm/addon-clipboard": "^0.2.0-beta.101",
+-    "@xterm/addon-image": "^0.9.0-beta.118",
+-    "@xterm/addon-ligatures": "^0.10.0-beta.118",
+-    "@xterm/addon-progress": "^0.2.0-beta.24",
+-    "@xterm/addon-search": "^0.16.0-beta.118",
+-    "@xterm/addon-serialize": "^0.14.0-beta.118",
+-    "@xterm/addon-unicode11": "^0.9.0-beta.118",
+-    "@xterm/addon-webgl": "^0.19.0-beta.118",
+-    "@xterm/headless": "^5.6.0-beta.118",
+-    "@xterm/xterm": "^5.6.0-beta.118",
++    "@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.101",
++    "@daiyam/xterm-tab-addon-image": "^0.9.0-beta.118",
++    "@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.118",
++    "@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.24",
++    "@daiyam/xterm-tab-addon-search": "^0.16.0-beta.118",
++    "@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.118",
++    "@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.118",
++    "@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.118",
++    "@daiyam/xterm-tab-headless": "^5.6.0-beta.118",
++    "@daiyam/xterm-tab": "^5.6.0-beta.118",
      "http-proxy-agent": "^7.0.0",
 diff --git a/remote/package-lock.json b/remote/package-lock.json
-index a09aaf6..fb35519 100644
+index 76620ac..c595d7d 100644
 --- a/remote/package-lock.json
 +++ b/remote/package-lock.json
 @@ -10,2 +10,12 @@
        "dependencies": {
-+        "@daiyam/xterm-tab": "^5.6.0-beta.112",
-+        "@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.95",
-+        "@daiyam/xterm-tab-addon-image": "^0.9.0-beta.112",
-+        "@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.112",
-+        "@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.18",
-+        "@daiyam/xterm-tab-addon-search": "^0.16.0-beta.112",
-+        "@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.112",
-+        "@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.112",
-+        "@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.112",
-+        "@daiyam/xterm-tab-headless": "^5.6.0-beta.112",
++        "@daiyam/xterm-tab": "^5.6.0-beta.118",
++        "@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.101",
++        "@daiyam/xterm-tab-addon-image": "^0.9.0-beta.118",
++        "@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.118",
++        "@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.24",
++        "@daiyam/xterm-tab-addon-search": "^0.16.0-beta.118",
++        "@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.118",
++        "@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.118",
++        "@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.118",
++        "@daiyam/xterm-tab-headless": "^5.6.0-beta.118",
          "@microsoft/1ds-core-js": "^3.2.13",
 @@ -22,12 +32,2 @@
          "@vscode/windows-registry": "^1.1.0",
--        "@xterm/addon-clipboard": "^0.2.0-beta.95",
--        "@xterm/addon-image": "^0.9.0-beta.112",
--        "@xterm/addon-ligatures": "^0.10.0-beta.112",
--        "@xterm/addon-progress": "^0.2.0-beta.18",
--        "@xterm/addon-search": "^0.16.0-beta.112",
--        "@xterm/addon-serialize": "^0.14.0-beta.112",
--        "@xterm/addon-unicode11": "^0.9.0-beta.112",
--        "@xterm/addon-webgl": "^0.19.0-beta.112",
--        "@xterm/headless": "^5.6.0-beta.112",
--        "@xterm/xterm": "^5.6.0-beta.112",
+-        "@xterm/addon-clipboard": "^0.2.0-beta.101",
+-        "@xterm/addon-image": "^0.9.0-beta.118",
+-        "@xterm/addon-ligatures": "^0.10.0-beta.118",
+-        "@xterm/addon-progress": "^0.2.0-beta.24",
+-        "@xterm/addon-search": "^0.16.0-beta.118",
+-        "@xterm/addon-serialize": "^0.14.0-beta.118",
+-        "@xterm/addon-unicode11": "^0.9.0-beta.118",
+-        "@xterm/addon-webgl": "^0.19.0-beta.118",
+-        "@xterm/headless": "^5.6.0-beta.118",
+-        "@xterm/xterm": "^5.6.0-beta.118",
          "cookie": "^0.7.0",
-@@ -49,2 +49,96 @@
+@@ -50,2 +50,96 @@
      },
 +    "node_modules/@daiyam/xterm-tab": {
-+      "version": "5.6.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab/-/xterm-tab-5.6.0-beta.112.0.tgz",
-+      "integrity": "sha512-TIunKPNOJqxv1Mn6WsceoZkWee03mkGjo01hDiGPwIZZHxLIf2a1fwZK0yWOP9UZ+GEMAHSWt8x/24UWb4lmHA==",
++      "version": "5.6.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab/-/xterm-tab-5.6.0-beta.118.0.tgz",
++      "integrity": "sha512-5yd6WoavlACOGm6uGSP2euYZ3nbM4W2r2qy5DnkJ/RL/EgLTvdSt87369G6hm7K3RPAZXZmZ54iNGGc+IB6KBg==",
 +      "license": "MIT"
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-clipboard": {
-+      "version": "0.2.0-beta.95.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-clipboard/-/xterm-tab-addon-clipboard-0.2.0-beta.95.0.tgz",
-+      "integrity": "sha512-seXxa5aOMoBIqE/ramg3R8f4Ic3/hXQruICHp/oFZUXyu6LbTCpZrFgJNg1gV2+9qisq16y98MBp665dR7vpOQ==",
++      "version": "0.2.0-beta.101.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-clipboard/-/xterm-tab-addon-clipboard-0.2.0-beta.101.0.tgz",
++      "integrity": "sha512-I75NOHLU3fM5EIEEOtVDmzgX/cRsmlQtKli3MxIP0hUJfVq9Un3TJjVFH6vG6+3Q1iBuNQ5JUxouoklHdrT5Dw==",
 +      "license": "MIT",
 +      "dependencies": {
 +        "js-base64": "^3.7.5"
@@ -432,18 +437,18 @@ index a09aaf6..fb35519 100644
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-image": {
-+      "version": "0.9.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-image/-/xterm-tab-addon-image-0.9.0-beta.112.0.tgz",
-+      "integrity": "sha512-NErMQFHQc4R3dKdHtoAGORNNJFUvBVtgiMCaYMGIINUmxrSoGp5j2h3lSMcz9LY8KZksvLGUv+UObrhlgsUIFw==",
++      "version": "0.9.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-image/-/xterm-tab-addon-image-0.9.0-beta.118.0.tgz",
++      "integrity": "sha512-U+adEnSPRGoMxAvv1ASWq2HE/uMN1O2QR/Gs+ABVi+e7ne1L6ci6UAgIo6yTxV30mLNGjRAxoOZjAQQG0Dgdew==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.2.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-ligatures": {
-+      "version": "0.10.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-ligatures/-/xterm-tab-addon-ligatures-0.10.0-beta.112.0.tgz",
-+      "integrity": "sha512-updAAYCX3a/cm0+RHNAkbDbJZcmpFbCDwnrASr6ZOb1rZGGInJVcGABVe9JVP+kVuO2ZXUO+WO5r1+GvO9EfMA==",
++      "version": "0.10.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-ligatures/-/xterm-tab-addon-ligatures-0.10.0-beta.118.0.tgz",
++      "integrity": "sha512-JSXf4YQsSGnDQ0oKl28OJFcO6uC/ZN/LOPrL+8Hak3FF6WihRGEeolZ7EKKXPHxhqQ9LXoGLAW5wWRZVP+UMQg==",
 +      "license": "MIT",
 +      "dependencies": {
 +        "font-finder": "^1.1.0",
@@ -457,84 +462,84 @@ index a09aaf6..fb35519 100644
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-progress": {
-+      "version": "0.2.0-beta.18.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-progress/-/xterm-tab-addon-progress-0.2.0-beta.18.0.tgz",
-+      "integrity": "sha512-sA3XZQo7DNzk+MfsnEDHWo49N/M0uRTqgfguZWenrs6TkfnImVu5ytkaJMilfI4okVSr2+/4X8e9ps/zHhIebA==",
++      "version": "0.2.0-beta.24.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-progress/-/xterm-tab-addon-progress-0.2.0-beta.24.0.tgz",
++      "integrity": "sha512-mKY1hO6longXjxcEeIwnfgVfWIDlO19et1GuJbhHZimJZlxxWp4VtF1ro/ysHwtVMknxNuvzCGSmPHC+OPbyjg==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.0.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-search": {
-+      "version": "0.16.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.16.0-beta.112.0.tgz",
-+      "integrity": "sha512-+IJwFVIWSQ2VrTTEjNHDnYRlb+eELecqRZp0pfEiGexaUbEx4WxiCRpqtqSV4OA5+LCarvFRArHC1x6oeTX1yw==",
++      "version": "0.16.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.16.0-beta.118.0.tgz",
++      "integrity": "sha512-HiE2j40zxAXz/phsdFjhXAPJ1CGAW7lJGlXYg44wKEQKNoBEwBmwwEEjn5KjINErHkx0DnUJ26aTXUwFTFUtUg==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.0.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-serialize": {
-+      "version": "0.14.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.14.0-beta.112.0.tgz",
-+      "integrity": "sha512-8AY3V1VemE4yM9bix7G9v1r9p++75KjWwWHnsoHNmiOnotfLkRlDy1+h4BpXwu6OxG0kVe4msf6OWlIh55EUcw==",
++      "version": "0.14.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.14.0-beta.118.0.tgz",
++      "integrity": "sha512-Zp7Lrm5kH7zukXEFI/hhmNwaK6xpsHCIMrbpUv3FJMcPTNwnThvDQIC1ZS/L+JG3YranjMMSmj8A8/qfRtYgrQ==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.0.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-unicode11": {
-+      "version": "0.9.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.9.0-beta.112.0.tgz",
-+      "integrity": "sha512-is7ybOyAoPlBK9+FdEO4QvhY+6Ti67+YZAt+6sbXGCPdoeVNxJQXwzAEQz2/FyZE46mx5W5NPCHBlOE4OHWR5w==",
++      "version": "0.9.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.9.0-beta.118.0.tgz",
++      "integrity": "sha512-DRqqQosE2uINJ3uaH4MMuas4Er0ksqoT1ksRGL3JlvZcTslAWZm/gZ5uXC3eidHj4izobsl1iDMV1o0HwY+owg==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.0.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-addon-webgl": {
-+      "version": "0.19.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.19.0-beta.112.0.tgz",
-+      "integrity": "sha512-rER2/I8SH/a8xxnkr65soUy/xQc23MymJHQFE8maLJgrCxNDN/tIJIN8vgvFHxLLFAZrQq3MbEvPtM322Ne5Iw==",
++      "version": "0.19.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.19.0-beta.118.0.tgz",
++      "integrity": "sha512-6+Ff4wr1Da4GtJ3CnrxTWCi+cp5ryGE1+rXUeXDP+gduc2zIvQzQRpOGSqBrfJY682IrB3LphjEySVPulD9osw==",
 +      "license": "MIT",
 +      "peerDependencies": {
 +        "@daiyam/xterm-tab": "^5.0.0"
 +      }
 +    },
 +    "node_modules/@daiyam/xterm-tab-headless": {
-+      "version": "5.6.0-beta.112.0",
-+      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-headless/-/xterm-tab-headless-5.6.0-beta.112.0.tgz",
-+      "integrity": "sha512-jS6tQUSscehQbsw+Jns7JZ2vOQifxJbMTc3oDDnzdbzPhmV6mYlHkRGajIj104VZhpzBh+PWdpTS9x5XrfjR1g==",
++      "version": "5.6.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-headless/-/xterm-tab-headless-5.6.0-beta.118.0.tgz",
++      "integrity": "sha512-kb9JSKPoDpS8d2Dj0sVQJOAe5OK7+tIWs8Gm9nh/whlKvyV71gwiQNwssg0xiRpTNPzcGVzk00VRU8dghOaNrw==",
 +      "license": "MIT"
 +    },
      "node_modules/@microsoft/1ds-core-js": {
-@@ -525,96 +619,2 @@
+@@ -526,96 +620,2 @@
      },
 -    "node_modules/@xterm/addon-clipboard": {
--      "version": "0.2.0-beta.95",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-clipboard/-/addon-clipboard-0.2.0-beta.95.tgz",
--      "integrity": "sha512-9OknmXeK+AD6FxdTNDY6B2CpP6tNGF1e+vLds6AjTeRJMLjY0GIqn93XY3oMGJJwuakcsG+F0zTOJNQZSmE6JA==",
+-      "version": "0.2.0-beta.101",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-clipboard/-/addon-clipboard-0.2.0-beta.101.tgz",
+-      "integrity": "sha512-Q20+bySNgX9gGb8NYidHah/TzoCyOm/0+Orea9+jwCHADN/dnqb0vzT0UIvxZckFFW4twZnjNps19rszWoGC0A==",
 -      "license": "MIT",
 -      "dependencies": {
 -        "js-base64": "^3.7.5"
 -      },
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-image": {
--      "version": "0.9.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-image/-/addon-image-0.9.0-beta.112.tgz",
--      "integrity": "sha512-MzZ3bGTUNeDy5nf55Toz0UEXFS+rW7l35K/IQBZ4NggTa0cT1h2/mbbllvwyuy4a3jwB0Eyi2woOV8hATTQHwQ==",
+-      "version": "0.9.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-image/-/addon-image-0.9.0-beta.118.tgz",
+-      "integrity": "sha512-PsFEO3VsP2PdZ3TunvJuQfgPX/xdDxBzbUJD5Lh74piY1vNfpUb4R3kypRwgKxn/HYH0+/mIzwmrlMyz8i57vQ==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-ligatures": {
--      "version": "0.10.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-ligatures/-/addon-ligatures-0.10.0-beta.112.tgz",
--      "integrity": "sha512-cXrEiNrjqR4EmWRc3xV0kcvkpC830eX3JIygQJQ5cvLJopaxqrN9WBGuBvsVYznPuDLkT2wqgBwCRM/FetY8ag==",
+-      "version": "0.10.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-ligatures/-/addon-ligatures-0.10.0-beta.118.tgz",
+-      "integrity": "sha512-ry8jZoyTky0TRr9uayaHXhkwwin7HFjO/J5aB/77iZbs+ES0QuZZKRWJCyk/07/RNlj3NjfxDq4ImJgUD34oGQ==",
 -      "license": "MIT",
 -      "dependencies": {
 -        "font-finder": "^1.1.0",
@@ -544,329 +549,329 @@ index a09aaf6..fb35519 100644
 -        "node": ">8.0.0"
 -      },
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-progress": {
--      "version": "0.2.0-beta.18",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-progress/-/addon-progress-0.2.0-beta.18.tgz",
--      "integrity": "sha512-pOJlTVP9t38w7yBWzcwh97UC1dqKVWgpZ5yBZXVP/tkzzQlSqZ1iVdcCdOuPE08i+F2C3nU4cvwgSQYaRNIkow==",
+-      "version": "0.2.0-beta.24",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-progress/-/addon-progress-0.2.0-beta.24.tgz",
+-      "integrity": "sha512-ZDrgQQOtNuDYIPIbQCmPu+MdIEx3aob3jSxHu7j/SMIvBezXMGINFVk0g8ph9ARXldAydld2dUXyr9KdDtTHSA==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-search": {
--      "version": "0.16.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-search/-/addon-search-0.16.0-beta.112.tgz",
--      "integrity": "sha512-ZK+QC01H3+r4Kv4D7bPw8ARE8+Sgu0xbgtwofBIGXy1fgEymILt7xLCRv6b7P+W0xJ84/iSCGrs2aPNLixA7NA==",
+-      "version": "0.16.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-search/-/addon-search-0.16.0-beta.118.tgz",
+-      "integrity": "sha512-xZqu+0ip8wEFyGqLglqrWgjywcoc6EHGoqF2o94Qpjn/qlWYDFdbwQNLwVqF/awAxfOIvyqz7w6Z68QIbPTxWA==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-serialize": {
--      "version": "0.14.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-serialize/-/addon-serialize-0.14.0-beta.112.tgz",
--      "integrity": "sha512-aeX31ie3PU04qrTWm8qpNa32DDCvuN+QVs3J3M7yX8qeYEFtVtAChthBuGroUc5bT06/nI1+TGv453HZHFhiaA==",
+-      "version": "0.14.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-serialize/-/addon-serialize-0.14.0-beta.118.tgz",
+-      "integrity": "sha512-gcyP1Vv6GAsNgE0QfXs73XyZn1V7xxETnzjBVqTevhea580CBeE6bueI+L1WBk/ztg7PLF3W30jtQoyDgqyB7A==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-unicode11": {
--      "version": "0.9.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-unicode11/-/addon-unicode11-0.9.0-beta.112.tgz",
--      "integrity": "sha512-gPTEoWJsC7ReAuZ9Mv77QUw7gM2zJ7w1zy5LPGsCYpRdTB0R5SINqyvK0NRmGvHTxmZ0LP3bLl9yStBkU0KCgQ==",
+-      "version": "0.9.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-unicode11/-/addon-unicode11-0.9.0-beta.118.tgz",
+-      "integrity": "sha512-IjGBKjiopPk6hrplrd4FkOvx/94DJ6tJOXQtAyUUhpSHvQmrqEz+pWyx+K3u91OyRlsqgpdVCUfI1T9fG6V2Pg==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/addon-webgl": {
--      "version": "0.19.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/addon-webgl/-/addon-webgl-0.19.0-beta.112.tgz",
--      "integrity": "sha512-nxLXeI2nKal4zwpZrdRau3zdStDgn9PVD3f+y5NyWkCcSkPO8HyR5DuEQ964wgP2PFVEfYisLmnwD+GTvi9MXw==",
+-      "version": "0.19.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-webgl/-/addon-webgl-0.19.0-beta.118.tgz",
+-      "integrity": "sha512-l68STep6P7dCapAuzJGLKjmkDtIo6eNxRE3K9CXn2ni5epVO2e4dR5Pu0CRuY1BDHARqmFq5lU/ImaCOIWAn2g==",
 -      "license": "MIT",
 -      "peerDependencies": {
--        "@xterm/xterm": "^5.6.0-beta.112"
+-        "@xterm/xterm": "^5.6.0-beta.118"
 -      }
 -    },
 -    "node_modules/@xterm/headless": {
--      "version": "5.6.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/headless/-/headless-5.6.0-beta.112.tgz",
--      "integrity": "sha512-Al0MnluYCTdMEGHK+VTuFt1pV4GEo43nspfewdJUyrL19d1BX9oxMjCRKwGG8zsjHOh0n9yFCH70MJTRazQBnA==",
+-      "version": "5.6.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/headless/-/headless-5.6.0-beta.118.tgz",
+-      "integrity": "sha512-VUIlj6NvEmhi4PISiPhBAhPhEPcoSBYG39E3nuVHp2wvo02Z+2lig8WppVuwBMDk1EfBSo/MYa1YqPxVSqYNUQ==",
 -      "license": "MIT"
 -    },
 -    "node_modules/@xterm/xterm": {
--      "version": "5.6.0-beta.112",
--      "resolved": "https://registry.npmjs.org/@xterm/xterm/-/xterm-5.6.0-beta.112.tgz",
--      "integrity": "sha512-cDbt8o5kkdPcij0a4dcvDUfIPcvkHKLJHW5M6yhIOMG/+ZNmyg0Ux+zinMh/Lcf1K+vbcdw+qcPP3p5CXI7XFg==",
+-      "version": "5.6.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/xterm/-/xterm-5.6.0-beta.118.tgz",
+-      "integrity": "sha512-uwqiQP4VH1uFl99wey7gjPRHOHd/ovot/Dh6YJNQk95aT3UjWunb/yHNQpkMD6X4i5Ysv97rn0GrO5DR0eLPXw==",
 -      "license": "MIT"
 -    },
      "node_modules/agent-base": {
 diff --git a/remote/package.json b/remote/package.json
-index 1f628d3..9f0b225 100644
+index b430c67..469e495 100644
 --- a/remote/package.json
 +++ b/remote/package.json
 @@ -17,12 +17,12 @@
      "@vscode/windows-registry": "^1.1.0",
--    "@xterm/addon-clipboard": "^0.2.0-beta.95",
--    "@xterm/addon-image": "^0.9.0-beta.112",
--    "@xterm/addon-ligatures": "^0.10.0-beta.112",
--    "@xterm/addon-progress": "^0.2.0-beta.18",
--    "@xterm/addon-search": "^0.16.0-beta.112",
--    "@xterm/addon-serialize": "^0.14.0-beta.112",
--    "@xterm/addon-unicode11": "^0.9.0-beta.112",
--    "@xterm/addon-webgl": "^0.19.0-beta.112",
--    "@xterm/headless": "^5.6.0-beta.112",
--    "@xterm/xterm": "^5.6.0-beta.112",
-+    "@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.95",
-+    "@daiyam/xterm-tab-addon-image": "^0.9.0-beta.112",
-+    "@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.112",
-+    "@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.18",
-+    "@daiyam/xterm-tab-addon-search": "^0.16.0-beta.112",
-+    "@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.112",
-+    "@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.112",
-+    "@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.112",
-+    "@daiyam/xterm-tab-headless": "^5.6.0-beta.112",
-+    "@daiyam/xterm-tab": "^5.6.0-beta.112",
+-    "@xterm/addon-clipboard": "^0.2.0-beta.101",
+-    "@xterm/addon-image": "^0.9.0-beta.118",
+-    "@xterm/addon-ligatures": "^0.10.0-beta.118",
+-    "@xterm/addon-progress": "^0.2.0-beta.24",
+-    "@xterm/addon-search": "^0.16.0-beta.118",
+-    "@xterm/addon-serialize": "^0.14.0-beta.118",
+-    "@xterm/addon-unicode11": "^0.9.0-beta.118",
+-    "@xterm/addon-webgl": "^0.19.0-beta.118",
+-    "@xterm/headless": "^5.6.0-beta.118",
+-    "@xterm/xterm": "^5.6.0-beta.118",
++    "@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.101",
++    "@daiyam/xterm-tab-addon-image": "^0.9.0-beta.118",
++    "@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.118",
++    "@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.24",
++    "@daiyam/xterm-tab-addon-search": "^0.16.0-beta.118",
++    "@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.118",
++    "@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.118",
++    "@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.118",
++    "@daiyam/xterm-tab-headless": "^5.6.0-beta.118",
++    "@daiyam/xterm-tab": "^5.6.0-beta.118",
      "cookie": "^0.7.0",
 diff --git a/remote/web/package-lock.json b/remote/web/package-lock.json
-index 170a65c..24618a3 100644
+index 19ca9f4..ef0c8be 100644
 --- a/remote/web/package-lock.json
 +++ b/remote/web/package-lock.json
 @@ -10,2 +10,11 @@
- 			"dependencies": {
-+				"@daiyam/xterm-tab": "^5.6.0-beta.112",
-+				"@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.95",
-+				"@daiyam/xterm-tab-addon-image": "^0.9.0-beta.112",
-+				"@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.112",
-+				"@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.18",
-+				"@daiyam/xterm-tab-addon-search": "^0.16.0-beta.112",
-+				"@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.112",
-+				"@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.112",
-+				"@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.112",
- 				"@microsoft/1ds-core-js": "^3.2.13",
+       "dependencies": {
++        "@daiyam/xterm-tab": "^5.6.0-beta.118",
++        "@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.101",
++        "@daiyam/xterm-tab-addon-image": "^0.9.0-beta.118",
++        "@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.118",
++        "@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.24",
++        "@daiyam/xterm-tab-addon-search": "^0.16.0-beta.118",
++        "@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.118",
++        "@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.118",
++        "@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.118",
+         "@microsoft/1ds-core-js": "^3.2.13",
 @@ -15,11 +24,2 @@
- 				"@vscode/vscode-languagedetection": "1.0.21",
--				"@xterm/addon-clipboard": "^0.2.0-beta.95",
--				"@xterm/addon-image": "^0.9.0-beta.112",
--				"@xterm/addon-ligatures": "^0.10.0-beta.112",
--				"@xterm/addon-progress": "^0.2.0-beta.18",
--				"@xterm/addon-search": "^0.16.0-beta.112",
--				"@xterm/addon-serialize": "^0.14.0-beta.112",
--				"@xterm/addon-unicode11": "^0.9.0-beta.112",
--				"@xterm/addon-webgl": "^0.19.0-beta.112",
--				"@xterm/xterm": "^5.6.0-beta.112",
- 				"jschardet": "3.1.4",
-@@ -30,2 +30,90 @@
- 		},
-+		"node_modules/@daiyam/xterm-tab": {
-+			"version": "5.6.0-beta.112.0",
-+			"resolved": "https://registry.npmjs.org/@daiyam/xterm-tab/-/xterm-tab-5.6.0-beta.112.0.tgz",
-+			"integrity": "sha512-TIunKPNOJqxv1Mn6WsceoZkWee03mkGjo01hDiGPwIZZHxLIf2a1fwZK0yWOP9UZ+GEMAHSWt8x/24UWb4lmHA==",
-+			"license": "MIT"
-+		},
-+		"node_modules/@daiyam/xterm-tab-addon-clipboard": {
-+			"version": "0.2.0-beta.95.0",
-+			"resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-clipboard/-/xterm-tab-addon-clipboard-0.2.0-beta.95.0.tgz",
-+			"integrity": "sha512-seXxa5aOMoBIqE/ramg3R8f4Ic3/hXQruICHp/oFZUXyu6LbTCpZrFgJNg1gV2+9qisq16y98MBp665dR7vpOQ==",
-+			"license": "MIT",
-+			"dependencies": {
-+				"js-base64": "^3.7.5"
-+			},
-+			"peerDependencies": {
-+				"@daiyam/xterm-tab": "^5.4.0"
-+			}
-+		},
-+		"node_modules/@daiyam/xterm-tab-addon-image": {
-+			"version": "0.9.0-beta.112.0",
-+			"resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-image/-/xterm-tab-addon-image-0.9.0-beta.112.0.tgz",
-+			"integrity": "sha512-NErMQFHQc4R3dKdHtoAGORNNJFUvBVtgiMCaYMGIINUmxrSoGp5j2h3lSMcz9LY8KZksvLGUv+UObrhlgsUIFw==",
-+			"license": "MIT",
-+			"peerDependencies": {
-+				"@daiyam/xterm-tab": "^5.2.0"
-+			}
-+		},
-+		"node_modules/@daiyam/xterm-tab-addon-ligatures": {
-+			"version": "0.10.0-beta.112.0",
-+			"resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-ligatures/-/xterm-tab-addon-ligatures-0.10.0-beta.112.0.tgz",
-+			"integrity": "sha512-updAAYCX3a/cm0+RHNAkbDbJZcmpFbCDwnrASr6ZOb1rZGGInJVcGABVe9JVP+kVuO2ZXUO+WO5r1+GvO9EfMA==",
-+			"license": "MIT",
-+			"dependencies": {
-+				"font-finder": "^1.1.0",
-+				"font-ligatures": "^1.4.1"
-+			},
-+			"engines": {
-+				"node": ">8.0.0"
-+			},
-+			"peerDependencies": {
-+				"@daiyam/xterm-tab": "^5.0.0"
-+			}
-+		},
-+		"node_modules/@daiyam/xterm-tab-addon-progress": {
-+			"version": "0.2.0-beta.18.0",
-+			"resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-progress/-/xterm-tab-addon-progress-0.2.0-beta.18.0.tgz",
-+			"integrity": "sha512-sA3XZQo7DNzk+MfsnEDHWo49N/M0uRTqgfguZWenrs6TkfnImVu5ytkaJMilfI4okVSr2+/4X8e9ps/zHhIebA==",
-+			"license": "MIT",
-+			"peerDependencies": {
-+				"@daiyam/xterm-tab": "^5.0.0"
-+			}
-+		},
-+		"node_modules/@daiyam/xterm-tab-addon-search": {
-+			"version": "0.16.0-beta.112.0",
-+			"resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.16.0-beta.112.0.tgz",
-+			"integrity": "sha512-+IJwFVIWSQ2VrTTEjNHDnYRlb+eELecqRZp0pfEiGexaUbEx4WxiCRpqtqSV4OA5+LCarvFRArHC1x6oeTX1yw==",
-+			"license": "MIT",
-+			"peerDependencies": {
-+				"@daiyam/xterm-tab": "^5.0.0"
-+			}
-+		},
-+		"node_modules/@daiyam/xterm-tab-addon-serialize": {
-+			"version": "0.14.0-beta.112.0",
-+			"resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.14.0-beta.112.0.tgz",
-+			"integrity": "sha512-8AY3V1VemE4yM9bix7G9v1r9p++75KjWwWHnsoHNmiOnotfLkRlDy1+h4BpXwu6OxG0kVe4msf6OWlIh55EUcw==",
-+			"license": "MIT",
-+			"peerDependencies": {
-+				"@daiyam/xterm-tab": "^5.0.0"
-+			}
-+		},
-+		"node_modules/@daiyam/xterm-tab-addon-unicode11": {
-+			"version": "0.9.0-beta.112.0",
-+			"resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.9.0-beta.112.0.tgz",
-+			"integrity": "sha512-is7ybOyAoPlBK9+FdEO4QvhY+6Ti67+YZAt+6sbXGCPdoeVNxJQXwzAEQz2/FyZE46mx5W5NPCHBlOE4OHWR5w==",
-+			"license": "MIT",
-+			"peerDependencies": {
-+				"@daiyam/xterm-tab": "^5.0.0"
-+			}
-+		},
-+		"node_modules/@daiyam/xterm-tab-addon-webgl": {
-+			"version": "0.19.0-beta.112.0",
-+			"resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.19.0-beta.112.0.tgz",
-+			"integrity": "sha512-rER2/I8SH/a8xxnkr65soUy/xQc23MymJHQFE8maLJgrCxNDN/tIJIN8vgvFHxLLFAZrQq3MbEvPtM322Ne5Iw==",
-+			"license": "MIT",
-+			"peerDependencies": {
-+				"@daiyam/xterm-tab": "^5.0.0"
-+			}
-+		},
- 		"node_modules/@microsoft/1ds-core-js": {
-@@ -91,90 +179,2 @@
- 		},
--		"node_modules/@xterm/addon-clipboard": {
--			"version": "0.2.0-beta.95",
--			"resolved": "https://registry.npmjs.org/@xterm/addon-clipboard/-/addon-clipboard-0.2.0-beta.95.tgz",
--			"integrity": "sha512-9OknmXeK+AD6FxdTNDY6B2CpP6tNGF1e+vLds6AjTeRJMLjY0GIqn93XY3oMGJJwuakcsG+F0zTOJNQZSmE6JA==",
--			"license": "MIT",
--			"dependencies": {
--				"js-base64": "^3.7.5"
--			},
--			"peerDependencies": {
--				"@xterm/xterm": "^5.6.0-beta.112"
--			}
--		},
--		"node_modules/@xterm/addon-image": {
--			"version": "0.9.0-beta.112",
--			"resolved": "https://registry.npmjs.org/@xterm/addon-image/-/addon-image-0.9.0-beta.112.tgz",
--			"integrity": "sha512-MzZ3bGTUNeDy5nf55Toz0UEXFS+rW7l35K/IQBZ4NggTa0cT1h2/mbbllvwyuy4a3jwB0Eyi2woOV8hATTQHwQ==",
--			"license": "MIT",
--			"peerDependencies": {
--				"@xterm/xterm": "^5.6.0-beta.112"
--			}
--		},
--		"node_modules/@xterm/addon-ligatures": {
--			"version": "0.10.0-beta.112",
--			"resolved": "https://registry.npmjs.org/@xterm/addon-ligatures/-/addon-ligatures-0.10.0-beta.112.tgz",
--			"integrity": "sha512-cXrEiNrjqR4EmWRc3xV0kcvkpC830eX3JIygQJQ5cvLJopaxqrN9WBGuBvsVYznPuDLkT2wqgBwCRM/FetY8ag==",
--			"license": "MIT",
--			"dependencies": {
--				"font-finder": "^1.1.0",
--				"font-ligatures": "^1.4.1"
--			},
--			"engines": {
--				"node": ">8.0.0"
--			},
--			"peerDependencies": {
--				"@xterm/xterm": "^5.6.0-beta.112"
--			}
--		},
--		"node_modules/@xterm/addon-progress": {
--			"version": "0.2.0-beta.18",
--			"resolved": "https://registry.npmjs.org/@xterm/addon-progress/-/addon-progress-0.2.0-beta.18.tgz",
--			"integrity": "sha512-pOJlTVP9t38w7yBWzcwh97UC1dqKVWgpZ5yBZXVP/tkzzQlSqZ1iVdcCdOuPE08i+F2C3nU4cvwgSQYaRNIkow==",
--			"license": "MIT",
--			"peerDependencies": {
--				"@xterm/xterm": "^5.6.0-beta.112"
--			}
--		},
--		"node_modules/@xterm/addon-search": {
--			"version": "0.16.0-beta.112",
--			"resolved": "https://registry.npmjs.org/@xterm/addon-search/-/addon-search-0.16.0-beta.112.tgz",
--			"integrity": "sha512-ZK+QC01H3+r4Kv4D7bPw8ARE8+Sgu0xbgtwofBIGXy1fgEymILt7xLCRv6b7P+W0xJ84/iSCGrs2aPNLixA7NA==",
--			"license": "MIT",
--			"peerDependencies": {
--				"@xterm/xterm": "^5.6.0-beta.112"
--			}
--		},
--		"node_modules/@xterm/addon-serialize": {
--			"version": "0.14.0-beta.112",
--			"resolved": "https://registry.npmjs.org/@xterm/addon-serialize/-/addon-serialize-0.14.0-beta.112.tgz",
--			"integrity": "sha512-aeX31ie3PU04qrTWm8qpNa32DDCvuN+QVs3J3M7yX8qeYEFtVtAChthBuGroUc5bT06/nI1+TGv453HZHFhiaA==",
--			"license": "MIT",
--			"peerDependencies": {
--				"@xterm/xterm": "^5.6.0-beta.112"
--			}
--		},
--		"node_modules/@xterm/addon-unicode11": {
--			"version": "0.9.0-beta.112",
--			"resolved": "https://registry.npmjs.org/@xterm/addon-unicode11/-/addon-unicode11-0.9.0-beta.112.tgz",
--			"integrity": "sha512-gPTEoWJsC7ReAuZ9Mv77QUw7gM2zJ7w1zy5LPGsCYpRdTB0R5SINqyvK0NRmGvHTxmZ0LP3bLl9yStBkU0KCgQ==",
--			"license": "MIT",
--			"peerDependencies": {
--				"@xterm/xterm": "^5.6.0-beta.112"
--			}
--		},
--		"node_modules/@xterm/addon-webgl": {
--			"version": "0.19.0-beta.112",
--			"resolved": "https://registry.npmjs.org/@xterm/addon-webgl/-/addon-webgl-0.19.0-beta.112.tgz",
--			"integrity": "sha512-nxLXeI2nKal4zwpZrdRau3zdStDgn9PVD3f+y5NyWkCcSkPO8HyR5DuEQ964wgP2PFVEfYisLmnwD+GTvi9MXw==",
--			"license": "MIT",
--			"peerDependencies": {
--				"@xterm/xterm": "^5.6.0-beta.112"
--			}
--		},
--		"node_modules/@xterm/xterm": {
--			"version": "5.6.0-beta.112",
--			"resolved": "https://registry.npmjs.org/@xterm/xterm/-/xterm-5.6.0-beta.112.tgz",
--			"integrity": "sha512-cDbt8o5kkdPcij0a4dcvDUfIPcvkHKLJHW5M6yhIOMG/+ZNmyg0Ux+zinMh/Lcf1K+vbcdw+qcPP3p5CXI7XFg==",
--			"license": "MIT"
--		},
- 		"node_modules/font-finder": {
+         "@vscode/vscode-languagedetection": "1.0.21",
+-        "@xterm/addon-clipboard": "^0.2.0-beta.101",
+-        "@xterm/addon-image": "^0.9.0-beta.118",
+-        "@xterm/addon-ligatures": "^0.10.0-beta.118",
+-        "@xterm/addon-progress": "^0.2.0-beta.24",
+-        "@xterm/addon-search": "^0.16.0-beta.118",
+-        "@xterm/addon-serialize": "^0.14.0-beta.118",
+-        "@xterm/addon-unicode11": "^0.9.0-beta.118",
+-        "@xterm/addon-webgl": "^0.19.0-beta.118",
+-        "@xterm/xterm": "^5.6.0-beta.118",
+         "jschardet": "3.1.4",
+@@ -31,2 +31,90 @@
+     },
++    "node_modules/@daiyam/xterm-tab": {
++      "version": "5.6.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab/-/xterm-tab-5.6.0-beta.118.0.tgz",
++      "integrity": "sha512-5yd6WoavlACOGm6uGSP2euYZ3nbM4W2r2qy5DnkJ/RL/EgLTvdSt87369G6hm7K3RPAZXZmZ54iNGGc+IB6KBg==",
++      "license": "MIT"
++    },
++    "node_modules/@daiyam/xterm-tab-addon-clipboard": {
++      "version": "0.2.0-beta.101.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-clipboard/-/xterm-tab-addon-clipboard-0.2.0-beta.101.0.tgz",
++      "integrity": "sha512-I75NOHLU3fM5EIEEOtVDmzgX/cRsmlQtKli3MxIP0hUJfVq9Un3TJjVFH6vG6+3Q1iBuNQ5JUxouoklHdrT5Dw==",
++      "license": "MIT",
++      "dependencies": {
++        "js-base64": "^3.7.5"
++      },
++      "peerDependencies": {
++        "@daiyam/xterm-tab": "^5.4.0"
++      }
++    },
++    "node_modules/@daiyam/xterm-tab-addon-image": {
++      "version": "0.9.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-image/-/xterm-tab-addon-image-0.9.0-beta.118.0.tgz",
++      "integrity": "sha512-U+adEnSPRGoMxAvv1ASWq2HE/uMN1O2QR/Gs+ABVi+e7ne1L6ci6UAgIo6yTxV30mLNGjRAxoOZjAQQG0Dgdew==",
++      "license": "MIT",
++      "peerDependencies": {
++        "@daiyam/xterm-tab": "^5.2.0"
++      }
++    },
++    "node_modules/@daiyam/xterm-tab-addon-ligatures": {
++      "version": "0.10.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-ligatures/-/xterm-tab-addon-ligatures-0.10.0-beta.118.0.tgz",
++      "integrity": "sha512-JSXf4YQsSGnDQ0oKl28OJFcO6uC/ZN/LOPrL+8Hak3FF6WihRGEeolZ7EKKXPHxhqQ9LXoGLAW5wWRZVP+UMQg==",
++      "license": "MIT",
++      "dependencies": {
++        "font-finder": "^1.1.0",
++        "font-ligatures": "^1.4.1"
++      },
++      "engines": {
++        "node": ">8.0.0"
++      },
++      "peerDependencies": {
++        "@daiyam/xterm-tab": "^5.0.0"
++      }
++    },
++    "node_modules/@daiyam/xterm-tab-addon-progress": {
++      "version": "0.2.0-beta.24.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-progress/-/xterm-tab-addon-progress-0.2.0-beta.24.0.tgz",
++      "integrity": "sha512-mKY1hO6longXjxcEeIwnfgVfWIDlO19et1GuJbhHZimJZlxxWp4VtF1ro/ysHwtVMknxNuvzCGSmPHC+OPbyjg==",
++      "license": "MIT",
++      "peerDependencies": {
++        "@daiyam/xterm-tab": "^5.0.0"
++      }
++    },
++    "node_modules/@daiyam/xterm-tab-addon-search": {
++      "version": "0.16.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-search/-/xterm-tab-addon-search-0.16.0-beta.118.0.tgz",
++      "integrity": "sha512-HiE2j40zxAXz/phsdFjhXAPJ1CGAW7lJGlXYg44wKEQKNoBEwBmwwEEjn5KjINErHkx0DnUJ26aTXUwFTFUtUg==",
++      "license": "MIT",
++      "peerDependencies": {
++        "@daiyam/xterm-tab": "^5.0.0"
++      }
++    },
++    "node_modules/@daiyam/xterm-tab-addon-serialize": {
++      "version": "0.14.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-serialize/-/xterm-tab-addon-serialize-0.14.0-beta.118.0.tgz",
++      "integrity": "sha512-Zp7Lrm5kH7zukXEFI/hhmNwaK6xpsHCIMrbpUv3FJMcPTNwnThvDQIC1ZS/L+JG3YranjMMSmj8A8/qfRtYgrQ==",
++      "license": "MIT",
++      "peerDependencies": {
++        "@daiyam/xterm-tab": "^5.0.0"
++      }
++    },
++    "node_modules/@daiyam/xterm-tab-addon-unicode11": {
++      "version": "0.9.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-unicode11/-/xterm-tab-addon-unicode11-0.9.0-beta.118.0.tgz",
++      "integrity": "sha512-DRqqQosE2uINJ3uaH4MMuas4Er0ksqoT1ksRGL3JlvZcTslAWZm/gZ5uXC3eidHj4izobsl1iDMV1o0HwY+owg==",
++      "license": "MIT",
++      "peerDependencies": {
++        "@daiyam/xterm-tab": "^5.0.0"
++      }
++    },
++    "node_modules/@daiyam/xterm-tab-addon-webgl": {
++      "version": "0.19.0-beta.118.0",
++      "resolved": "https://registry.npmjs.org/@daiyam/xterm-tab-addon-webgl/-/xterm-tab-addon-webgl-0.19.0-beta.118.0.tgz",
++      "integrity": "sha512-6+Ff4wr1Da4GtJ3CnrxTWCi+cp5ryGE1+rXUeXDP+gduc2zIvQzQRpOGSqBrfJY682IrB3LphjEySVPulD9osw==",
++      "license": "MIT",
++      "peerDependencies": {
++        "@daiyam/xterm-tab": "^5.0.0"
++      }
++    },
+     "node_modules/@microsoft/1ds-core-js": {
+@@ -92,90 +180,2 @@
+     },
+-    "node_modules/@xterm/addon-clipboard": {
+-      "version": "0.2.0-beta.101",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-clipboard/-/addon-clipboard-0.2.0-beta.101.tgz",
+-      "integrity": "sha512-Q20+bySNgX9gGb8NYidHah/TzoCyOm/0+Orea9+jwCHADN/dnqb0vzT0UIvxZckFFW4twZnjNps19rszWoGC0A==",
+-      "license": "MIT",
+-      "dependencies": {
+-        "js-base64": "^3.7.5"
+-      },
+-      "peerDependencies": {
+-        "@xterm/xterm": "^5.6.0-beta.118"
+-      }
+-    },
+-    "node_modules/@xterm/addon-image": {
+-      "version": "0.9.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-image/-/addon-image-0.9.0-beta.118.tgz",
+-      "integrity": "sha512-PsFEO3VsP2PdZ3TunvJuQfgPX/xdDxBzbUJD5Lh74piY1vNfpUb4R3kypRwgKxn/HYH0+/mIzwmrlMyz8i57vQ==",
+-      "license": "MIT",
+-      "peerDependencies": {
+-        "@xterm/xterm": "^5.6.0-beta.118"
+-      }
+-    },
+-    "node_modules/@xterm/addon-ligatures": {
+-      "version": "0.10.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-ligatures/-/addon-ligatures-0.10.0-beta.118.tgz",
+-      "integrity": "sha512-ry8jZoyTky0TRr9uayaHXhkwwin7HFjO/J5aB/77iZbs+ES0QuZZKRWJCyk/07/RNlj3NjfxDq4ImJgUD34oGQ==",
+-      "license": "MIT",
+-      "dependencies": {
+-        "font-finder": "^1.1.0",
+-        "font-ligatures": "^1.4.1"
+-      },
+-      "engines": {
+-        "node": ">8.0.0"
+-      },
+-      "peerDependencies": {
+-        "@xterm/xterm": "^5.6.0-beta.118"
+-      }
+-    },
+-    "node_modules/@xterm/addon-progress": {
+-      "version": "0.2.0-beta.24",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-progress/-/addon-progress-0.2.0-beta.24.tgz",
+-      "integrity": "sha512-ZDrgQQOtNuDYIPIbQCmPu+MdIEx3aob3jSxHu7j/SMIvBezXMGINFVk0g8ph9ARXldAydld2dUXyr9KdDtTHSA==",
+-      "license": "MIT",
+-      "peerDependencies": {
+-        "@xterm/xterm": "^5.6.0-beta.118"
+-      }
+-    },
+-    "node_modules/@xterm/addon-search": {
+-      "version": "0.16.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-search/-/addon-search-0.16.0-beta.118.tgz",
+-      "integrity": "sha512-xZqu+0ip8wEFyGqLglqrWgjywcoc6EHGoqF2o94Qpjn/qlWYDFdbwQNLwVqF/awAxfOIvyqz7w6Z68QIbPTxWA==",
+-      "license": "MIT",
+-      "peerDependencies": {
+-        "@xterm/xterm": "^5.6.0-beta.118"
+-      }
+-    },
+-    "node_modules/@xterm/addon-serialize": {
+-      "version": "0.14.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-serialize/-/addon-serialize-0.14.0-beta.118.tgz",
+-      "integrity": "sha512-gcyP1Vv6GAsNgE0QfXs73XyZn1V7xxETnzjBVqTevhea580CBeE6bueI+L1WBk/ztg7PLF3W30jtQoyDgqyB7A==",
+-      "license": "MIT",
+-      "peerDependencies": {
+-        "@xterm/xterm": "^5.6.0-beta.118"
+-      }
+-    },
+-    "node_modules/@xterm/addon-unicode11": {
+-      "version": "0.9.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-unicode11/-/addon-unicode11-0.9.0-beta.118.tgz",
+-      "integrity": "sha512-IjGBKjiopPk6hrplrd4FkOvx/94DJ6tJOXQtAyUUhpSHvQmrqEz+pWyx+K3u91OyRlsqgpdVCUfI1T9fG6V2Pg==",
+-      "license": "MIT",
+-      "peerDependencies": {
+-        "@xterm/xterm": "^5.6.0-beta.118"
+-      }
+-    },
+-    "node_modules/@xterm/addon-webgl": {
+-      "version": "0.19.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/addon-webgl/-/addon-webgl-0.19.0-beta.118.tgz",
+-      "integrity": "sha512-l68STep6P7dCapAuzJGLKjmkDtIo6eNxRE3K9CXn2ni5epVO2e4dR5Pu0CRuY1BDHARqmFq5lU/ImaCOIWAn2g==",
+-      "license": "MIT",
+-      "peerDependencies": {
+-        "@xterm/xterm": "^5.6.0-beta.118"
+-      }
+-    },
+-    "node_modules/@xterm/xterm": {
+-      "version": "5.6.0-beta.118",
+-      "resolved": "https://registry.npmjs.org/@xterm/xterm/-/xterm-5.6.0-beta.118.tgz",
+-      "integrity": "sha512-uwqiQP4VH1uFl99wey7gjPRHOHd/ovot/Dh6YJNQk95aT3UjWunb/yHNQpkMD6X4i5Ysv97rn0GrO5DR0eLPXw==",
+-      "license": "MIT"
+-    },
+     "node_modules/commander": {
 diff --git a/remote/web/package.json b/remote/web/package.json
-index 5f66c70..f6e1733 100644
+index e119845..4f0946d 100644
 --- a/remote/web/package.json
 +++ b/remote/web/package.json
 @@ -10,11 +10,11 @@
- 		"@vscode/vscode-languagedetection": "1.0.21",
--		"@xterm/addon-clipboard": "^0.2.0-beta.95",
--		"@xterm/addon-image": "^0.9.0-beta.112",
--		"@xterm/addon-ligatures": "^0.10.0-beta.112",
--		"@xterm/addon-progress": "^0.2.0-beta.18",
--		"@xterm/addon-search": "^0.16.0-beta.112",
--		"@xterm/addon-serialize": "^0.14.0-beta.112",
--		"@xterm/addon-unicode11": "^0.9.0-beta.112",
--		"@xterm/addon-webgl": "^0.19.0-beta.112",
--		"@xterm/xterm": "^5.6.0-beta.112",
-+		"@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.95",
-+		"@daiyam/xterm-tab-addon-image": "^0.9.0-beta.112",
-+		"@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.112",
-+		"@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.18",
-+		"@daiyam/xterm-tab-addon-search": "^0.16.0-beta.112",
-+		"@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.112",
-+		"@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.112",
-+		"@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.112",
-+		"@daiyam/xterm-tab": "^5.6.0-beta.112",
- 		"jschardet": "3.1.4",
+     "@vscode/vscode-languagedetection": "1.0.21",
+-    "@xterm/addon-clipboard": "^0.2.0-beta.101",
+-    "@xterm/addon-image": "^0.9.0-beta.118",
+-    "@xterm/addon-ligatures": "^0.10.0-beta.118",
+-    "@xterm/addon-progress": "^0.2.0-beta.24",
+-    "@xterm/addon-search": "^0.16.0-beta.118",
+-    "@xterm/addon-serialize": "^0.14.0-beta.118",
+-    "@xterm/addon-unicode11": "^0.9.0-beta.118",
+-    "@xterm/addon-webgl": "^0.19.0-beta.118",
+-    "@xterm/xterm": "^5.6.0-beta.118",
++    "@daiyam/xterm-tab-addon-clipboard": "^0.2.0-beta.101",
++    "@daiyam/xterm-tab-addon-image": "^0.9.0-beta.118",
++    "@daiyam/xterm-tab-addon-ligatures": "^0.10.0-beta.118",
++    "@daiyam/xterm-tab-addon-progress": "^0.2.0-beta.24",
++    "@daiyam/xterm-tab-addon-search": "^0.16.0-beta.118",
++    "@daiyam/xterm-tab-addon-serialize": "^0.14.0-beta.118",
++    "@daiyam/xterm-tab-addon-unicode11": "^0.9.0-beta.118",
++    "@daiyam/xterm-tab-addon-webgl": "^0.19.0-beta.118",
++    "@daiyam/xterm-tab": "^5.6.0-beta.118",
+     "jschardet": "3.1.4",
 diff --git a/scripts/xterm-symlink.ps1 b/scripts/xterm-symlink.ps1
 index 06e44dc..6ddeb8e 100644
 --- a/scripts/xterm-symlink.ps1
@@ -925,14 +930,14 @@ index bb62e2e..ce1a8b4 100644
 +import type { IMarker } from '@daiyam/xterm-tab-headless';
  
 diff --git a/src/vs/platform/terminal/common/capabilities/commandDetection/promptInputModel.ts b/src/vs/platform/terminal/common/capabilities/commandDetection/promptInputModel.ts
-index e8ec484..4e71c3e 100644
+index c8df3d6..1f91d47 100644
 --- a/src/vs/platform/terminal/common/capabilities/commandDetection/promptInputModel.ts
 +++ b/src/vs/platform/terminal/common/capabilities/commandDetection/promptInputModel.ts
-@@ -11,3 +11,3 @@ import { throttle } from '../../../../../base/common/decorators.js';
+@@ -5,3 +5,3 @@
  
--import type { Terminal, IMarker, IBufferCell, IBufferLine, IBuffer } from '@xterm/headless';
-+import type { Terminal, IMarker, IBufferCell, IBufferLine, IBuffer } from '@daiyam/xterm-tab-headless';
- import { PosixShellType, TerminalShellType } from '../../terminal.js';
+-import type { IBuffer, IBufferCell, IBufferLine, IMarker, Terminal } from '@xterm/headless';
++import type { IBuffer, IBufferCell, IBufferLine, IMarker, Terminal } from '@daiyam/xterm-tab-headless';
+ import { throttle } from '../../../../../base/common/decorators.js';
 diff --git a/src/vs/platform/terminal/common/capabilities/commandDetection/terminalCommand.ts b/src/vs/platform/terminal/common/capabilities/commandDetection/terminalCommand.ts
 index ecc7f98..8bf1a78 100644
 --- a/src/vs/platform/terminal/common/capabilities/commandDetection/terminalCommand.ts
@@ -961,10 +966,10 @@ index 5a63169..f16fc8f 100644
 +import type { IMarker, Terminal } from '@daiyam/xterm-tab-headless';
  
 diff --git a/src/vs/platform/terminal/common/terminal.ts b/src/vs/platform/terminal/common/terminal.ts
-index c9bd442..b739602 100644
+index 2b2af3d..2e77f1d 100644
 --- a/src/vs/platform/terminal/common/terminal.ts
 +++ b/src/vs/platform/terminal/common/terminal.ts
-@@ -808,3 +808,3 @@ export interface ITerminalChildProcess {
+@@ -814,3 +814,3 @@ export interface ITerminalChildProcess {
  	 * Sets the unicode version for the process, this drives the size of some characters in the
 -	 * xterm-headless instance.
 +	 * @daiyam/xterm-tab-headless instance.
@@ -1005,7 +1010,7 @@ index ac14042..d7f25e8 100644
 +			SerializeAddon = (await import('@daiyam/xterm-tab-addon-serialize')).SerializeAddon;
  		}
 diff --git a/src/vs/platform/terminal/test/common/capabilities/commandDetection/promptInputModel.test.ts b/src/vs/platform/terminal/test/common/capabilities/commandDetection/promptInputModel.test.ts
-index f1bd6de..a7c3d9a 100644
+index 7e2f8ff..01b1cf4 100644
 --- a/src/vs/platform/terminal/test/common/capabilities/commandDetection/promptInputModel.test.ts
 +++ b/src/vs/platform/terminal/test/common/capabilities/commandDetection/promptInputModel.test.ts
 @@ -5,3 +5,3 @@
@@ -1019,10 +1024,10 @@ index f1bd6de..a7c3d9a 100644
 +		const TerminalCtor = (await importAMDNodeModule<typeof import('@daiyam/xterm-tab')>('@daiyam/xterm-tab', 'lib/xterm.js')).Terminal;
  		xterm = store.add(new TerminalCtor({ allowProposedApi: true }));
 diff --git a/src/vs/workbench/api/common/extHostTerminalService.ts b/src/vs/workbench/api/common/extHostTerminalService.ts
-index 7f218f1..4646433 100644
+index f3970bc..fd7df9b 100644
 --- a/src/vs/workbench/api/common/extHostTerminalService.ts
 +++ b/src/vs/workbench/api/common/extHostTerminalService.ts
-@@ -360,3 +360,3 @@ class ExtHostPseudoterminal implements ITerminalChildProcess {
+@@ -362,3 +362,3 @@ class ExtHostPseudoterminal implements ITerminalChildProcess {
  	async setUnicodeVersion(version: '6' | '11'): Promise<void> {
 -		// No-op, xterm-headless isn't used for extension owned terminals.
 +		// No-op, @daiyam/xterm-tab-headless isn't used for extension owned terminals.
@@ -1037,7 +1042,7 @@ index 528341b..b438789 100644
 +import type { IMarker } from '@daiyam/xterm-tab';
  import { AccessibilitySignal, IAccessibilitySignalService } from '../../../../platform/accessibilitySignal/browser/accessibilitySignalService.js';
 diff --git a/src/vs/workbench/contrib/terminal/browser/terminal.ts b/src/vs/workbench/contrib/terminal/browser/terminal.ts
-index d7d74f4..feed285 100644
+index d22e008..7f895d3 100644
 --- a/src/vs/workbench/contrib/terminal/browser/terminal.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/terminal.ts
 @@ -24,3 +24,3 @@ import { XtermTerminal } from './xterm/xtermTerminal.js';
@@ -1049,9 +1054,9 @@ index d7d74f4..feed285 100644
  import type { Barrier } from '../../../../base/common/async.js';
 -import type { IProgressState } from '@xterm/addon-progress';
 +import type { IProgressState } from '@daiyam/xterm-tab-addon-progress';
- 
+ import type { IEditorOptions } from '../../../../platform/editor/common/editor.js';
 diff --git a/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts b/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts
-index 9a0bee2..33427c8 100644
+index 6f27a44..bad263d 100644
 --- a/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts
 +++ b/src/vs/workbench/contrib/terminal/browser/terminalInstance.ts
 @@ -82,3 +82,3 @@ import { IPreferencesService } from '../../../services/preferences/common/prefer
@@ -1353,7 +1358,7 @@ index 996b5c1..8170a4e 100644
 +import type { IDecoration, ITerminalAddon, Terminal as RawXtermTerminal } from '@daiyam/xterm-tab';
  import * as dom from '../../../../../base/browser/dom.js';
 diff --git a/src/vs/workbench/contrib/terminalContrib/chat/browser/terminalChatController.ts b/src/vs/workbench/contrib/terminalContrib/chat/browser/terminalChatController.ts
-index fbf6c29..04b7b9d 100644
+index 711a193..168b441 100644
 --- a/src/vs/workbench/contrib/terminalContrib/chat/browser/terminalChatController.ts
 +++ b/src/vs/workbench/contrib/terminalContrib/chat/browser/terminalChatController.ts
 @@ -5,3 +5,3 @@
@@ -1371,7 +1376,7 @@ index bd9b9f7..f67faae 100644
 +import type { Terminal as RawXtermTerminal } from '@daiyam/xterm-tab';
  import { Dimension, getActiveWindow, IFocusTracker, trackFocus } from '../../../../../base/browser/dom.js';
 diff --git a/src/vs/workbench/contrib/terminalContrib/chat/test/browser/terminalInitialHint.test.ts b/src/vs/workbench/contrib/terminalContrib/chat/test/browser/terminalInitialHint.test.ts
-index 1616d33..7c4ed1c 100644
+index 5e1da3d..3e3ea53 100644
 --- a/src/vs/workbench/contrib/terminalContrib/chat/test/browser/terminalInitialHint.test.ts
 +++ b/src/vs/workbench/contrib/terminalContrib/chat/test/browser/terminalInitialHint.test.ts
 @@ -5,3 +5,3 @@
@@ -1379,22 +1384,49 @@ index 1616d33..7c4ed1c 100644
 -import type { Terminal } from '@xterm/xterm';
 +import type { Terminal } from '@daiyam/xterm-tab';
  import { ensureNoDisposablesAreLeakedInTestSuite } from '../../../../../../base/test/common/utils.js';
-@@ -54,3 +54,3 @@ suite('Terminal Initial Hint Addon', () => {
+@@ -56,3 +56,3 @@ suite('Terminal Initial Hint Addon', () => {
  		const instantiationService = workbenchInstantiationService({}, store);
 -		const TerminalCtor = (await importAMDNodeModule<typeof import('@xterm/xterm')>('@xterm/xterm', 'lib/xterm.js')).Terminal;
 +		const TerminalCtor = (await importAMDNodeModule<typeof import('@daiyam/xterm-tab')>('@daiyam/xterm-tab', 'lib/xterm.js')).Terminal;
  		xterm = store.add(new TerminalCtor());
-diff --git a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/bufferOutputPolling.ts b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/bufferOutputPolling.ts
-index ba54aea..07b5368 100644
---- a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/bufferOutputPolling.ts
-+++ b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/bufferOutputPolling.ts
-@@ -16,3 +16,3 @@ import { IToolInvocationContext } from '../../../chat/common/languageModelToolsS
- import { ITerminalInstance } from '../../../terminal/browser/terminal.js';
+diff --git a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/basicExecuteStrategy.ts b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/basicExecuteStrategy.ts
+index b697f73..17da37d 100644
+--- a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/basicExecuteStrategy.ts
++++ b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/basicExecuteStrategy.ts
+@@ -13,3 +13,3 @@ import { ITerminalLogService } from '../../../../../../platform/terminal/common/
+ import { trackIdleOnPrompt, waitForIdle, type ITerminalExecuteStrategy, type ITerminalExecuteStrategyResult } from './executeStrategy.js';
+-import type { IMarker as IXtermMarker } from '@xterm/xterm';
++import type { IMarker as IXtermMarker } from '@daiyam/xterm-tab';
+ import { ITerminalInstance } from '../../../../terminal/browser/terminal.js';
+diff --git a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/executeStrategy.ts b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/executeStrategy.ts
+index 4206c45..fadb4aa 100644
+--- a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/executeStrategy.ts
++++ b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/executeStrategy.ts
+@@ -10,3 +10,3 @@ import { DisposableStore } from '../../../../../../base/common/lifecycle.js';
+ import type { ITerminalInstance } from '../../../../terminal/browser/terminal.js';
+-import type { IMarker as IXtermMarker } from '@xterm/xterm';
++import type { IMarker as IXtermMarker } from '@daiyam/xterm-tab';
+ 
+diff --git a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/noneExecuteStrategy.ts b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/noneExecuteStrategy.ts
+index dd27cc6..56ee5bf 100644
+--- a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/noneExecuteStrategy.ts
++++ b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/noneExecuteStrategy.ts
+@@ -11,3 +11,3 @@ import { ITerminalLogService } from '../../../../../../platform/terminal/common/
+ import { waitForIdle, waitForIdleWithPromptHeuristics, type ITerminalExecuteStrategy, type ITerminalExecuteStrategyResult } from './executeStrategy.js';
+-import type { IMarker as IXtermMarker } from '@xterm/xterm';
++import type { IMarker as IXtermMarker } from '@daiyam/xterm-tab';
+ import { ITerminalInstance } from '../../../../terminal/browser/terminal.js';
+diff --git a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/richExecuteStrategy.ts b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/richExecuteStrategy.ts
+index b5ca687..2b002a2 100644
+--- a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/richExecuteStrategy.ts
++++ b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/executeStrategy/richExecuteStrategy.ts
+@@ -14,3 +14,3 @@ import type { ITerminalInstance } from '../../../../terminal/browser/terminal.js
+ import { trackIdleOnPrompt, type ITerminalExecuteStrategy, type ITerminalExecuteStrategyResult } from './executeStrategy.js';
 -import type { IMarker as IXtermMarker } from '@xterm/xterm';
 +import type { IMarker as IXtermMarker } from '@daiyam/xterm-tab';
  
 diff --git a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/outputHelpers.ts b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/outputHelpers.ts
-index 4904474..d694e8b 100644
+index 318a597..ec2aa45 100644
 --- a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/outputHelpers.ts
 +++ b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/outputHelpers.ts
 @@ -6,3 +6,3 @@
@@ -1402,15 +1434,33 @@ index 4904474..d694e8b 100644
 -import type { IMarker as IXtermMarker } from '@xterm/xterm';
 +import type { IMarker as IXtermMarker } from '@daiyam/xterm-tab';
  
-diff --git a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/runInTerminalTool.ts b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/runInTerminalTool.ts
-index edb555f..8a9573d 100644
---- a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/runInTerminalTool.ts
-+++ b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/runInTerminalTool.ts
+diff --git a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/monitoring/outputMonitor.ts b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/monitoring/outputMonitor.ts
+index b0fd2f0..331a107 100644
+--- a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/monitoring/outputMonitor.ts
++++ b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/monitoring/outputMonitor.ts
+@@ -25,3 +25,3 @@ import { ILinkLocation } from '../../taskHelpers.js';
+ import { IAction } from '../../../../../../../base/common/actions.js';
+-import type { IMarker as XtermMarker } from '@xterm/xterm';
++import type { IMarker as XtermMarker } from '@daiyam/xterm-tab';
+ import { detectsInputRequiredPattern } from '../../executeStrategy/executeStrategy.js';
+diff --git a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/monitoring/types.ts b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/monitoring/types.ts
+index 4e9cc7c..f6ded9e 100644
+--- a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/monitoring/types.ts
++++ b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/monitoring/types.ts
+@@ -8,3 +8,3 @@ import type { ITerminalInstance } from '../../../../../terminal/browser/terminal
+ import type { ILinkLocation } from '../../taskHelpers.js';
+-import type { IMarker as XtermMarker } from '@xterm/xterm';
++import type { IMarker as XtermMarker } from '@daiyam/xterm-tab';
+ 
+diff --git a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/runInTerminalTool.ts b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/runInTerminalTool.ts
+index c4f9635..81243c6 100644
+--- a/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/runInTerminalTool.ts
++++ b/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/runInTerminalTool.ts
 @@ -5,3 +5,3 @@
  
 -import type { IMarker as IXtermMarker } from '@xterm/xterm';
 +import type { IMarker as IXtermMarker } from '@daiyam/xterm-tab';
- import { timeout } from '../../../../../base/common/async.js';
+ import { asArray } from '../../../../../../base/common/arrays.js';
 diff --git a/src/vs/workbench/contrib/terminalContrib/clipboard/browser/terminal.clipboard.contribution.ts b/src/vs/workbench/contrib/terminalContrib/clipboard/browser/terminal.clipboard.contribution.ts
 index 8fafdc6..2846238 100644
 --- a/src/vs/workbench/contrib/terminalContrib/clipboard/browser/terminal.clipboard.contribution.ts
@@ -1448,7 +1498,7 @@ index 40e7294..da4e1d0 100644
 +import type { Terminal as RawXtermTerminal } from '@daiyam/xterm-tab';
  import { IDimension } from '../../../../../base/browser/dom.js';
 diff --git a/src/vs/workbench/contrib/terminalContrib/find/browser/terminalFindWidget.ts b/src/vs/workbench/contrib/terminalContrib/find/browser/terminalFindWidget.ts
-index d1cf89f..0cf5ca2 100644
+index 687f3e0..512ec00 100644
 --- a/src/vs/workbench/contrib/terminalContrib/find/browser/terminalFindWidget.ts
 +++ b/src/vs/workbench/contrib/terminalContrib/find/browser/terminalFindWidget.ts
 @@ -15,3 +15,3 @@ import { IKeybindingService } from '../../../../../platform/keybinding/common/ke
@@ -1493,7 +1543,7 @@ index 228d047..4a1960d 100644
 +import type { IViewportRange, IBufferRange, ILink, ILinkDecorations, Terminal } from '@daiyam/xterm-tab';
  import { Disposable, DisposableStore, MutableDisposable } from '../../../../../base/common/lifecycle.js';
 diff --git a/src/vs/workbench/contrib/terminalContrib/links/browser/terminalLinkDetectorAdapter.ts b/src/vs/workbench/contrib/terminalContrib/links/browser/terminalLinkDetectorAdapter.ts
-index 29bb3e3..4ab4ff2 100644
+index acda574..23af0ba 100644
 --- a/src/vs/workbench/contrib/terminalContrib/links/browser/terminalLinkDetectorAdapter.ts
 +++ b/src/vs/workbench/contrib/terminalContrib/links/browser/terminalLinkDetectorAdapter.ts
 @@ -12,3 +12,3 @@ import { TerminalLink } from './terminalLink.js';
@@ -1709,7 +1759,7 @@ index d7da979..9441143 100644
 +		const TerminalCtor = (await importAMDNodeModule<typeof import('@daiyam/xterm-tab')>('@daiyam/xterm-tab', 'lib/xterm.js')).Terminal;
  		terminal = store.add(new TerminalCtor({
 diff --git a/src/vs/workbench/contrib/terminalContrib/stickyScroll/browser/terminalStickyScrollContribution.ts b/src/vs/workbench/contrib/terminalContrib/stickyScroll/browser/terminalStickyScrollContribution.ts
-index 9d2b55e..dbdfec5 100644
+index 4537ef2..4d09576 100644
 --- a/src/vs/workbench/contrib/terminalContrib/stickyScroll/browser/terminalStickyScrollContribution.ts
 +++ b/src/vs/workbench/contrib/terminalContrib/stickyScroll/browser/terminalStickyScrollContribution.ts
 @@ -5,3 +5,3 @@
@@ -1718,7 +1768,7 @@ index 9d2b55e..dbdfec5 100644
 +import type { Terminal as RawXtermTerminal } from '@daiyam/xterm-tab';
  import { Event } from '../../../../../base/common/event.js';
 diff --git a/src/vs/workbench/contrib/terminalContrib/stickyScroll/browser/terminalStickyScrollOverlay.ts b/src/vs/workbench/contrib/terminalContrib/stickyScroll/browser/terminalStickyScrollOverlay.ts
-index 3e94022..e5af65b 100644
+index 9e0a5e7..decd370 100644
 --- a/src/vs/workbench/contrib/terminalContrib/stickyScroll/browser/terminalStickyScrollOverlay.ts
 +++ b/src/vs/workbench/contrib/terminalContrib/stickyScroll/browser/terminalStickyScrollOverlay.ts
 @@ -5,6 +5,6 @@
@@ -1733,7 +1783,7 @@ index 3e94022..e5af65b 100644
 +import type { IBufferLine, IMarker, ITerminalOptions, ITheme, Terminal as RawXtermTerminal, Terminal as XTermTerminal } from '@daiyam/xterm-tab';
  import { $, addDisposableListener, addStandardDisposableListener, getWindow } from '../../../../../base/browser/dom.js';
 diff --git a/src/vs/workbench/contrib/terminalContrib/suggest/browser/lspCompletionProviderAddon.ts b/src/vs/workbench/contrib/terminalContrib/suggest/browser/lspCompletionProviderAddon.ts
-index 8d73191..6d34780 100644
+index 8c02694..1593f75 100644
 --- a/src/vs/workbench/contrib/terminalContrib/suggest/browser/lspCompletionProviderAddon.ts
 +++ b/src/vs/workbench/contrib/terminalContrib/suggest/browser/lspCompletionProviderAddon.ts
 @@ -5,3 +5,3 @@
@@ -1741,17 +1791,8 @@ index 8d73191..6d34780 100644
 -import type { ITerminalAddon, Terminal } from '@xterm/xterm';
 +import type { ITerminalAddon, Terminal } from '@daiyam/xterm-tab';
  import { Disposable, IReference } from '../../../../../base/common/lifecycle.js';
-diff --git a/src/vs/workbench/contrib/terminalContrib/suggest/browser/pwshCompletionProviderAddon.ts b/src/vs/workbench/contrib/terminalContrib/suggest/browser/pwshCompletionProviderAddon.ts
-index d4b09e3..8de7254 100644
---- a/src/vs/workbench/contrib/terminalContrib/suggest/browser/pwshCompletionProviderAddon.ts
-+++ b/src/vs/workbench/contrib/terminalContrib/suggest/browser/pwshCompletionProviderAddon.ts
-@@ -7,3 +7,3 @@ import { ITerminalCompletionProvider } from './terminalCompletionService.js';
- import { Disposable } from '../../../../../base/common/lifecycle.js';
--import type { ITerminalAddon, Terminal } from '@xterm/xterm';
-+import type { ITerminalAddon, Terminal } from '@daiyam/xterm-tab';
- import { Event, Emitter } from '../../../../../base/common/event.js';
 diff --git a/src/vs/workbench/contrib/terminalContrib/suggest/browser/terminal.suggest.contribution.ts b/src/vs/workbench/contrib/terminalContrib/suggest/browser/terminal.suggest.contribution.ts
-index dd21744..20935ba 100644
+index cef23bb..d4c92dd 100644
 --- a/src/vs/workbench/contrib/terminalContrib/suggest/browser/terminal.suggest.contribution.ts
 +++ b/src/vs/workbench/contrib/terminalContrib/suggest/browser/terminal.suggest.contribution.ts
 @@ -5,3 +5,3 @@
@@ -1760,7 +1801,7 @@ index dd21744..20935ba 100644
 +import type { Terminal as RawXtermTerminal } from '@daiyam/xterm-tab';
  import * as dom from '../../../../../base/browser/dom.js';
 diff --git a/src/vs/workbench/contrib/terminalContrib/suggest/browser/terminalSuggestAddon.ts b/src/vs/workbench/contrib/terminalContrib/suggest/browser/terminalSuggestAddon.ts
-index 1d2a13e..115aa5d 100644
+index e1251ef..52be09f 100644
 --- a/src/vs/workbench/contrib/terminalContrib/suggest/browser/terminalSuggestAddon.ts
 +++ b/src/vs/workbench/contrib/terminalContrib/suggest/browser/terminalSuggestAddon.ts
 @@ -5,3 +5,3 @@

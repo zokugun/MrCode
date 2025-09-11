@@ -11,14 +11,23 @@ else
     cd vscodium
 fi
 
+if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
+  git checkout insider
+fi
+
 if [[ -z "${RELEASE_VERSION}" ]]; then
   if [[ "${VSCODIUM_LATEST}" == "yes" ]] || [[ ! -f "../upstream/${VSCODE_QUALITY}.json" ]]; then
     echo "Retrieve lastest version"
 
-    git pull origin master
+    if [[ "${VSCODE_QUALITY}" == "insider" ]]; then
+      echo "Not supported"
+      exit 1
+    else
+      git pull origin master
 
-    VSCODIUM_COMMIT=$( git log --no-show-signature --format="%H" -n 1 )
-    VSCODIUM_TAG=$( git tag -l --sort=-version:refname | head -1 )
+      VSCODIUM_COMMIT=$( git log --no-show-signature --format="%H" -n 1 )
+      VSCODIUM_TAG=$( git tag -l --sort=-version:refname | head -1 )
+    fi
   else
     echo "Get version from ${VSCODE_QUALITY}.json"
     VSCODIUM_COMMIT=$( jq -r '.commit' "../upstream/${VSCODE_QUALITY}.json" )
