@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="100" height="100" viewBox="0, 0, 100, 100">
+  <defs>
+    <linearGradient id="Gradient_1" gradientUnits="userSpaceOnUse" x1="55.473" y1="106.34" x2="55.473" y2="82.148" gradientTransform="matrix(3.983, 0, 0, 3.983, -219.133, -327.2)">
+      <stop offset="0" stop-color="#E6E6E6"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+  </defs>
+  <g id="Layer_1">
+    <path d="M50,3.642 L50,3.642 C76.608,3.642 98.179,25.213 98.179,51.821 L98.179,51.821 C98.179,78.43 76.608,100 50,100 L50,100 C23.392,100 1.821,78.43 1.821,51.821 L1.821,51.821 C1.821,25.213 23.392,3.642 50,3.642 z" fill="#808080" id="rect6638" opacity="0.5"/>
+    <path d="M50,0 L50,0 C76.608,0 98.179,21.57 98.179,48.179 L98.179,48.179 C98.179,74.787 76.608,96.358 50,96.358 L50,96.358 C23.392,96.358 1.821,74.787 1.821,48.179 L1.821,48.179 C1.821,21.57 23.392,0 50,0 z" fill="url(#Gradient_1)" id="rect5668"/>
+  </g>
+</svg>
