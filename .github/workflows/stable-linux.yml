@@ -200,7 +200,7 @@ jobs:
 
       - name: Install GH
         working-directory: ./vscodium
-        run: ./install_gh.sh
+        run: ./build/linux/install_gh.sh
         if: env.DISABLED != 'yes' && env.SHOULD_BUILD == 'yes'
 
       - name: Prepare VSCodium
@@ -347,7 +347,7 @@ jobs:
 
       - name: Install GH
         working-directory: ./vscodium
-        run: ./install_gh.sh
+        run: ./build/linux/install_gh.sh
         if: env.DISABLED != 'yes' && (env.SHOULD_BUILD_REH != 'no' || env.SHOULD_BUILD_REH_WEB != 'no')
 
       - name: Prepare VSCodium
@@ -435,7 +435,7 @@ jobs:
 
       - name: Install GH
         working-directory: ./vscodium
-        run: ./install_gh.sh
+        run: ./build/linux/install_gh.sh
         if: env.DISABLED != 'yes' && (env.SHOULD_BUILD_REH != 'no' || env.SHOULD_BUILD_REH_WEB != 'no')
 
       - name: Prepare VSCodium
