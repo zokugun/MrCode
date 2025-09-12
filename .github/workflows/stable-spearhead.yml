@@ -39,6 +39,8 @@ jobs:
           node-version-file: '.nvmrc'
 
       - name: Clone VSCodium repo
+        env:
+          NEW_RELEASE: ${{ github.event.inputs.new_release }}
         run: . get_repo.sh
 
       - name: Prepare VSCodium
@@ -47,7 +49,6 @@ jobs:
       - name: Check existing VSCodium tags/releases
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NEW_RELEASE: ${{ github.event.inputs.new_release }}
           IS_SPEARHEAD: 'yes'
         working-directory: ./vscodium
         run: . check_tags.sh
