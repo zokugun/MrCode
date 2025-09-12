@@ -28,6 +28,14 @@ if [[ -z "${RELEASE_VERSION}" ]]; then
       VSCODIUM_COMMIT=$( git log --no-show-signature --format="%H" -n 1 )
       VSCODIUM_TAG=$( git tag -l --sort=-version:refname | head -1 )
     fi
+
+    if [[ -f "../upstream/${VSCODE_QUALITY}.json" ]]; then
+      SAVED_TAG=$( jq -r '.tag' "../upstream/${VSCODE_QUALITY}.json" )
+
+      if [[ "${VSCODIUM_TAG}" != "${SAVED_TAG}" ]]; then
+        NEW_RELEASE="true"
+      fi
+    fi
   else
     echo "Get version from ${VSCODE_QUALITY}.json"
     VSCODIUM_COMMIT=$( jq -r '.commit' "../upstream/${VSCODE_QUALITY}.json" )
@@ -83,18 +91,21 @@ fi
 
 echo "VSCODIUM_TAG=\"${VSCODIUM_TAG}\""
 echo "VSCODIUM_COMMIT=\"${VSCODIUM_COMMIT}\""
+echo "NEW_RELEASE=\"${NEW_RELEASE}\""
 
 cd ..
 
 # for GH actions
 if [[ "${GITHUB_ENV}" ]]; then
   echo "MS_TAG=${MS_TAG}" >> "${GITHUB_ENV}"
+  echo "NEW_RELEASE=${NEW_RELEASE}" >> "${GITHUB_ENV}"
+  echo "RELEASE_VERSION=${RELEASE_VERSION}" >> "${GITHUB_ENV}"
   echo "VSCODIUM_TAG=${VSCODIUM_TAG}" >> "${GITHUB_ENV}"
   echo "VSCODIUM_COMMIT=${VSCODIUM_COMMIT}" >> "${GITHUB_ENV}"
-  echo "RELEASE_VERSION=${RELEASE_VERSION}" >> "${GITHUB_ENV}"
 fi
 
 export MS_TAG
+export NEW_RELEASE
+export RELEASE_VERSION
 export VSCODIUM_TAG
 export VSCODIUM_COMMIT
-export RELEASE_VERSION
